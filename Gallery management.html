@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Dashboard - Gallery Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{--bg:#f8fafc;--card:#ffffff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--tile:#fffdf5}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712}}
+.gallery-card img{transition:transform .4s ease}
+.gallery-card .ov{transition:opacity .25s ease}
+.gallery-card .ov .rb{width:46px;height:46px;border-radius:9999px;background:#ffffff;color:#0f172a;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.35);transition:transform .2s ease,background-color .2s ease;cursor:pointer}
+.gallery-card .ov .rb:hover{background:#f8fafc;transform:scale(1.08)}
+.gallery-card .ov .rb:active{transform:scale(.92)!important}
+.card.active-card{border:2px solid #ea580c!important;box-shadow:0 0 0 3px rgba(234,88,12,0.25),0 10px 25px -5px rgba(0,0,0,0.15)!important}
+.card.active-card .ov{opacity:1!important;pointer-events:auto!important;background:rgba(0,0,0,0.5)!important;-webkit-backdrop-filter:blur(2px)!important;backdrop-filter:blur(2px)!important}
+@media (hover:hover){.gallery-card:hover .ov{opacity:1;pointer-events:auto;background:rgba(0,0,0,0.45)}}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif;letter-spacing:-.01em;overflow-x:hidden}
+.card{background:var(--card);border:1px solid var(--bd)}
+.mu{color:var(--mu)} .bd{border-color:var(--bd)}
+.soft{box-shadow:0 4px 20px -4px rgba(15,23,42,.06)}
+.btn{border:1px solid var(--bd);background:var(--card)}
+#desktopSidebar{transition:width .25s cubic-bezier(.4,0,.2,1)}
+#desktopSidebar.sidebar-collapsed{width:54px!important;min-width:54px!important}
+#desktopSidebar.sidebar-collapsed .logo-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .logo-mini{display:block!important}
+#desktopSidebar.sidebar-collapsed .sidebar-header-box{padding:1.25rem .25rem!important}
+#desktopSidebar.sidebar-collapsed nav a{justify-content:center!important;padding:0!important;width:36px!important;height:36px!important;margin-left:auto!important;margin-right:auto!important}
+#desktopSidebar.sidebar-collapsed nav a span{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-mini{display:block!important}
+</style>
+</head>
+<body class="min-h-screen flex bg-[var(--bg)] text-[var(--tx)]">
+
+<!-- Desktop Persistent Left Sidebar -->
+<aside id="desktopSidebar" class="hidden lg:flex flex-col w-[220px] border-r bd h-screen sticky top-0 bg-white dark:bg-[#141a25] z-30 shrink-0">
+  <div class="sidebar-header-box pt-5 pb-5 px-3 flex items-center justify-center">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="logo-full h-[54px] w-auto max-w-[185px] object-contain">
+    <img src="logo-mini.png" alt="DCS" class="logo-mini hidden w-7 h-7 object-contain">
+  </div>
+  <nav class="flex-1 overflow-y-auto px-2.5 space-y-1" id="desktopNav"></nav>
+  <div class="py-3 border-t bd text-center">
+    <p class="sidebar-footer-full text-[10.5px] mu">DCS Admin v1.0.0</p>
+    <p class="sidebar-footer-mini hidden text-[10px] mu font-semibold">v1.0</p>
+  </div>
+</aside>
+
+<!-- Right Side Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+
+  <!-- Top Header Bar -->
+  <header class="sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 h-14 border-b bd bg-white dark:bg-[#141a25]">
+    <div class="flex items-center gap-2.5">
+      <button onclick="toggleSidebar()" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle sidebar" title="Toggle sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" y2="6"/>
+          <line x1="4" x2="20" y1="12" y2="12"/>
+          <line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+      <span class="text-[13.5px] font-bold tracking-tight">Admin Dashboard</span>
+    </div>
+    <div class="flex items-center gap-2.5">
+      <button onclick="theme()" id="tbtn" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button class="h-8 px-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-xs">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 flex-1">
+    <!-- Enclosing White Card -->
+    <div class="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25]">
+      
+      <!-- Top Title Row: Icon + Title on Left, Upload Button on Right -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
+        <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3">
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm" style="background:linear-gradient(135deg,#ff9a3c,#ff7a45)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          </div>
+          <div>
+            <h1 class="text-[17px] font-bold tracking-tight text-[var(--tx)]">Gallery Management</h1>
+            <p class="mu text-[11.5px] mt-0.5 max-w-sm sm:max-w-none">Upload and manage gallery images for your website</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto sm:self-center">
+          <input type="file" id="galleryFileInput" accept="image/*" multiple class="hidden" onchange="uploadDirectFiles(this)">
+          <button id="upbtn" onclick="$('galleryFileInput').click()" class="w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95" style="background:#ea580c;box-shadow:0 6px 16px -4px rgba(234,88,12,0.5)">
+            <span class="text-sm font-bold leading-none">+</span>
+            Upload Images
+          </button>
+        </div>
+      </div>
+
+      <!-- Upload Progress Card (shown while uploading) -->
+      <div id="uploadProgressCard" class="hidden card rounded-xl p-3.5 sm:p-4 border-l-4 border-l-[#ea580c] shadow-xs mb-5 bg-white dark:bg-[#141a25] flex items-center gap-3.5">
+        <div class="flex-1 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div id="uploadProgressBar" class="h-full bg-[#ea580c] rounded-full transition-all duration-150" style="width: 0%"></div>
+        </div>
+        <span id="uploadProgressText" class="text-[11.5px] font-semibold text-slate-700 dark:text-slate-300 shrink-0">Uploading... 0%</span>
+      </div>
+
+      <!-- Upload Success Alert Popup (shown when finished) -->
+      <div id="uploadSuccessAlert" class="hidden rounded-xl p-3.5 mb-5 border-l-4 border-l-emerald-500 border border-emerald-300 dark:border-emerald-700/60 bg-[#edfbf2] dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100 flex items-center justify-between text-[12px] font-medium shadow-xs">
+        <span id="uploadSuccessText">Image uploaded successfully</span>
+        <button type="button" onclick="dismissSuccessAlert()" class="w-5 h-5 rounded-full bg-emerald-200/60 hover:bg-emerald-300/80 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200 flex items-center justify-center transition cursor-pointer" aria-label="Close">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Section Card: Gallery Images (Count) with Orange Left Accent Bar -->
+      <div class="card rounded-xl p-3.5 sm:p-4 border-l-4 border-l-[#ea580c] shadow-xs mb-5 bg-white dark:bg-[#141a25]">
+        <div class="flex items-center gap-2 text-[var(--tx)]">
+          <svg class="text-[#ea580c] shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="2" />
+            <circle cx="9" cy="9" r="2" />
+            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+          </svg>
+          <h2 class="text-[13.5px] sm:text-[14px] font-bold tracking-tight">
+            Gallery Images (<span id="count">38</span>)
+          </h2>
+        </div>
+        <p class="text-[11px] sm:text-[11.5px] mu mt-0.5">
+          Click on any image to preview or use the action buttons to manage your gallery
+        </p>
+      </div>
+
+      <!-- Gallery Grid (3 columns on desktop) -->
+      <div id="list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+      <div id="empty" class="hidden card rounded-2xl p-10 text-center soft">
+        <p class="text-lg font-semibold">No gallery images yet</p>
+        <p class="mu text-sm mt-1">Upload an image to get started.</p>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Mobile Slide-out Drawer Nav -->
+<div id="navbg" onclick="closeNav()" class="hidden fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm lg:hidden"></div>
+<aside id="nav" class="fixed left-0 top-0 z-[71] h-full w-72 max-w-[85vw] flex flex-col card border-y-0 border-l-0 transition-transform duration-200 -translate-x-full lg:hidden" style="padding-top:env(safe-area-inset-top,0px)" aria-label="Admin menu">
+  <div class="flex items-center justify-between px-5 pt-4 pb-3">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="h-10 w-auto max-w-[170px] object-contain">
+    <button onclick="closeNav()" aria-label="Close menu" class="w-8 h-8 rounded-lg mu flex items-center justify-center hover:opacity-75 cursor-pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <nav id="mobileNav" class="flex-1 overflow-y-auto px-2.5 py-2 space-y-0.5"></nav>
+  <p class="text-center text-[11px] mu py-3 border-t bd">DCS Admin v1.0.0</p>
+</aside>
+
+<!-- Preview Modal -->
+<div id="preview" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-pointer" onclick="this.classList.add('hidden')">
+  <div id="pv" class="max-h-[85vh] max-w-full rounded-2xl overflow-hidden flex items-center justify-center" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div id="confirm" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+  <div class="card rounded-2xl p-5 max-w-sm w-full shadow-2xl">
+    <h3 class="font-bold text-[14px] mb-1">Delete this gallery image?</h3>
+    <p class="text-[12px] mu mb-4">It will be removed from your website gallery immediately.</p>
+    <div class="flex gap-2">
+      <button onclick="$('confirm').classList.add('hidden')" class="btn flex-1 h-9 rounded-lg text-[12px] font-medium cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">Cancel</button>
+      <button id="yes" class="flex-1 h-9 rounded-lg bg-red-600 text-white text-[12px] font-semibold cursor-pointer hover:bg-red-700">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] hidden px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-lg pointer-events-none"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const ico=(p,z=18)=>`<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+
+let galleryItems = [
+  { id: 1, name: 'Screenshot 2026-09-08 143514.png', date: '9/8/2026', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&auto=format&fit=crop&q=80' },
+  { id: 2, name: 'Screenshot 2026-09-08 143558.png', date: '9/8/2026', img: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=80' },
+  { id: 3, name: 'Screenshot 2026-09-08 143704.png', date: '9/8/2026', img: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&auto=format&fit=crop&q=80' },
+  { id: 4, name: 'Screenshot 2026-09-08 143820.png', date: '9/8/2026', img: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop&q=80' },
+  { id: 5, name: 'Screenshot 2026-09-08 143912.png', date: '9/8/2026', img: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800&auto=format&fit=crop&q=80' },
+  { id: 6, name: 'Screenshot 2026-09-08 144005.png', date: '9/8/2026', img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop&q=80' }
+];
+
+let selectedFile = null;
+
+function toast(m){const t=$('toast');t.textContent=m;t.classList.remove('hidden');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.add('hidden'),2200)}
+function theme(){const r=document.documentElement;const d=getComputedStyle(r).colorScheme.includes('dark');r.dataset.theme=d?'light':'dark';$('tbtn').innerHTML=ico(d?'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>':'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',20)}
+
+function renderGallery(){
+  $('count').textContent = galleryItems.length;
+  $('empty').classList.toggle('hidden', galleryItems.length > 0);
+  $('list').innerHTML = galleryItems.map(item => `
+    <article onclick="selectGalleryCard(this, event)" class="card rounded-2xl overflow-hidden soft flex flex-col justify-between transition-all duration-200 cursor-pointer border bd">
+      <div class="gallery-card relative aspect-[16/11] flex items-center justify-center overflow-hidden">
+        <img src="${item.img}" alt="${item.name}" class="absolute inset-0 w-full h-full object-cover">
+        <div class="ov absolute inset-0 flex items-center justify-center gap-3.5 transition-opacity duration-200 opacity-0 pointer-events-none">
+          <button type="button" class="rb" onclick="event.stopPropagation();previewImage('${item.img}')" aria-label="Preview" title="Preview">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+          <button type="button" class="rb" onclick="event.stopPropagation();askDelete(${item.id})" aria-label="Delete" title="Delete">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="px-3.5 py-2.5 bg-white dark:bg-[#141a25] border-t bd">
+        <h3 class="text-[12px] sm:text-[12.5px] font-semibold truncate text-[var(--tx)]">${item.name}</h3>
+        <p class="text-[10.5px] mu mt-0.5">Unknown size${item.date}</p>
+      </div>
+    </article>
+  `).join('');
+}
+
+function selectGalleryCard(el, e){
+  if(e.target.closest('button')) return;
+  e.stopPropagation();
+  const wasActive = el.classList.contains('active-card');
+  document.querySelectorAll('#list article').forEach(a => a.classList.remove('active-card'));
+  if(!wasActive){
+    el.classList.add('active-card');
+  }
+}
+
+document.addEventListener('click', e => {
+  if(!e.target.closest('#list article') && !e.target.closest('#confirm') && !e.target.closest('#preview')){
+    document.querySelectorAll('#list article.active-card').forEach(a => a.classList.remove('active-card'));
+  }
+});
+
+function previewImage(src){
+  $('pv').innerHTML = `<img src="${src}" class="max-h-[85vh] max-w-full rounded-2xl object-contain shadow-2xl" alt="">`;
+  $('preview').classList.remove('hidden');
+}
+
+function askDelete(id){
+  $('confirm').classList.remove('hidden');
+  $('yes').onclick = () => {
+    galleryItems = galleryItems.filter(x => x.id !== id);
+    $('confirm').classList.add('hidden');
+    renderGallery();
+    showBannerAlert('Image deleted successfully');
+  };
+}
+
+let uploadTimer = null;
+let alertTimer = null;
+
+function dismissSuccessAlert() {
+  if (alertTimer) clearTimeout(alertTimer);
+  $('uploadSuccessAlert').classList.add('hidden');
+}
+
+function showBannerAlert(msg) {
+  dismissSuccessAlert();
+  $('uploadSuccessText').textContent = msg;
+  $('uploadSuccessAlert').classList.remove('hidden');
+  alertTimer = setTimeout(() => {
+    $('uploadSuccessAlert').classList.add('hidden');
+  }, 5000);
+}
+
+function uploadDirectFiles(el) {
+  const files = Array.from(el.files);
+  if (!files.length) return;
+
+  const upbtn = $('upbtn');
+  const progCard = $('uploadProgressCard');
+  const progBar = $('uploadProgressBar');
+  const progText = $('uploadProgressText');
+  const successAlert = $('uploadSuccessAlert');
+  const successText = $('uploadSuccessText');
+
+  dismissSuccessAlert();
+
+  // Button in uploading state
+  upbtn.disabled = true;
+  upbtn.className = 'w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-not-allowed text-white/90 shadow-none';
+  upbtn.style.background = '#cbd5e1';
+  upbtn.style.boxShadow = 'none';
+  upbtn.innerHTML = '<span class="text-xs font-bold leading-none">+</span> Uploading...';
+
+  // Show progress card
+  progCard.classList.remove('hidden');
+  progBar.style.width = '0%';
+  progText.textContent = 'Uploading... 0%';
+
+  let percent = 0;
+  if (uploadTimer) clearInterval(uploadTimer);
+
+  uploadTimer = setInterval(() => {
+    percent += Math.floor(Math.random() * 20) + 15;
+    if (percent >= 100) {
+      percent = 100;
+      clearInterval(uploadTimer);
+      progBar.style.width = '100%';
+      progText.textContent = 'Uploading... 100%';
+
+      setTimeout(() => {
+        const now = new Date();
+        const dateStr = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
+        files.forEach((f, idx) => {
+          galleryItems.unshift({
+            id: Date.now() + idx,
+            name: f.name || `Screenshot ${dateStr}.png`,
+            date: dateStr,
+            img: URL.createObjectURL(f)
+          });
+        });
+        el.value = '';
+        renderGallery();
+
+        // Hide progress
+        progCard.classList.add('hidden');
+
+        // Reset button
+        upbtn.disabled = false;
+        upbtn.className = 'w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95';
+        upbtn.style.background = '#ea580c';
+        upbtn.style.boxShadow = '0 6px 16px -4px rgba(234,88,12,0.5)';
+        upbtn.innerHTML = '<span class="text-sm font-bold leading-none">+</span> Upload Images';
+
+        // Show Success Alert
+        showBannerAlert(files.length > 1 ? `${files.length} images uploaded successfully` : 'Image uploaded successfully');
+      }, 300);
+    } else {
+      progBar.style.width = percent + '%';
+      progText.textContent = `Uploading... ${percent}%`;
+    }
+  }, 160);
+}
+
+const P = {
+ Banners: { path: 'Banner management.html', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14"/>' },
+ Gallery: { path: 'Gallery management.html', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>' },
+ Blogs: { path: 'Blog management.html', icon: '<path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 4v16"/>' },
+ Contacts: { path: 'Contact management.html', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 10h4M15 14h4"/>' },
+ 'Client Logos': { path: 'Client logos.html', icon: '<path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>' },
+ Websites: { path: '#', icon: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+ Employees: { path: '#', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+ 'Documents Validation': { path: '#', icon: '<path d="M12 3l2.5 1.8 3-.2 1 2.9 2.5 1.7-1 2.9 1 2.9-2.5 1.7-1 2.9-3-.2L12 21l-2.5-1.8-3 .2-1-2.9L3 14.8l1-2.9-1-2.9 2.5-1.7 1-2.9 3 .2z"/><path d="m9 12 2 2 4-4"/>' },
+ Team: { path: '#', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+ 'Project Manager': { path: '#', icon: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/>' },
+ Access: { path: '#', icon: '<path stroke-width="3" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/>' }
+};
+
+function renderNavHTML(activeName){
+  return Object.keys(P).map(k => {
+    const on = k === activeName;
+    const item = P[k];
+    return `<a href="${item.path}" title="${k}" class="w-full flex items-center gap-2.5 h-9 px-2.5 rounded-lg text-[12.5px] transition cursor-pointer ${
+      on ? 'border border-orange-400/90 bg-indigo-50/70 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-semibold' : 'font-medium text-[var(--tx)] hover:bg-slate-100 dark:hover:bg-slate-800'
+    }">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${on ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}">${item.icon}</svg>
+      <span>${k}</span>
+    </a>`;
+  }).join('');
+}
+
+$('desktopNav').innerHTML = renderNavHTML('Gallery');
+$('mobileNav').innerHTML = renderNavHTML('Gallery');
+
+function openNav(){$('navbg').classList.remove('hidden');$('nav').classList.remove('-translate-x-full')}
+function closeNav(){$('navbg').classList.add('hidden');$('nav').classList.add('-translate-x-full')}
+function toggleSidebar(){
+  if(window.innerWidth < 1024){
+    if($('nav').classList.contains('-translate-x-full')){
+      openNav();
+    } else {
+      closeNav();
+    }
+  } else {
+    $('desktopSidebar').classList.toggle('sidebar-collapsed');
+  }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNav()});
+
+renderGallery();
+</script>
+</body>
+</html>
+

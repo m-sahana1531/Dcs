@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Admin Dashboard - Banner Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --tx: #0f172a;
+      --mu: #64748b;
+      --bd: #e2e8f0;
+      --tile: #fffdf5
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #0b0f17;
+      --card: #141a25;
+      --tx: #f1f5f9;
+      --mu: #94a3b8;
+      --bd: #263042;
+      --tile: #1c1712
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #0b0f17;
+        --card: #141a25;
+        --tx: #f1f5f9;
+        --mu: #94a3b8;
+        --bd: #263042;
+        --tile: #1c1712
+      }
+    }
+
+    .banner img {
+      transition: transform .5s cubic-bezier(.22, 1, .36, 1)
+    }
+
+    .banner .ov {
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(0, 0, 0, .55);
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+      transition: opacity .35s ease
+    }
+
+    .banner .ov .rb {
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      background: #fff;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, .3);
+      transform: scale(.5) translateY(10px);
+      opacity: 0;
+      transition: transform .4s cubic-bezier(.34, 1.56, .64, 1), opacity .3s ease
+    }
+
+    .banner .ov .rb:nth-child(2) {
+      transition-delay: .06s
+    }
+
+    .banner .ov .rb:active {
+      transform: scale(.92) !important
+    }
+
+    .banner.open img {
+      transform: scale(1.06)
+    }
+
+    .banner.open .ov {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .banner.open .ov .rb {
+      transform: none;
+      opacity: 1
+    }
+
+    @media (hover:hover) {
+      .banner:hover img {
+        transform: scale(1.06)
+      }
+
+      .banner:hover .ov {
+        opacity: 1;
+        pointer-events: auto
+      }
+
+      .banner:hover .ov .rb {
+        transform: none;
+        opacity: 1
+      }
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--tx);
+      font-family: Inter, system-ui, sans-serif;
+      letter-spacing: -.01em;
+      overflow-x: hidden;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--bd)
+    }
+
+    .mu {
+      color: var(--mu)
+    }
+
+    .bd {
+      border-color: var(--bd)
+    }
+
+    .soft {
+      box-shadow: 0 4px 20px -4px rgba(15, 23, 42, .06)
+    }
+
+    .btn {
+      border: 1px solid var(--bd);
+      background: var(--card)
+    }
+
+    #desktopSidebar {
+      transition: width .25s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    #desktopSidebar.sidebar-collapsed {
+      width: 54px !important;
+      min-width: 54px !important;
+    }
+
+    #desktopSidebar.sidebar-collapsed .logo-full {
+      display: none !important;
+    }
+
+    #desktopSidebar.sidebar-collapsed .logo-mini {
+      display: block !important;
+    }
+
+    #desktopSidebar.sidebar-collapsed .sidebar-header-box {
+      padding: 1.25rem .25rem !important;
+    }
+
+    #desktopSidebar.sidebar-collapsed nav a {
+      justify-content: center !important;
+      padding: 0 !important;
+      width: 36px !important;
+      height: 36px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    #desktopSidebar.sidebar-collapsed nav a span {
+      display: none !important;
+    }
+
+    #desktopSidebar.sidebar-collapsed .sidebar-footer-full {
+      display: none !important;
+    }
+
+    #desktopSidebar.sidebar-collapsed .sidebar-footer-mini {
+      display: block !important;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex bg-[var(--bg)] text-[var(--tx)]">
+
+  <!-- Desktop Persistent Left Sidebar -->
+  <aside id="desktopSidebar"
+    class="hidden lg:flex flex-col w-[220px] border-r bd h-screen sticky top-0 bg-white dark:bg-[#141a25] z-30 shrink-0">
+    <div class="sidebar-header-box pt-5 pb-5 px-3 flex items-center justify-center">
+      <img src="logo.png" alt="Dev Creations and Solutions" class="logo-full h-[54px] w-auto max-w-[185px] object-contain">
+      <img src="logo-mini.png" alt="DCS" class="logo-mini hidden w-7 h-7 object-contain">
+    </div>
+    <nav class="flex-1 overflow-y-auto px-2.5 py-2.5 space-y-0.5" id="desktopNav"></nav>
+    <div class="py-3 border-t bd text-center">
+      <p class="sidebar-footer-full text-[11px] mu">DCS Admin v1.0.0</p>
+      <p class="sidebar-footer-mini hidden text-[10px] mu font-semibold">v1.0</p>
+    </div>
+  </aside>
+
+  <!-- Right Side Main Content Area -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- Top Navbar -->
+    <header
+      class="sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 h-14 border-b bd bg-white dark:bg-[#141a25]">
+      <div class="flex items-center gap-2.5">
+        <button onclick="toggleSidebar()"
+          class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+          aria-label="Toggle sidebar" title="Toggle sidebar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="6" y2="6" />
+            <line x1="4" x2="20" y1="12" y2="12" />
+            <line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
+        </button>
+        <span class="text-[13.5px] font-bold tracking-tight">Admin Dashboard</span>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <button onclick="theme()" id="tbtn"
+          class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+          aria-label="Toggle theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+          </svg>
+        </button>
+        <button
+          class="h-8 px-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+          </svg>
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 flex-1">
+      <!-- Enclosing Card -->
+      <div class="card rounded-2xl p-5 sm:p-6 soft">
+
+        <!-- Header Row: Centered on mobile, Left-to-Right on desktop -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
+          <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 sm:gap-3.5">
+            <div
+              class="w-11 h-11 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm"
+              style="background:linear-gradient(135deg,#ff9a3c,#ff7a45)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+                <circle cx="9" cy="9" r="2" />
+                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+              </svg>
+            </div>
+            <div>
+              <h1 class="text-[17px] font-bold tracking-tight text-[var(--tx)]">Banner Management</h1>
+              <p class="text-[11.5px] text-[#64748b] mt-0.5 max-w-sm sm:max-w-none">Upload and manage banner images for your website
+                (Desktop + Mobile versions required)</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 w-full sm:w-auto sm:self-center">
+            <button id="backbtn" onclick="closePanel()"
+              class="hidden flex-1 sm:flex-initial h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white bg-slate-800 hover:bg-slate-900 shadow-sm active:scale-95">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+              Back
+            </button>
+            <button id="upbtn" onclick="togglePanel()"
+              class="w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95"
+              style="background:#ea580c;box-shadow:0 6px 16px -4px rgba(234,88,12,0.5)">
+              <span class="text-sm font-bold leading-none">+</span>
+              Upload Banner
+            </button>
+          </div>
+        </div>
+
+        <!-- Upload New Banner Set Panel (Full Width 2-Column Desktop View) -->
+        <section id="panel"
+          class="hidden rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#141a25] shadow-sm mb-6">
+          <!-- Orange Banner Header -->
+          <div class="text-center text-white px-5 py-3" style="background:linear-gradient(90deg,#f26a0f,#e05a00)">
+            <p class="font-bold text-[13px] inline-flex items-center justify-center gap-1.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 16V4M7 9l5-5 5 5M4 20h16" />
+              </svg>
+              Upload New Banner Set
+            </p>
+            <p class="text-[11px] opacity-90 mt-0.5">Both desktop and mobile images are required to create a complete banner
+              set</p>
+          </div>
+
+          <!-- Upload Zones: 2 Columns Side-by-Side on Desktop -->
+          <div id="zones" class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6 bg-white dark:bg-[#141a25]"></div>
+
+          <!-- Footer Action Buttons: Cancel (left) and Upload Banner Set (right) -->
+          <div class="p-4 pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3 border-t bd bg-white dark:bg-[#141a25]">
+            <button onclick="closePanel()"
+              class="w-full h-9 rounded-lg font-semibold text-[12px] text-white bg-slate-400 hover:bg-slate-500 transition cursor-pointer flex items-center justify-center">
+              Cancel
+            </button>
+            <button id="save" onclick="save()"
+              class="w-full h-9 rounded-lg font-semibold text-[12px] text-white disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-1.5 transition cursor-pointer"
+              style="background:#ea580c" disabled>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 16V4M7 9l5-5 5 5M4 20h16" />
+              </svg>
+              Upload Banner Set
+            </button>
+          </div>
+        </section>
+
+        <!-- Existing Banner Images Section Header Card -->
+        <div
+          class="card rounded-xl p-3.5 sm:p-4 border-l-4 border-l-[#ea580c] shadow-xs mb-5 bg-white dark:bg-[#141a25]">
+          <div class="flex items-center gap-2 text-[var(--tx)]">
+            <svg class="text-[#ea580c] shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+            </svg>
+            <h2 class="text-[13.5px] sm:text-[14px] font-bold tracking-tight">
+              Existing Banner Images (<span id="count">0</span>)
+            </h2>
+          </div>
+          <p class="text-[11px] sm:text-[11.5px] text-[#64748b] mt-0.5">
+            Click on any banner to preview or use the action buttons to manage your banners
+          </p>
+        </div>
+        <div id="list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+        <div id="empty" class="hidden card rounded-2xl p-8 text-center soft">
+          <p class="text-base font-semibold">No banners yet</p>
+          <p class="mu text-xs mt-1">Upload a desktop and mobile image to get started.</p>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Slide-out Sidebar Nav -->
+  <div id="navbg" onclick="closeNav()" class="hidden fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm lg:hidden"></div>
+  <aside id="nav"
+    class="fixed left-0 top-0 z-[71] h-full w-72 max-w-[85vw] flex flex-col card border-y-0 border-l-0 transition-transform duration-200 -translate-x-full lg:hidden"
+    style="padding-top:env(safe-area-inset-top,0px)" aria-label="Admin menu">
+    <div class="flex items-center justify-between px-5 pt-4 pb-3">
+      <img src="logo.png" alt="Dev Creations and Solutions" class="h-10 w-auto max-w-[170px] object-contain">
+      <button onclick="closeNav()" aria-label="Close menu"
+        class="w-8 h-8 rounded-lg mu flex items-center justify-center hover:opacity-75 cursor-pointer"><svg width="18"
+          height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg></button>
+    </div>
+    <nav id="mobileNav" class="flex-1 overflow-y-auto px-2.5 py-2 space-y-0.5"></nav>
+    <p class="text-center text-[11px] mu py-3 border-t bd">DCS Admin v1.0.0</p>
+  </aside>
+
+  <!-- Preview Modal -->
+  <div id="preview" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+    onclick="this.classList.add('hidden')">
+    <div id="pv" class="max-h-[85vh] max-w-full rounded-2xl overflow-hidden flex items-center justify-center"
+      onclick="event.stopPropagation()"></div>
+  </div>
+
+  <!-- Confirm Delete Modal -->
+  <div id="confirm" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div class="card rounded-2xl p-5 max-w-sm w-full shadow-2xl">
+      <h3 class="font-bold text-[14px] mb-1">Delete this banner?</h3>
+      <p class="text-[12px] mu mb-4">It will be removed from your website immediately.</p>
+      <div class="flex gap-2">
+        <button onclick="$('confirm').classList.add('hidden')"
+          class="btn flex-1 h-9 rounded-lg text-[12px] font-medium cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">Cancel</button>
+        <button id="yes"
+          class="flex-1 h-9 rounded-lg bg-red-600 text-white text-[12px] font-semibold cursor-pointer hover:bg-red-700">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"
+    class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] hidden px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-lg pointer-events-none">
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const ico = (p, z = 18) => `<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+    const MON = '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>', PH = '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/>', CK = '<path d="M20 6 9 17l-5-5"/>', UP = '<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>', MOON = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>', SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+    const SIZE = { desktop: '1920×1080', mobile: '768×1024' };
+    let items = [
+      { id: 1, type: 'desktop', name: 'Homepage hero', img: null },
+      { id: 2, type: 'mobile', name: 'Homepage hero (mobile)', img: null },
+      { id: 3, type: 'desktop', name: 'Festive offer', img: null }
+    ];
+    let files = { desktop: null, mobile: null }, n = 3;
+
+    function toast(m) { const t = $('toast'); t.textContent = m; t.classList.remove('hidden'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.add('hidden'), 2200) }
+    function theme() { const r = document.documentElement; const d = getComputedStyle(r).colorScheme.includes('dark'); r.dataset.theme = d ? 'light' : 'dark'; $('tbtn').innerHTML = ico(d ? MOON : SUN, 20) }
+
+    function render() {
+      $('count').textContent = items.length;
+      $('empty').classList.toggle('hidden', items.length > 0);
+      $('list').innerHTML = items.map(b => {
+        const bg = 'linear-gradient(135deg,var(--tile),var(--card))';
+        return `<article class="card rounded-2xl overflow-hidden soft">
+      <div class="banner relative aspect-[16/8] flex items-center justify-center overflow-hidden cursor-pointer" onclick="tapBanner(this,event)" style="background:${bg}">
+        ${b.img ? `<img src="${b.img}" alt="" class="absolute inset-0 w-full h-full object-cover">` : '<div class="flex flex-col items-center gap-2"><div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm" style="background:var(--card);border:1px solid var(--bd);color:#ea580c"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg></div></div>'}
+        <div class="ov absolute inset-0 flex items-center justify-center gap-4">
+          <button class="rb" onclick="event.stopPropagation();pv(${b.id})" aria-label="Preview"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          <button class="rb" onclick="event.stopPropagation();ask(${b.id})" aria-label="Delete"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button>
+        </div>
+        <span class="absolute left-3 top-3 text-[9.5px] font-semibold text-white px-2 py-0.5 rounded-md capitalize shadow" style="background:#5c3305">${b.type}</span>
+        <div class="absolute right-3 top-3 flex gap-1.5">
+          <button onclick="pv(${b.id})" class="inline-flex items-center gap-1 h-7 px-2.5 rounded-lg text-[11px] font-semibold text-white shadow bg-gray-800 hover:bg-gray-900 transition cursor-pointer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Preview</button>
+          <button onclick="ask(${b.id})" class="inline-flex items-center gap-1 h-7 px-2.5 rounded-lg text-[11px] font-semibold text-white shadow bg-red-600 hover:bg-red-700 transition cursor-pointer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>Delete</button>
+        </div>
+      </div>
+      <div class="px-3.5 py-2.5" style="background:#e8590c">
+        <h3 class="text-[12px] sm:text-[12.5px] font-semibold leading-snug text-white">${b.name}</h3>
+        <p class="text-[10.5px] capitalize text-white/90">${b.type} · ${SIZE[b.type]}</p>
+      </div>
+    </article>`}).join('');
+    }
+    function tapBanner(el, e) { if (e.target.closest('button')) return; const was = el.classList.contains('open'); document.querySelectorAll('.banner.open').forEach(x => x.classList.remove('open')); if (!was) el.classList.add('open') }
+    document.addEventListener('click', e => { if (!e.target.closest('.banner')) document.querySelectorAll('.banner.open').forEach(x => x.classList.remove('open')) });
+    function pv(id) {
+      const b = items.find(x => x.id === id);
+      $('pv').innerHTML = b.img ? `<img src="${b.img}" class="max-h-[85vh] max-w-full" alt="">` : `<div class="${b.type === 'desktop' ? 'w-[90vw] max-w-3xl aspect-[12/5]' : 'h-[80vh] aspect-[4/5]'} flex items-center justify-center text-7xl" style="background:var(--tile);color:#ea580c"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg></div>`;
+      $('preview').classList.remove('hidden')
+    }
+    function ask(id) { $('confirm').classList.remove('hidden'); $('yes').onclick = () => { items = items.filter(b => b.id !== id); $('confirm').classList.add('hidden'); render(); toast('Banner deleted') } }
+
+    function drops() {
+      const M = {
+        desktop: [ico(MON, 18), 'DESKTOP IMAGE'],
+        mobile: [ico(PH, 18), 'MOBILE IMAGE']
+      };
+      $('zones').innerHTML = ['desktop', 'mobile'].map(k => {
+        const [ic, lb] = M[k], f = files[k];
+        const isDesk = k === 'desktop';
+        return `<div class="rounded-2xl p-4 sm:p-5 border-2 flex flex-col justify-between" style="border-color:#fbbf24;background:var(--tile)">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-bold text-[12px] inline-flex items-center gap-1.5 text-slate-800 dark:text-slate-100">${ic} ${lb}</span>
+          ${f ? `<div class="flex items-center gap-1.5">
+            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full inline-flex items-center gap-1 bg-emerald-500 text-white">
+              ${ico(CK, 10)} Added
+            </span>
+            <button type="button" onclick="removeImage('${k}')" class="w-5 h-5 rounded-full bg-slate-200 hover:bg-red-600 hover:text-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition flex items-center justify-center cursor-pointer shadow-xs active:scale-95" title="Remove image" aria-label="Remove image">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>` : `<span class="text-[10px] font-semibold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 bg-amber-400 text-black">● Required</span>`}
+        </div>
+        <div class="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-900/50 flex flex-col items-center justify-center text-center overflow-hidden mb-4 h-[200px]">
+          ${f ? `<img src="${f}" class="w-full h-full ${k === 'mobile' ? 'object-contain' : 'object-cover'}" alt="">` :
+            `<span class="mu mb-2 opacity-60">${isDesk ? ico(MON, 36) : ico(PH, 36)}</span>
+           <p class="text-[12px] font-medium text-slate-700 dark:text-slate-200">Click below to select ${k} image</p>
+           <p class="text-[10.5px] mu mt-0.5">Recommended: ${SIZE[k]}px</p>`}
+        </div>
+      </div>
+      <label class="flex items-center justify-center gap-1.5 h-9 rounded-lg text-white text-[12px] font-semibold cursor-pointer transition hover:opacity-95 shadow-sm" style="background:#ea580c">
+        <input type="file" accept="image/*" class="hidden" onchange="pick('${k}',this)">
+        ${ico(UP, 14)} ${f ? 'Change' : 'Select'} ${k[0].toUpperCase() + k.slice(1)} Image
+      </label>
+    </div>`}).join('');
+      const hasFiles = Boolean(files.desktop || files.mobile);
+      const s = $('save');
+      s.disabled = !hasFiles;
+      if (hasFiles) {
+        s.style.opacity = '1';
+        s.style.background = '#ea580c';
+        s.style.cursor = 'pointer';
+        s.classList.remove('cursor-not-allowed', 'opacity-40');
+        s.classList.add('hover:opacity-95', 'shadow-md', 'shadow-orange-600/30');
+      } else {
+        s.style.opacity = '0.4';
+        s.style.cursor = 'not-allowed';
+        s.classList.add('cursor-not-allowed', 'opacity-40');
+        s.classList.remove('hover:opacity-95', 'shadow-md', 'shadow-orange-600/30');
+      }
+    }
+
+    function pick(k, el) { const f = el.files[0]; if (!f) return; if (f.size > 5 * 1024 * 1024) { toast('File is over 5 MB'); return } files[k] = URL.createObjectURL(f); drops() }
+    function removeImage(k) { files[k] = null; drops(); }
+
+    function togglePanel() {
+      if ($('panel').classList.contains('hidden')) {
+        openPanel();
+      } else {
+        closePanel();
+      }
+    }
+
+    function openPanel() {
+      files = { desktop: null, mobile: null };
+      drops();
+      $('panel').classList.remove('hidden');
+      $('backbtn').classList.remove('hidden');
+      const u = $('upbtn');
+      u.innerHTML = '<span class="text-xs font-bold leading-none">+</span> Upload Banner';
+      u.className = 'w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-not-allowed text-slate-400 bg-slate-200 dark:bg-slate-800 dark:text-slate-500 shadow-none';
+      u.style.background = '#cbd5e1';
+      u.style.color = '#94a3b8';
+      u.style.boxShadow = 'none';
+      $('panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closePanel() {
+      $('panel').classList.add('hidden');
+      $('backbtn').classList.add('hidden');
+      const u = $('upbtn');
+      u.innerHTML = '<span class="text-sm font-bold leading-none">+</span> Upload Banner';
+      u.className = 'w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95';
+      u.style.background = '#ea580c';
+      u.style.color = '#ffffff';
+      u.style.boxShadow = '0 6px 16px -4px rgba(234,88,12,0.5)';
+    }
+
+    function save() {
+      if (!files.desktop && !files.mobile) {
+        toast('Please select an image first');
+        return;
+      }
+      const t = Date.now(), name = 'Banner ' + (++n);
+      if (files.desktop && files.mobile) {
+        items.unshift(
+          { id: t, type: 'desktop', name: name, img: files.desktop },
+          { id: t + 1, type: 'mobile', name: name + ' (mobile)', img: files.mobile }
+        );
+      } else if (files.desktop) {
+        items.unshift({ id: t, type: 'desktop', name: name + ' (desktop)', img: files.desktop });
+      } else if (files.mobile) {
+        items.unshift({ id: t, type: 'mobile', name: name + ' (mobile)', img: files.mobile });
+      }
+      files = { desktop: null, mobile: null };
+      closePanel();
+      render();
+      toast('Banner added successfully');
+    }
+
+    const P = {
+      Banners: { path: 'Banner management.html', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14"/>' },
+      Gallery: { path: 'Gallery management.html', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>' },
+      Blogs: { path: 'Blog management.html', icon: '<path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 4v16"/>' },
+      Contacts: { path: 'Contact management.html', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 10h4M15 14h4"/>' },
+      'Client Logos': { path: 'Client logos.html', icon: '<path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>' },
+      Websites: { path: '#', icon: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+      Employees: { path: '#', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+      'Documents Validation': { path: '#', icon: '<path d="M12 3l2.5 1.8 3-.2 1 2.9 2.5 1.7-1 2.9 1 2.9-2.5 1.7-1 2.9-3-.2L12 21l-2.5-1.8-3 .2-1-2.9L3 14.8l1-2.9-1-2.9 2.5-1.7 1-2.9 3 .2z"/><path d="m9 12 2 2 4-4"/>' },
+      Team: { path: '#', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+      'Project Manager': { path: '#', icon: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/>' },
+      Access: { path: '#', icon: '<path stroke-width="3" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/>' }
+    };
+
+    function renderNavHTML(activeName) {
+      return Object.keys(P).map(k => {
+        const on = k === activeName;
+        const item = P[k];
+        return `<a href="${item.path}" title="${k}" class="w-full flex items-center gap-2.5 h-9 px-2.5 rounded-lg text-[12.5px] transition cursor-pointer ${on ? 'border border-orange-400/90 bg-indigo-50/70 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-semibold' : 'font-medium text-[var(--tx)] hover:bg-slate-100 dark:hover:bg-slate-800'
+          }">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${on ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}">${item.icon}</svg>
+          <span>${k}</span>
+        </a>`;
+      }).join('');
+    }
+
+    $('desktopNav').innerHTML = renderNavHTML('Banners');
+    $('mobileNav').innerHTML = renderNavHTML('Banners');
+
+    function openNav() { $('navbg').classList.remove('hidden'); $('nav').classList.remove('-translate-x-full') }
+    function closeNav() { $('navbg').classList.add('hidden'); $('nav').classList.add('-translate-x-full') }
+    function toggleSidebar() {
+      if (window.innerWidth < 1024) {
+        if ($('nav').classList.contains('-translate-x-full')) {
+          openNav();
+        } else {
+          closeNav();
+        }
+      } else {
+        $('desktopSidebar').classList.toggle('sidebar-collapsed');
+      }
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav() });
+    render();
+  </script>
+</body>
+
+</html>

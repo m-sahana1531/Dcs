@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #ffffff;
+  --card: #ffffff;
+  --tx: #0f172a;
+  --mu: #64748b;
+  --bd: #e2e8f0;
+  --tile: #fff1e6;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b0f17;
+  --card: #141a25;
+  --tx: #f1f5f9;
+  --mu: #94a3b8;
+  --bd: #263042;
+  --tile: #2a1a0e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0b0f17;
+    --card: #141a25;
+    --tx: #f1f5f9;
+    --mu: #94a3b8;
+    --bd: #263042;
+    --tile: #2a1a0e;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--tx);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.01em;
+  overflow-x: hidden;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+}
+
+.mu {
+  color: var(--mu);
+}
+
+.bd {
+  border-color: var(--bd);
+}
+
+.soft {
+  box-shadow: 0 6px 24px -10px rgba(15, 23, 42, 0.18);
+}
+
+.btn {
+  border: 1px solid var(--bd);
+  background: var(--card);
+}
+
+.banner img {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.banner .ov {
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  transition: opacity 0.35s ease;
+}
+
+.banner .ov .rb {
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transform: scale(0.5) translateY(10px);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.banner .ov .rb:nth-child(2) {
+  transition-delay: 0.06s;
+}
+
+.banner .ov .rb:active {
+  transform: scale(0.92) !important;
+}
+
+.banner.open img {
+  transform: scale(1.06);
+}
+
+.banner.open .ov {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.banner.open .ov .rb {
+  transform: none;
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .banner:hover img {
+    transform: scale(1.06);
+  }
+  .banner:hover .ov {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .banner:hover .ov .rb {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.gallery-card img {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.gallery-card .ov {
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.52);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gallery-card .ov .rb {
+  width: 46px;
+  height: 46px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  transform: scale(0.6) translateY(14px);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.gallery-card .ov .rb:nth-child(2) {
+  transition-delay: 0.08s;
+}
+
+.gallery-card .ov .rb:hover {
+  background: #f8fafc;
+  transform: scale(1.1) !important;
+}
+
+.gallery-card .ov .rb:active {
+  transform: scale(0.92) !important;
+}
+
+.card.active-card {
+  border: 2px solid #ea580c !important;
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.25), 0 12px 28px -6px rgba(0, 0, 0, 0.16) !important;
+}
+
+.card.active-card img {
+  transform: scale(1.06);
+}
+
+.card.active-card .ov {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.card.active-card .ov .rb {
+  transform: scale(1) translateY(0) !important;
+  opacity: 1 !important;
+}
+
+@media (hover: hover) {
+  .gallery-card:hover img {
+    transform: scale(1.06);
+  }
+  .gallery-card:hover .ov {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .gallery-card:hover .ov .rb {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+
