@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Dashboard - Website Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{--bg:#f8fafc;--card:#ffffff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--tile:#fffdf5}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712}}
+.site-card-box img, .site-card-box svg{transition:transform .3s ease}
+.site-card-box .ov{transition:opacity .25s ease}
+.site-card-box .ov .rb{width:36px;height:36px;border-radius:9999px;background:#ffffff;color:#1e293b;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:transform .18s ease,background-color .18s ease;cursor:pointer;border:none}
+.site-card-box .ov .rb:hover{background:#f8fafc;transform:scale(1.1);color:#0f172a}
+.site-card-box .ov .rb:active{transform:scale(.92)!important}
+.card.active-card{border:2px solid #ea580c!important;box-shadow:0 0 0 3px rgba(234,88,12,0.25),0 10px 25px -5px rgba(0,0,0,0.15)!important}
+.card.active-card .ov{opacity:1!important;pointer-events:auto!important;background:rgba(0,0,0,0.48)!important;-webkit-backdrop-filter:blur(1px)!important;backdrop-filter:blur(1px)!important}
+@media (hover:hover){.site-card-box:hover .ov{opacity:1;pointer-events:auto;background:rgba(0,0,0,0.45)}}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif;letter-spacing:-.01em;overflow-x:hidden}
+.card{background:var(--card);border:1px solid var(--bd)}
+.mu{color:var(--mu)} .bd{border-color:var(--bd)}
+.soft{box-shadow:0 4px 20px -4px rgba(15,23,42,.06)}
+.btn{border:1px solid var(--bd);background:var(--card)}
+#desktopSidebar{transition:width .25s cubic-bezier(.4,0,.2,1)}
+#desktopSidebar.sidebar-collapsed{width:54px!important;min-width:54px!important}
+#desktopSidebar.sidebar-collapsed .logo-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .logo-mini{display:block!important}
+#desktopSidebar.sidebar-collapsed .sidebar-header-box{padding:1.25rem .25rem!important}
+#desktopSidebar.sidebar-collapsed nav a{justify-content:center!important;padding:0!important;width:36px!important;height:36px!important;margin-left:auto!important;margin-right:auto!important}
+#desktopSidebar.sidebar-collapsed nav a span{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-mini{display:block!important}
+</style>
+</head>
+<body class="min-h-screen flex bg-[var(--bg)] text-[var(--tx)]">
+
+<!-- Desktop Persistent Left Sidebar -->
+<aside id="desktopSidebar" class="hidden lg:flex flex-col w-[220px] border-r bd h-screen sticky top-0 bg-white dark:bg-[#141a25] z-30 shrink-0">
+  <div class="sidebar-header-box pt-5 pb-5 px-3 flex items-center justify-center">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="logo-full h-[54px] w-auto max-w-[185px] object-contain">
+    <img src="logo-mini.png" alt="DCS" class="logo-mini hidden w-7 h-7 object-contain">
+  </div>
+  <nav class="flex-1 overflow-y-auto px-2.5 space-y-1" id="desktopNav"></nav>
+  <div class="py-3 border-t bd text-center">
+    <p class="sidebar-footer-full text-[10.5px] mu">DCS Admin v1.0.0</p>
+    <p class="sidebar-footer-mini hidden text-[10px] mu font-semibold">v1.0</p>
+  </div>
+</aside>
+
+<!-- Right Side Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+
+  <!-- Top Header Bar -->
+  <header class="sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 h-14 border-b bd bg-white dark:bg-[#141a25]">
+    <div class="flex items-center gap-2.5">
+      <button onclick="toggleSidebar()" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle sidebar" title="Toggle sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" y2="6"/>
+          <line x1="4" x2="20" y1="12" y2="12"/>
+          <line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+      <span class="text-[13.5px] font-bold tracking-tight">Admin Dashboard</span>
+    </div>
+    <div class="flex items-center gap-2.5">
+      <button onclick="theme()" id="tbtn" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button onclick="toast('Logged out successfully')" class="h-8 px-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-xs">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 flex-1">
+    <!-- Enclosing White Card -->
+    <div class="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25]">
+      
+      <!-- Top Title Row: Icon + Title on Left, Add Website / Cancel Button on Right -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
+        <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3">
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm" style="background:linear-gradient(135deg,#ff9a3c,#ff7a45)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" x2="22" y1="12" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-[17px] font-bold tracking-tight text-[var(--tx)]">Website Management</h1>
+            <p class="mu text-[11.5px] mt-0.5 max-w-sm sm:max-w-none">Upload and manage website information with images and URLs</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto sm:self-center">
+          <button 
+            type="button" 
+            onclick="toggleUploadView()" 
+            id="topActionBtn"
+            class="w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95"
+            style="background:#ea580c;box-shadow:0 6px 16px -4px rgba(234,88,12,0.5)"
+          >
+            <span id="topActionIcon" class="text-[15px] font-bold leading-none">+</span>
+            <span id="topActionLabel">Add Website</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Upload Progress Alert (Simulated Upload Animation) -->
+      <div id="uploadProgressCard" class="hidden card rounded-xl p-3.5 sm:p-4 border-l-4 border-l-[#ea580c] shadow-xs mb-5 bg-white dark:bg-[#141a25] flex items-center gap-3.5">
+        <div class="flex-1 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div id="uploadProgressBar" class="h-full bg-[#ea580c] rounded-full transition-all duration-150" style="width:0%"></div>
+        </div>
+        <span id="uploadProgressText" class="text-[11.5px] font-semibold text-slate-700 dark:text-slate-300 shrink-0">Uploading... 0%</span>
+      </div>
+
+      <!-- Upload Success Alert -->
+      <div id="uploadSuccessAlert" class="hidden rounded-xl p-3.5 mb-5 border-l-4 border-l-emerald-500 border border-emerald-300 dark:border-emerald-700/60 bg-[#edfbf2] dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100 flex items-center justify-between text-[12px] font-medium shadow-xs">
+        <span id="uploadSuccessText">Website information uploaded successfully</span>
+        <button onclick="dismissSuccessAlert()" class="w-5 h-5 rounded-full bg-emerald-200/60 hover:bg-emerald-300/80 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200 flex items-center justify-center transition cursor-pointer">✕</button>
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- VIEW A: ADD / EDIT WEBSITE FORM                                -->
+      <!-- ============================================================== -->
+      <div id="uploadFormSection" class="hidden card rounded-2xl overflow-hidden soft border bd bg-white dark:bg-[#141a25] mb-5">
+        <!-- Top Solid Orange Banner -->
+        <div class="bg-[#ea580c] py-4 px-6 text-center text-white">
+          <div class="flex items-center justify-center gap-2 font-bold text-[15.5px] sm:text-[16px] tracking-tight">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" x2="22" y1="12" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span id="formBannerTitle">Add Website</span>
+          </div>
+          <p id="formBannerSubtitle" class="text-[12px] text-white/90 mt-1 font-normal">
+            Enter the website title, live URL, and upload the preview screenshot
+          </p>
+        </div>
+
+        <!-- Form Body -->
+        <div class="p-6 sm:p-8 space-y-6">
+          <!-- Field 1: Website Title * -->
+          <div>
+            <label class="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+              Website Title <span class="text-slate-700 dark:text-slate-300 font-bold">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="websiteTitleInput" 
+              placeholder="e.g. GeoTrackMee" 
+              class="w-full h-11 px-3.5 rounded-lg border bd bg-white dark:bg-slate-900 text-[13px] text-slate-800 dark:text-slate-100 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-[#ea580c] transition"
+            >
+          </div>
+
+          <!-- Field 2: Website URL * -->
+          <div>
+            <label class="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+              Website URL <span class="text-slate-700 dark:text-slate-300 font-bold">*</span>
+            </label>
+            <input 
+              type="url" 
+              id="websiteUrlInput" 
+              placeholder="e.g. https://gtm.devcreationsblr.com/" 
+              class="w-full h-11 px-3.5 rounded-lg border bd bg-white dark:bg-slate-900 text-[13px] text-slate-800 dark:text-slate-100 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-[#ea580c] transition"
+            >
+          </div>
+
+          <!-- Field 3: Website Screenshot Image * -->
+          <div>
+            <label class="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+              Website Screenshot Image <span class="text-slate-700 dark:text-slate-300 font-bold">*</span>
+            </label>
+            
+            <input type="file" id="websiteFileInput" accept="image/*" class="hidden" onchange="handleFileSelected(this)">
+            
+            <div 
+              id="dropzoneBox" 
+              onclick="$('websiteFileInput').click()" 
+              class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 sm:p-10 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/30 cursor-pointer hover:border-orange-400 dark:hover:border-orange-500 transition group"
+            >
+              <!-- Unselected State -->
+              <div id="dropzoneEmpty" class="flex flex-col items-center justify-center">
+                <button 
+                  type="button" 
+                  class="h-9 px-5 rounded-lg font-semibold text-[12.5px] text-white bg-[#ea580c] hover:opacity-95 shadow-sm inline-flex items-center gap-2 cursor-pointer pointer-events-none"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                  </svg>
+                  Select Website Image
+                </button>
+              </div>
+
+              <!-- Selected Preview State -->
+              <div id="dropzoneSelected" class="hidden flex flex-col items-center justify-center gap-3 w-full">
+                <div class="h-32 max-w-[340px] p-2 bg-white dark:bg-slate-900 rounded-lg border bd flex items-center justify-center shadow-xs overflow-hidden">
+                  <img id="selectedWebsitePreview" src="" alt="" class="max-h-full max-w-full object-contain" onerror="this.style.opacity='0'">
+                </div>
+                <div class="text-center">
+                  <p id="selectedWebsiteName" class="text-[12.5px] font-bold text-slate-800 dark:text-slate-200 truncate max-w-xs"></p>
+                  <p id="selectedWebsiteSize" class="text-[11px] mu mt-0.5"></p>
+                </div>
+                <button 
+                  type="button" 
+                  onclick="event.stopPropagation(); $('websiteFileInput').click()" 
+                  class="text-[11.5px] font-semibold text-orange-600 dark:text-orange-400 hover:underline cursor-pointer"
+                >
+                  Change Image
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons at bottom: Cancel (grey) & Upload Website (green) -->
+          <div class="flex items-center gap-4 pt-2">
+            <button 
+              type="button" 
+              onclick="hideUploadForm()" 
+              class="flex-1 h-11 rounded-lg font-bold text-[14px] text-white bg-[#94a3b8] hover:bg-[#64748b] transition cursor-pointer flex items-center justify-center shadow-xs active:scale-95"
+            >
+              Cancel
+            </button>
+            <button 
+              type="button" 
+              id="formSubmitBtn"
+              onclick="submitWebsite()" 
+              class="flex-1 h-11 rounded-lg font-bold text-[14px] text-white bg-[#00a86b] hover:bg-[#059669] transition cursor-pointer flex items-center justify-center shadow-sm active:scale-95"
+            >
+              Add Website
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- VIEW B: WEBSITE INFORMATION GRID LIST                          -->
+      <!-- ============================================================== -->
+      <div id="websiteListSection">
+        <!-- Section Card: Website Information (Count) with Orange Left Accent Bar -->
+        <div class="card rounded-xl p-3.5 sm:p-4 border-l-4 border-l-[#ea580c] shadow-xs mb-5 bg-white dark:bg-[#141a25]">
+          <div class="flex items-center gap-2 text-[var(--tx)]">
+            <svg class="text-[#ea580c] shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" x2="22" y1="12" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <h2 class="text-[13.5px] sm:text-[14px] font-bold tracking-tight">
+              Website Information (<span id="count">17</span>)
+            </h2>
+          </div>
+          <p class="text-[11px] sm:text-[11.5px] mu mt-0.5">
+            Click on any website image to preview or use the action buttons to manage your websites
+          </p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty" class="hidden py-16 text-center">
+          <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-slate-400 mb-3" style="background:var(--tile)">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" x2="22" y1="12" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <p class="font-bold text-[14px]">No websites found</p>
+          <p class="text-[12px] mu mt-1">Upload your first website using the button above.</p>
+        </div>
+
+        <!-- 3-Column Responsive Grid Matching Screenshot Exactly -->
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="list"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="py-4 text-center text-xs mu border-t bd bg-white dark:bg-[#141a25] mt-auto">
+    &copy; 2026 Dev Creations and Solutions. All rights reserved.
+  </footer>
+</div>
+
+<!-- Mobile Navigation Overlay Drawer -->
+<div id="navbg" onclick="closeNav()" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
+<div id="nav" class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-[#141a25] z-50 transform -translate-x-full transition-transform duration-200 flex flex-col lg:hidden border-r bd">
+  <div class="pt-5 pb-5 px-4 border-b bd flex items-center justify-between">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="h-10 w-auto object-contain">
+    <button onclick="closeNav()" class="w-8 h-8 rounded-lg mu flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="p-3 overflow-y-auto flex-1 space-y-1" id="mobileNav"></div>
+  <div class="py-3 border-t bd text-center text-xs mu">DCS Admin v1.0.0</div>
+</div>
+
+<!-- Website Preview Modal -->
+<div id="preview" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4">
+  <div class="bg-white dark:bg-[#141a25] rounded-2xl max-w-3xl w-full p-5 card soft overflow-hidden" id="pv"></div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="confirm" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4">
+  <div class="bg-white dark:bg-[#141a25] rounded-2xl max-w-sm w-full p-5 card soft text-center">
+    <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 mx-auto flex items-center justify-center mb-3">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>
+    </div>
+    <h3 class="font-bold text-[15px] mb-1">Delete Website</h3>
+    <p class="text-[12.5px] mu mb-5">Are you sure you want to delete this website? This action cannot be undone.</p>
+    <div class="flex gap-2.5">
+      <button onclick="$('confirm').classList.add('hidden')" class="flex-1 h-9 rounded-lg btn text-[12px] font-semibold cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800">Cancel</button>
+      <button id="yes" class="flex-1 h-9 rounded-lg bg-red-600 text-white text-[12px] font-semibold cursor-pointer hover:bg-red-700">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] hidden px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-lg pointer-events-none"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const ico=(p,z=18)=>`<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+
+const makeSvgUri = (s) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s.trim());
+
+// Realistic SVG mockup screenshots matching the user's reference screenshots
+const svgGeoTrackMee = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#f8fafc"/>
+  <rect width="480" height="42" fill="#2563eb"/>
+  <circle cx="28" cy="21" r="7" fill="#ffffff" opacity="0.9"/>
+  <text x="44" y="26" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">GeoTrackMee</text>
+  <text x="250" y="25" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#dbeafe">Home   About Us   Features   Pricing   Contact Us</text>
+  <rect x="40" y="65" width="130" height="215" rx="16" fill="#0f172a"/>
+  <rect x="44" y="69" width="122" height="207" rx="13" fill="#ffffff"/>
+  <rect x="80" y="73" width="50" height="4" rx="2" fill="#0f172a"/>
+  <rect x="52" y="88" width="106" height="58" rx="8" fill="#1e293b"/>
+  <text x="60" y="105" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#38bdf8">Live Attendance</text>
+  <text x="60" y="122" font-family="system-ui, sans-serif" font-size="15" font-weight="900" fill="#ffffff">09:42 AM</text>
+  <text x="60" y="136" font-family="system-ui, sans-serif" font-size="8" fill="#94a3b8">Office Geofence Active</text>
+  <rect x="52" y="154" width="106" height="30" rx="6" fill="#f1f5f9"/>
+  <circle cx="64" cy="169" r="6" fill="#22c55e"/>
+  <text x="76" y="173" font-family="system-ui, sans-serif" font-size="8.5" font-weight="600" fill="#0f172a">Check-in Verified</text>
+  <rect x="52" y="190" width="106" height="30" rx="6" fill="#f1f5f9"/>
+  <circle cx="64" cy="205" r="6" fill="#3b82f6"/>
+  <text x="76" y="209" font-family="system-ui, sans-serif" font-size="8.5" font-weight="600" fill="#0f172a">GPS Route Logged</text>
+  <rect x="52" y="226" width="106" height="26" rx="6" fill="#2563eb"/>
+  <text x="105" y="242" font-family="system-ui, sans-serif" font-size="9" font-weight="700" text-anchor="middle" fill="#ffffff">Mark Attendance</text>
+  <text x="195" y="112" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0f172a">Simplify Attendance &amp;</text>
+  <text x="195" y="138" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#2563eb">Workforce Management</text>
+  <text x="195" y="165" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">AI-powered facial check-in, real-time geofence tracking,</text>
+  <text x="195" y="180" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">and automated shift rosters for modern distributed teams.</text>
+  <rect x="195" y="205" width="110" height="34" rx="8" fill="#2563eb"/>
+  <text x="250" y="226" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Book a Demo</text>
+  <rect x="315" y="205" width="85" height="34" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="357" y="226" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="#334155">Login</text>
+</svg>`);
+
+const svgInvora = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#f0fdf4"/>
+  <rect width="480" height="42" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="24" y="13" width="18" height="18" rx="4" fill="#059669"/>
+  <text x="50" y="26" font-family="system-ui, sans-serif" font-size="14" font-weight="800" fill="#065f46">Invora Accounts</text>
+  <text x="210" y="26" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#64748b">Home    About    Features    Sales &amp; POS    Pricing    Contact</text>
+  <rect x="400" y="10" width="65" height="24" rx="6" fill="#10b981"/>
+  <text x="432" y="26" font-family="system-ui, sans-serif" font-size="10" font-weight="700" text-anchor="middle" fill="#ffffff">Start Free</text>
+  <text x="32" y="108" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0f172a">Smart Billing &amp; Inventory</text>
+  <text x="32" y="138" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#059669">Made Effortless</text>
+  <text x="32" y="165" font-family="system-ui, sans-serif" font-size="10.5" fill="#475569">Automated invoicing, GST taxation, multi-warehouse stock</text>
+  <text x="32" y="180" font-family="system-ui, sans-serif" font-size="10.5" fill="#475569">audits, and barcode POS built for rapid retail scaling.</text>
+  <rect x="32" y="206" width="120" height="34" rx="8" fill="#059669"/>
+  <text x="92" y="227" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Explore ERP Modules</text>
+  <rect x="260" y="75" width="195" height="185" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="drop-shadow(0 10px 15px rgba(0,0,0,0.05))"/>
+  <rect x="275" y="92" width="165" height="38" rx="8" fill="#ecfdf5"/>
+  <text x="288" y="110" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#047857">Revenue Today</text>
+  <text x="288" y="124" font-family="system-ui, sans-serif" font-size="14" font-weight="900" fill="#065f46">₹ 1,48,920</text>
+  <rect x="275" y="138" width="78" height="52" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="283" y="155" font-family="system-ui, sans-serif" font-size="8" fill="#64748b">Invoices Sent</text>
+  <text x="283" y="176" font-family="system-ui, sans-serif" font-size="16" font-weight="800" fill="#0f172a">284</text>
+  <rect x="362" y="138" width="78" height="52" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="370" y="155" font-family="system-ui, sans-serif" font-size="8" fill="#64748b">Stock Items</text>
+  <text x="370" y="176" font-family="system-ui, sans-serif" font-size="16" font-weight="800" fill="#059669">4,120</text>
+  <rect x="275" y="200" width="165" height="42" rx="8" fill="#f1f5f9"/>
+  <text x="288" y="225" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700" fill="#334155">GST E-Way Bill Auto-Generated</text>
+</svg>`);
+
+const svgMhidhil = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="mgreen" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#166534"/></linearGradient>
+    <linearGradient id="morb" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4ade80"/><stop offset="100%" stop-color="#15803d"/></linearGradient>
+  </defs>
+  <rect width="480" height="300" fill="#ffffff"/>
+  <rect width="480" height="42" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#14532d" letter-spacing="1">MHIDHIL POLYMERS</text>
+  <text x="240" y="26" font-family="system-ui, sans-serif" font-size="9.5" font-weight="600" fill="#475569">Home   About Us   Products   Certifications   Contact Us</text>
+  <rect x="405" y="10" width="60" height="22" rx="4" fill="#15803d"/>
+  <text x="435" y="24" font-family="system-ui, sans-serif" font-size="9" font-weight="700" text-anchor="middle" fill="#ffffff">Enquiry</text>
+  <rect x="0" y="42" width="480" height="258" fill="url(#mgreen)"/>
+  <circle cx="370" cy="170" r="85" fill="url(#morb)" opacity="0.85"/>
+  <circle cx="370" cy="170" r="70" fill="#22c55e" opacity="0.3"/>
+  <path d="M310 190 Q340 140 370 170 T430 150" stroke="#ffffff" stroke-width="3" fill="none" opacity="0.6"/>
+  <path d="M320 210 Q360 170 390 190 T440 180" stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.4"/>
+  <text x="35" y="125" font-family="system-ui, sans-serif" font-size="28" font-weight="900" fill="#ffffff">Made to</text>
+  <text x="35" y="160" font-family="system-ui, sans-serif" font-size="28" font-weight="900" fill="#86efac">Return to Nature.</text>
+  <text x="35" y="195" font-family="system-ui, sans-serif" font-size="11" fill="#cbd5e1">100% Certified Biodegradable &amp; Compostable</text>
+  <text x="35" y="212" font-family="system-ui, sans-serif" font-size="11" fill="#cbd5e1">Eco-friendly polymer packaging solutions for sustainable retail.</text>
+  <rect x="35" y="235" width="130" height="32" rx="6" fill="#22c55e"/>
+  <text x="100" y="255" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" text-anchor="middle" fill="#052e16">Download Brochure</text>
+</svg>`);
+
+const svgNbt = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#0f172a"/>
+  <rect width="480" height="42" fill="#1e293b"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#f59e0b">Namma Bengaluru Trekkers</text>
+  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#cbd5e1">Upcoming Treks   Gallery   Safety   Reviews</text>
+  <polygon points="120,300 240,110 360,300" fill="#1e293b"/>
+  <polygon points="260,300 370,140 480,300" fill="#334155"/>
+  <circle cx="380" cy="90" r="35" fill="#f59e0b" opacity="0.8"/>
+  <text x="35" y="110" font-family="system-ui, sans-serif" font-size="26" font-weight="900" fill="#ffffff">Conquer the</text>
+  <text x="35" y="140" font-family="system-ui, sans-serif" font-size="26" font-weight="900" fill="#f59e0b">Western Ghats</text>
+  <text x="35" y="170" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Weekend getaways, summit camps, and wilderness trails.</text>
+  <rect x="35" y="195" width="115" height="32" rx="6" fill="#ea580c"/>
+  <text x="92" y="215" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">View Treks</text>
+</svg>`);
+
+const svgTridalaSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#fefce8"/>
+  <rect width="480" height="42" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#dc2626">TRIDALA HERBAL</text>
+  <text x="240" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#713f12">Herbal Oils   Ayurvedic Extracts   Wellness   Shop</text>
+  <text x="35" y="115" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#166534">Pure Ayurvedic Wellness</text>
+  <text x="35" y="142" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#854d0e">Rooted in Tradition</text>
+  <text x="35" y="175" font-family="system-ui, sans-serif" font-size="11" fill="#713f12">100% natural cold-pressed botanicals for holistic care.</text>
+  <rect x="35" y="200" width="110" height="32" rx="6" fill="#15803d"/>
+  <text x="90" y="220" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Shop Products</text>
+</svg>`);
+
+const svgEcoTrekSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#f0fdf4"/>
+  <rect width="480" height="42" fill="#166534"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#86efac">ECO-TREK ADVENTURES</text>
+  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#bbf7d0">Himalayas   Expeditions   Leave No Trace</text>
+  <text x="35" y="118" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#14532d">Zero-Waste Expeditions</text>
+  <text x="35" y="145" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#16a34a">In The Great Himalayas</text>
+  <text x="35" y="175" font-family="system-ui, sans-serif" font-size="11" fill="#374151">Sustainable high-altitude mountaineering camps &amp; tours.</text>
+  <rect x="35" y="200" width="125" height="32" rx="6" fill="#16a34a"/>
+  <text x="97" y="220" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Plan Expedition</text>
+</svg>`);
+
+const svgNexusSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#0b0f19"/>
+  <rect width="480" height="42" fill="#111827"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#38bdf8">NEXUS INNOVATIONS</text>
+  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">AI Platform   Cloud Mesh   Docs</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="25" font-weight="900" fill="#ffffff">Next-Gen Distributed</text>
+  <text x="35" y="150" font-family="system-ui, sans-serif" font-size="25" font-weight="900" fill="#38bdf8">AI Infrastructure</text>
+  <text x="35" y="180" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Sub-millisecond inference pipelines for modern tech enterprises.</text>
+  <rect x="35" y="205" width="115" height="32" rx="6" fill="#0284c7"/>
+  <text x="92" y="225" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Get Started</text>
+</svg>`);
+
+const svgApexSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#ffffff"/>
+  <rect width="480" height="42" fill="#881337"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#ffffff">APEX GLOBAL</text>
+  <text x="250" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#fecdd3">Consulting   Advisory   M&amp;A   Insights</text>
+  <text x="35" y="118" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0f172a">Strategic Advisory for</text>
+  <text x="35" y="145" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#e11d48">Global Scale</text>
+  <text x="35" y="175" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Empowering Fortune 500 enterprises through digital transformation.</text>
+  <rect x="35" y="200" width="115" height="32" rx="6" fill="#e11d48"/>
+  <text x="92" y="220" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Contact Partner</text>
+</svg>`);
+
+const svgZenithSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#f0f9ff"/>
+  <rect width="480" height="42" fill="#0369a1"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#ffffff">ZENITH CLOUD</text>
+  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#bae6fd">Kubernetes   Storage   CDN   Pricing</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0c4a6e">Ultra-Fast Serverless</text>
+  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0284c7">Cloud Hosting</text>
+  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#475569">99.999% uptime with global edge clusters across 40 regions.</text>
+  <rect x="35" y="202" width="120" height="32" rx="6" fill="#0284c7"/>
+  <text x="95" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Deploy Cluster</text>
+</svg>`);
+
+const svgVanguardSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#2e1065"/>
+  <rect width="480" height="42" fill="#1e1b4b"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#c084fc">VANGUARD MEDIA</text>
+  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Commercials   3D VFX   Brand Reels</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#ffffff">Cinematic Storytelling &amp;</text>
+  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#a855f7">Brand Experience</text>
+  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#cbd5e1">Award-winning commercial film and digital visual design.</text>
+  <rect x="35" y="202" width="115" height="32" rx="6" fill="#9333ea"/>
+  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Watch Showreel</text>
+</svg>`);
+
+const svgCyberShieldSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#0f172a"/>
+  <rect width="480" height="42" fill="#020617"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#10b981">CYBERSHIELD</text>
+  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">SOC Monitoring   Pen-Testing   Compliance</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#ffffff">24/7 Managed Threat</text>
+  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#10b981">Detection &amp; Response</text>
+  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Zero-trust architecture protecting cloud-native enterprise assets.</text>
+  <rect x="35" y="202" width="120" height="32" rx="6" fill="#059669"/>
+  <text x="95" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Request Audit</text>
+</svg>`);
+
+const svgGreenPulseSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#f7fee7"/>
+  <rect width="480" height="42" fill="#365314"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#bef264">GREENPULSE ENERGY</text>
+  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#d9f99d">Solar Farms   Grid Storage   ESG</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#1a2e05">Utility-Scale Solar &amp;</text>
+  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#65a30d">Clean Wind Power</text>
+  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#4d7c0f">Accelerating industrial net-zero carbon transition.</text>
+  <rect x="35" y="202" width="115" height="32" rx="6" fill="#65a30d"/>
+  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Calculate ROI</text>
+</svg>`);
+
+const svgAuraSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#fff1f2"/>
+  <rect width="480" height="42" fill="#ffffff" stroke="#ffe4e6" stroke-width="1"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#be123c">AURA WELLNESS</text>
+  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#9f1239">Clinics   Treatments   Specialists   Book</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#881337">Personalized Holistic</text>
+  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#e11d48">Health &amp; Aesthetic Care</text>
+  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#701a75">Integrative therapy with world-class clinical practitioners.</text>
+  <rect x="35" y="202" width="115" height="32" rx="6" fill="#e11d48"/>
+  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Book Appointment</text>
+</svg>`);
+
+const svgQuantumSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#1e1b4b"/>
+  <rect width="480" height="42" fill="#0f0e26"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#818cf8">QUANTUM LOGIC</text>
+  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#c7d2fe">Quantum SDK   Simulators   Research</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#ffffff">Accelerating Quantum</text>
+  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#818cf8">Circuit Simulation</text>
+  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#a5b4fc">Algorithmic optimization on 128-qubit quantum hardware.</text>
+  <rect x="35" y="202" width="115" height="32" rx="6" fill="#6366f1"/>
+  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Read Whitepaper</text>
+</svg>`);
+
+const svgBlueSkySite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#f8fafc"/>
+  <rect width="480" height="42" fill="#0284c7"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#ffffff">BLUESKY LOGISTICS</text>
+  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#e0f2fe">Air Freight   Ocean Cargo   Track Consignment</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0f172a">Seamless Worldwide</text>
+  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0284c7">Freight &amp; Supply Chain</text>
+  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Real-time GPS tracking across 140 countries and 500 ports.</text>
+  <rect x="35" y="202" width="115" height="32" rx="6" fill="#0284c7"/>
+  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Track Shipment</text>
+</svg>`);
+
+const svgStarlightSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#fffbeb"/>
+  <rect width="480" height="42" fill="#78350f"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#fde68a">STARLIGHT RESORTS</text>
+  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#fef3c7">Suites   Dining   Spa &amp; Wellness   Book</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#451a03">Exquisite Luxury</text>
+  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#b45309">Island Escapes</text>
+  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">Private beachfront villas with personalized Michelin culinary service.</text>
+  <rect x="35" y="202" width="115" height="32" rx="6" fill="#b45309"/>
+  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Reserve Suite</text>
+</svg>`);
+
+const svgNovaSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
+  <rect width="480" height="300" fill="#f0fdfa"/>
+  <rect width="480" height="42" fill="#0f766e"/>
+  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#ccfbf1">NOVA FINTECH</text>
+  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#e6fffa">Multi-Currency   Virtual Cards   API</text>
+  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#134e4a">Borderless Global</text>
+  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0d9488">Digital Payments</text>
+  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#0f766e">Instant cross-border settlement with zero hidden FX markup.</text>
+  <rect x="35" y="202" width="115" height="32" rx="6" fill="#0d9488"/>
+  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Open Account</text>
+</svg>`);
+
+let websites = [
+  { id: 1, title: 'GeoTrackMee', url: 'https://gtm.devcreationsblr.com/', date: '9/8/2026', img: svgGeoTrackMee },
+  { id: 2, title: 'Invora - Billing and Inventory', url: 'https://billing.devcreationsblr.com/', date: '9/8/2026', img: svgInvora },
+  { id: 3, title: 'MhidhilPolymers', url: 'https://mhidhilpolymers.com/', date: '9/8/2026', img: svgMhidhil },
+  { id: 4, title: 'Namma Bengaluru Trekkers', url: 'https://nammabengalurutrekkers.org/', date: '8/24/2026', img: svgNbt },
+  { id: 5, title: 'Tridala Herbal Solutions', url: 'https://tridalaherbal.com/', date: '8/15/2026', img: svgTridalaSite },
+  { id: 6, title: 'Eco-Trek Adventures', url: 'https://ecotrekadventures.in/', date: '8/02/2026', img: svgEcoTrekSite },
+  { id: 7, title: 'Nexus Innovations', url: 'https://nexusinnovations.tech/', date: '7/28/2026', img: svgNexusSite },
+  { id: 8, title: 'Apex Global Consulting', url: 'https://apexglobal.co/', date: '7/19/2026', img: svgApexSite },
+  { id: 9, title: 'Zenith Cloud Corp', url: 'https://zenithcloud.io/', date: '7/10/2026', img: svgZenithSite },
+  { id: 10, title: 'Vanguard Media Labs', url: 'https://vanguardcreative.agency/', date: '6/30/2026', img: svgVanguardSite },
+  { id: 11, title: 'CyberShield Security', url: 'https://cybershieldsec.net/', date: '6/22/2026', img: svgCyberShieldSite },
+  { id: 12, title: 'GreenPulse Renewable Energy', url: 'https://greenpulseenergy.com/', date: '6/15/2026', img: svgGreenPulseSite },
+  { id: 13, title: 'Aura Health & Wellness Clinic', url: 'https://aurahealthwell.com/', date: '6/08/2026', img: svgAuraSite },
+  { id: 14, title: 'Quantum Logic Systems', url: 'https://quantumlogicsys.com/', date: '5/29/2026', img: svgQuantumSite },
+  { id: 15, title: 'BlueSky Logistics', url: 'https://blueskylogistics.in/', date: '5/18/2026', img: svgBlueSkySite },
+  { id: 16, title: 'Starlight Luxury Resorts', url: 'https://starlighthospitality.com/', date: '5/10/2026', img: svgStarlightSite },
+  { id: 17, title: 'Nova Fintech Platform', url: 'https://novafintech.global/', date: '4/25/2026', img: svgNovaSite }
+];
+
+let isUploadFormVisible = false;
+let editingWebsiteId = null;
+let selectedWebsiteFile = null;
+let selectedWebsiteDataUrl = null;
+
+function toast(m){const t=$('toast');t.textContent=m;t.classList.remove('hidden');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.add('hidden'),2200)}
+function theme(){const r=document.documentElement;const d=getComputedStyle(r).colorScheme.includes('dark');r.dataset.theme=d?'light':'dark';$('tbtn').innerHTML=ico(d?'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>':'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',16)}
+
+function toggleUploadView(){
+  if(isUploadFormVisible){
+    hideUploadForm();
+  } else {
+    showUploadForm();
+  }
+}
+
+function showUploadForm(){
+  isUploadFormVisible = true;
+  editingWebsiteId = null;
+  $('uploadFormSection').classList.remove('hidden');
+  $('websiteListSection').classList.add('hidden');
+  
+  $('topActionIcon').textContent = '✕';
+  $('topActionLabel').textContent = 'Cancel';
+
+  $('formBannerTitle').textContent = 'Add Website';
+  $('formBannerSubtitle').textContent = 'Enter the website title, live URL, and upload the preview screenshot';
+  $('formSubmitBtn').textContent = 'Add Website';
+  
+  $('websiteTitleInput').value = '';
+  $('websiteUrlInput').value = '';
+  selectedWebsiteFile = null;
+  selectedWebsiteDataUrl = null;
+  $('websiteFileInput').value = '';
+  $('dropzoneEmpty').classList.remove('hidden');
+  $('dropzoneSelected').classList.add('hidden');
+  
+  setTimeout(() => $('websiteTitleInput').focus(), 100);
+}
+
+function hideUploadForm(){
+  isUploadFormVisible = false;
+  editingWebsiteId = null;
+  $('uploadFormSection').classList.add('hidden');
+  $('websiteListSection').classList.remove('hidden');
+  
+  $('topActionIcon').textContent = '+';
+  $('topActionLabel').textContent = 'Add Website';
+
+  $('formBannerTitle').textContent = 'Add Website';
+  $('formBannerSubtitle').textContent = 'Enter the website title, live URL, and upload the preview screenshot';
+  $('formSubmitBtn').textContent = 'Add Website';
+}
+
+function editWebsite(id){
+  const item = websites.find(x => x.id === id);
+  if(!item) return;
+
+  editingWebsiteId = id;
+  isUploadFormVisible = true;
+  $('uploadFormSection').classList.remove('hidden');
+  $('websiteListSection').classList.add('hidden');
+
+  $('topActionIcon').textContent = '✕';
+  $('topActionLabel').textContent = 'Cancel';
+
+  $('formBannerTitle').textContent = 'Edit Website';
+  $('formBannerSubtitle').textContent = 'Update the website title, URL, and screenshot';
+  $('formSubmitBtn').textContent = 'Update Website';
+
+  $('websiteTitleInput').value = item.title;
+  $('websiteUrlInput').value = item.url;
+  selectedWebsiteDataUrl = item.img;
+  selectedWebsiteFile = { name: `${item.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}-screenshot.png`, size: 120 * 1024 };
+
+  $('selectedWebsitePreview').src = item.img;
+  $('selectedWebsiteName').textContent = selectedWebsiteFile.name;
+  $('selectedWebsiteSize').textContent = 'Current Screenshot';
+  $('dropzoneEmpty').classList.add('hidden');
+  $('dropzoneSelected').classList.remove('hidden');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => $('websiteTitleInput').focus(), 100);
+}
+
+function handleFileSelected(input){
+  const file = input.files?.[0];
+  if(!file) return;
+
+  selectedWebsiteFile = file;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    selectedWebsiteDataUrl = e.target.result;
+    $('selectedWebsitePreview').src = selectedWebsiteDataUrl;
+    $('selectedWebsiteName').textContent = file.name;
+    const kb = (file.size / 1024).toFixed(1);
+    $('selectedWebsiteSize').textContent = `${kb} KB`;
+    $('dropzoneEmpty').classList.add('hidden');
+    $('dropzoneSelected').classList.remove('hidden');
+
+    if(!$('websiteTitleInput').value.trim()){
+      const raw = file.name.replace(/\.[^/.]+$/, "");
+      $('websiteTitleInput').value = raw.charAt(0).toUpperCase() + raw.slice(1);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function submitWebsite(){
+  const title = $('websiteTitleInput').value.trim();
+  const url = $('websiteUrlInput').value.trim();
+
+  if(!title){
+    toast('Please enter website title');
+    $('websiteTitleInput').focus();
+    return;
+  }
+  if(!url){
+    toast('Please enter website URL');
+    $('websiteUrlInput').focus();
+    return;
+  }
+
+  if(!selectedWebsiteDataUrl){
+    toast('Please select a website screenshot');
+    return;
+  }
+
+  const progCard = $('uploadProgressCard');
+  const progBar = $('uploadProgressBar');
+  const progText = $('uploadProgressText');
+  dismissSuccessAlert();
+
+  progBar.style.width = '0%';
+  progText.textContent = 'Uploading... 0%';
+  progCard.classList.remove('hidden');
+
+  let percent = 0;
+  const interval = setInterval(() => {
+    percent += Math.floor(Math.random() * 25) + 20;
+    if(percent >= 100){
+      percent = 100;
+      clearInterval(interval);
+      progBar.style.width = '100%';
+      progText.textContent = 'Uploading... 100%';
+
+      setTimeout(() => {
+        const today = new Date();
+        const dateStr = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`;
+
+        if(editingWebsiteId){
+          const target = websites.find(x => x.id === editingWebsiteId);
+          if(target){
+            target.title = title;
+            target.url = url;
+            target.img = selectedWebsiteDataUrl;
+          }
+          progCard.classList.add('hidden');
+          renderWebsites();
+          hideUploadForm();
+          showSuccessAlert('Website information updated successfully');
+        } else {
+          websites.unshift({
+            id: Date.now(),
+            title: title,
+            url: url,
+            date: dateStr,
+            img: selectedWebsiteDataUrl
+          });
+
+          progCard.classList.add('hidden');
+          renderWebsites();
+          hideUploadForm();
+          showSuccessAlert('Website information uploaded successfully');
+        }
+      }, 300);
+    } else {
+      progBar.style.width = percent + '%';
+      progText.textContent = `Uploading... ${percent}%`;
+    }
+  }, 120);
+}
+
+function renderWebsites(){
+  $('count').textContent = websites.length;
+  $('empty').classList.toggle('hidden', websites.length > 0);
+  $('list').innerHTML = websites.map(item => `
+    <article onclick="selectWebsiteCard(this, event)" class="card rounded-2xl overflow-hidden soft flex flex-col justify-between transition-all duration-200 cursor-pointer border bd border-l-4 border-l-[#ea580c] bg-white dark:bg-[#141a25] group hover:shadow-md">
+      <!-- Website Image Box -->
+      <div class="site-card-box relative aspect-[16/10.5] flex items-center justify-center bg-slate-100 dark:bg-slate-800/50 overflow-hidden">
+        <img src="${item.img}" alt="" class="w-full h-full object-cover select-none transition-transform duration-300 group-hover:scale-105" onerror="this.style.opacity='0'">
+        <!-- Hover Action Overlay -->
+        <div class="ov absolute inset-0 flex items-center justify-center gap-2.5 transition-opacity duration-200 opacity-0 pointer-events-none">
+          <button type="button" class="rb" onclick="event.stopPropagation();previewWebsite(${item.id})" aria-label="Preview Website" title="Preview Screenshot">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+          <button type="button" class="rb" onclick="event.stopPropagation();editWebsite(${item.id})" aria-label="Edit Website" title="Edit Website">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+          </button>
+          <button type="button" class="rb" onclick="event.stopPropagation();askDelete(${item.id})" aria-label="Delete Website" title="Delete Website">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+          </button>
+        </div>
+      </div>
+      <!-- Card Metadata Footer Matching Screenshot Exactly -->
+      <div class="px-4 py-3.5 bg-white dark:bg-[#141a25] border-t bd">
+        <h3 class="text-[13.5px] font-bold text-slate-800 dark:text-slate-100 truncate">${item.title}</h3>
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-[11.5px] text-[#ea580c] hover:underline truncate block mt-0.5 font-medium" title="${item.url}">${item.url}</a>
+        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Added: ${item.date}</p>
+      </div>
+    </article>
+  `).join('');
+}
+
+function selectWebsiteCard(cardEl, event){
+  if(event && event.target && event.target.closest('button, a')) return;
+  const isAlreadyActive = cardEl.classList.contains('active-card');
+  document.querySelectorAll('#list .card').forEach(c => c.classList.remove('active-card'));
+  if(!isAlreadyActive){
+    cardEl.classList.add('active-card');
+  }
+}
+
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('#list .card') && !e.target.closest('#confirm') && !e.target.closest('#preview')){
+    document.querySelectorAll('#list .card').forEach(c => c.classList.remove('active-card'));
+  }
+});
+
+function previewWebsite(id){
+  const item = websites.find(x => x.id === id);
+  if(!item) return;
+  $('pv').innerHTML = `
+    <div class="w-full flex items-center justify-between pb-3 border-b bd mb-4">
+      <div>
+        <h3 class="font-bold text-[14px] text-[var(--tx)]">${item.title}</h3>
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="text-[11.5px] text-[#ea580c] hover:underline mt-0.5 inline-block font-medium">${item.url} &nearr;</a>
+        <p class="text-[10.5px] mu mt-0.5">Added on ${item.date}</p>
+      </div>
+      <button onclick="$('preview').classList.add('hidden')" class="w-7 h-7 rounded-lg mu flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="w-full bg-slate-50 dark:bg-slate-900/50 rounded-xl overflow-hidden flex items-center justify-center border bd mb-4">
+      <img src="${item.img}" class="max-h-[60vh] w-full object-contain" alt="" onerror="this.style.opacity='0'">
+    </div>
+    <div class="flex items-center justify-end gap-3 pt-2">
+      <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="h-9 px-4 rounded-lg bg-[#ea580c] hover:opacity-95 text-white text-[12px] font-semibold inline-flex items-center gap-1.5 shadow-sm">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>
+        Visit Live Site
+      </a>
+      <button onclick="$('preview').classList.add('hidden')" class="h-9 px-4 rounded-lg btn text-[12px] font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">Close</button>
+    </div>
+  `;
+  $('preview').classList.remove('hidden');
+}
+
+function askDelete(id){
+  $('confirm').classList.remove('hidden');
+  $('yes').onclick = () => {
+    websites = websites.filter(item => item.id !== id);
+    $('confirm').classList.add('hidden');
+    renderWebsites();
+    toast('Website deleted');
+  };
+}
+
+let successAlertTimer = null;
+
+function showSuccessAlert(msg){
+  if(successAlertTimer) clearTimeout(successAlertTimer);
+  $('uploadSuccessText').textContent = msg;
+  $('uploadSuccessAlert').classList.remove('hidden');
+  successAlertTimer = setTimeout(() => {
+    $('uploadSuccessAlert').classList.add('hidden');
+  }, 5000);
+}
+
+function dismissSuccessAlert(){
+  if(successAlertTimer) clearTimeout(successAlertTimer);
+  $('uploadSuccessAlert').classList.add('hidden');
+}
+
+const P = {
+  Banners: { path: 'Banner management.html', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14"/>' },
+  Gallery: { path: 'Gallery management.html', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>' },
+  Blogs: { path: 'Blog management.html', icon: '<path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 4v16"/>' },
+  Contacts: { path: 'Contact management.html', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 10h4M15 14h4"/>' },
+  'Client Logos': { path: 'Client logos.html', icon: '<path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>' },
+  Websites: { path: 'Website management.html', icon: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+  Employees: { path: '#', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Documents Validation': { path: '#', icon: '<path d="M12 3l2.5 1.8 3-.2 1 2.9 2.5 1.7-1 2.9 1 2.9-2.5 1.7-1 2.9-3-.2L12 21l-2.5-1.8-3 .2-1-2.9L3 14.8l1-2.9-1-2.9 2.5-1.7 1-2.9 3 .2z"/><path d="m9 12 2 2 4-4"/>' },
+  Team: { path: '#', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Project Manager': { path: '#', icon: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/>' },
+  Access: { path: '#', icon: '<path stroke-width="3" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/>' }
+};
+
+function renderNavHTML(activeName){
+  return Object.keys(P).map(k => {
+    const on = k === activeName;
+    const item = P[k];
+    return `<a href="${item.path}" title="${k}" class="w-full flex items-center gap-2.5 h-9 px-2.5 rounded-lg text-[12.5px] transition cursor-pointer ${
+      on ? 'border border-orange-400/90 bg-indigo-50/70 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-semibold' : 'font-medium text-[var(--tx)] hover:bg-slate-100 dark:hover:bg-slate-800'
+    }">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${on ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}">${item.icon}</svg>
+      <span>${k}</span>
+    </a>`;
+  }).join('');
+}
+
+$('desktopNav').innerHTML = renderNavHTML('Websites');
+$('mobileNav').innerHTML = renderNavHTML('Websites');
+
+function openNav(){ $('navbg').classList.remove('hidden'); $('nav').classList.remove('-translate-x-full'); }
+function closeNav(){ $('navbg').classList.add('hidden'); $('nav').classList.add('-translate-x-full'); }
+function toggleSidebar(){
+  if(window.innerWidth < 1024){
+    if($('nav').classList.contains('-translate-x-full')){
+      openNav();
+    } else {
+      closeNav();
+    }
+  } else {
+    $('desktopSidebar').classList.toggle('sidebar-collapsed');
+  }
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeNav(); });
+
+renderWebsites();
+</script>
+</body>
+</html>
