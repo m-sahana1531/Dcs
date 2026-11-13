@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Dashboard - Project Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{
+  --bg:#f8fafc;--card:#ffffff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--tile:#fffdf5;
+  --surface:#ffffff;--ink:#1c2230;--muted:#667085;--line:#e2e5ea;
+  --brand:#4f46e5;--brand-ink:#ffffff;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712;
+  --surface:#1b1f29;--ink:#eef0f4;--muted:#9aa3b2;--line:#2a3040;
+  --brand:#6366f1;--brand-ink:#ffffff;
+}
+body{background:var(--bg);color:var(--tx);font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.card{background:var(--card);border:1px solid var(--bd)}
+.mu{color:var(--mu)} .bd{border-color:var(--bd)}
+.soft{box-shadow:0 4px 20px -4px rgba(15,23,42,.06)}
+.btn{border:1px solid var(--bd);background:var(--card)}
+
+#desktopSidebar{transition:width .25s cubic-bezier(.4,0,.2,1)}
+#desktopSidebar.sidebar-collapsed{width:54px!important;min-width:54px!important}
+#desktopSidebar.sidebar-collapsed .logo-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .logo-mini{display:block!important}
+#desktopSidebar.sidebar-collapsed .sidebar-header-box{padding:1.25rem .25rem!important}
+#desktopSidebar.sidebar-collapsed nav a{justify-content:center!important;padding:0!important;width:36px!important;height:36px!important;margin-left:auto!important;margin-right:auto!important}
+#desktopSidebar.sidebar-collapsed nav a span{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-mini{display:block!important}
+
+@keyframes scaleUp{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.animate-scale-up{animation:scaleUp .15s ease-out forwards}
+</style>
+</head>
+<body class="min-h-screen flex bg-[var(--bg)] text-[var(--tx)]">
+
+<!-- Desktop Persistent Left Sidebar -->
+<aside id="desktopSidebar" class="hidden lg:flex flex-col w-[220px] border-r bd h-screen sticky top-0 bg-white dark:bg-[#141a25] z-30 shrink-0">
+  <div class="sidebar-header-box pt-5 pb-5 px-3 flex items-center justify-center">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="logo-full h-[54px] w-auto max-w-[185px] object-contain">
+    <img src="logo-mini.png" alt="DCS" class="logo-mini hidden w-7 h-7 object-contain">
+  </div>
+  <nav class="flex-1 overflow-y-auto px-2.5 space-y-1" id="desktopNav"></nav>
+  <div class="py-3 border-t bd text-center">
+    <p class="sidebar-footer-full text-[10.5px] mu">DCS Admin v1.0.0</p>
+    <p class="sidebar-footer-mini hidden text-[10px] mu font-semibold">v1.0</p>
+  </div>
+</aside>
+
+<!-- Right Side Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+
+  <!-- Top Header Bar -->
+  <header class="sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 h-14 border-b bd bg-white dark:bg-[#141a25]">
+    <div class="flex items-center gap-2.5">
+      <button onclick="toggleSidebar()" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle sidebar" title="Toggle sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" y2="6"/>
+          <line x1="4" x2="20" y1="12" y2="12"/>
+          <line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+      <span class="text-[13.5px] font-bold tracking-tight">Admin Dashboard</span>
+    </div>
+
+    <div class="flex items-center gap-2.5">
+      <button onclick="theme()" id="tbtn" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button onclick="toast('Logged out successfully')" class="h-8 px-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-xs">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex-1 space-y-6">
+
+    <!-- Header Section (Matching Screenshot) -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-[24px] sm:text-[26px] font-extrabold tracking-tight text-[var(--tx)]">Project Manager</h1>
+        <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5">Create and manage your company projects</p>
+      </div>
+
+      <div class="flex items-center gap-2.5">
+        <button
+          type="button"
+          onclick="toggleViewMode()"
+          id="viewToggleBtn"
+          class="h-9 px-3.5 rounded-xl border bd bg-white dark:bg-[#141a25] hover:bg-slate-50 dark:hover:bg-slate-800 text-[#4f46e5] dark:text-indigo-400 font-bold text-[12.5px] inline-flex items-center gap-2 transition cursor-pointer shadow-2xs"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>
+          </svg>
+          <span id="viewToggleText">Go to Board</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="openCreateProjectModal()"
+          class="h-9 px-4 rounded-xl bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold text-[12.5px] inline-flex items-center gap-1.5 transition cursor-pointer shadow-xs active:scale-95"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Create Project</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter & Search Controls Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="relative w-full sm:max-w-xs">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <input
+          type="text"
+          id="projectSearch"
+          oninput="handleSearch(this.value)"
+          placeholder="Search projects by name..."
+          class="w-full h-10 pl-9 pr-4 rounded-xl border bd bg-white dark:bg-[#141a25] text-slate-800 dark:text-slate-100 text-[13px] placeholder:text-slate-400 focus:outline-none focus:border-[#4f46e5] shadow-2xs"
+        />
+      </div>
+
+      <div class="relative">
+        <select
+          id="categoryFilter"
+          onchange="handleFilter(this.value)"
+          class="h-10 px-4 pr-9 rounded-xl border bd bg-white dark:bg-[#141a25] text-[12.5px] font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#4f46e5] cursor-pointer appearance-none shadow-2xs"
+        >
+          <option value="all">All Projects</option>
+          <option value="in_progress">In Progress</option>
+          <option value="planning">Planning</option>
+          <option value="completed">Completed</option>
+        </select>
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE VIEW (Matching Reference Screenshot) -->
+    <div id="tableView" class="card rounded-2xl bg-white dark:bg-[#141a25] soft overflow-hidden border bd">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b bd text-[12px] font-bold text-slate-600 dark:text-slate-400 bg-slate-50/50 dark:bg-slate-900/40">
+              <th class="py-3.5 pl-6 w-14 font-extrabold">#</th>
+              <th class="py-3.5 px-4 font-bold">Project Name</th>
+              <th class="py-3.5 px-4 font-bold">Description</th>
+              <th class="py-3.5 px-4 font-bold">Start Date</th>
+              <th class="py-3.5 pr-6 text-right font-bold">Action</th>
+            </tr>
+          </thead>
+          <tbody id="projectTableBody" class="divide-y bd text-[13px]">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- KANBAN BOARD VIEW (Toggled via "Go to Board") -->
+    <div id="boardView" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- To Do Column -->
+      <div class="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border bd space-y-3 flex flex-col">
+        <div class="flex items-center justify-between pb-2 border-b bd">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+            <h3 class="font-bold text-[13.5px]">To Do</h3>
+          </div>
+          <span id="countTodo" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">0</span>
+        </div>
+        <div id="boardTodo" class="space-y-3 flex-1 min-h-[140px]"></div>
+      </div>
+
+      <!-- In Progress Column -->
+      <div class="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border bd space-y-3 flex flex-col">
+        <div class="flex items-center justify-between pb-2 border-b bd">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+            <h3 class="font-bold text-[13.5px]">In Progress</h3>
+          </div>
+          <span id="countInProgress" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400">0</span>
+        </div>
+        <div id="boardInProgress" class="space-y-3 flex-1 min-h-[140px]"></div>
+      </div>
+
+      <!-- Review Column -->
+      <div class="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border bd space-y-3 flex flex-col">
+        <div class="flex items-center justify-between pb-2 border-b bd">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+            <h3 class="font-bold text-[13.5px]">Review</h3>
+          </div>
+          <span id="countReview" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400">0</span>
+        </div>
+        <div id="boardReview" class="space-y-3 flex-1 min-h-[140px]"></div>
+      </div>
+
+      <!-- Completed Column -->
+      <div class="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border bd space-y-3 flex flex-col">
+        <div class="flex items-center justify-between pb-2 border-b bd">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <h3 class="font-bold text-[13.5px]">Completed</h3>
+          </div>
+          <span id="countCompleted" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400">0</span>
+        </div>
+        <div id="boardCompleted" class="space-y-3 flex-1 min-h-[140px]"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Mobile Drawer Sidebar Backdrop -->
+<div id="backdrop" class="fixed inset-0 z-40 bg-black/60 hidden transition-opacity" onclick="closeNav()"></div>
+
+<!-- Mobile Left Drawer -->
+<aside id="mobileNav" class="fixed left-0 top-0 z-50 h-full w-72 max-w-[85vw] flex flex-col card border-y-0 border-l-0 -translate-x-full transition-transform duration-200 lg:hidden bg-white dark:bg-[#141a25]">
+  <div class="flex items-center justify-between px-5 pt-4 pb-3">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="h-10 w-auto max-w-[170px] object-contain">
+    <button onclick="closeNav()" class="w-8 h-8 rounded-lg mu flex items-center justify-center hover:opacity-75 cursor-pointer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="flex-1 overflow-y-auto px-2.5 py-2 space-y-0.5" id="drawerNav"></nav>
+  <p class="text-center text-[11px] mu py-3 border-t bd">DCS Admin v1.0.0</p>
+</aside>
+
+<!-- Create / Edit Project Modal (Exact Match to media_1794559745183_b15f39f3.png) -->
+<div id="projectModal" class="fixed inset-0 z-50 bg-black/50 hidden flex items-center justify-center p-4">
+  <div class="card rounded-2xl max-w-lg w-full shadow-2xl p-6 sm:p-7 bg-white dark:bg-[#141a25] animate-scale-up border bd space-y-4">
+    <h3 class="font-bold text-[18px] text-slate-900 dark:text-slate-100" id="projectModalHeading">Create New Project</h3>
+    
+    <form onsubmit="saveProject(event)" class="space-y-3.5">
+      <input type="hidden" id="editProjectId">
+      
+      <!-- Project Name -->
+      <div>
+        <input
+          type="text"
+          id="projectName"
+          required
+          placeholder="Project Name *"
+          class="w-full h-11 px-3.5 rounded-xl border border-slate-200 dark:border-slate-800 text-[13px] bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-[#4f46e5]"
+        >
+      </div>
+
+      <!-- Project Description -->
+      <div>
+        <textarea
+          id="projectDesc"
+          required
+          rows="4"
+          placeholder="Project Description *"
+          class="w-full p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 text-[13px] bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-[#4f46e5] resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Dates Row (2 Columns) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Start Date -->
+        <div>
+          <fieldset class="rounded-xl border border-slate-200 dark:border-slate-800 px-3 pb-2 pt-0 focus-within:border-[#4f46e5]">
+            <legend class="text-[11px] text-slate-400 px-1 font-medium select-none">Project Start Date</legend>
+            <input
+              type="date"
+              id="projectDate"
+              required
+              class="w-full bg-transparent text-[13px] text-slate-800 dark:text-slate-100 focus:outline-none cursor-pointer"
+            >
+          </fieldset>
+        </div>
+
+        <!-- Deadline -->
+        <div>
+          <fieldset class="rounded-xl border border-slate-200 dark:border-slate-800 px-3 pb-2 pt-0 focus-within:border-[#4f46e5]">
+            <legend class="text-[11px] text-slate-400 px-1 font-medium select-none">Project Deadline</legend>
+            <input
+              type="date"
+              id="projectDeadline"
+              class="w-full bg-transparent text-[13px] text-slate-800 dark:text-slate-100 focus:outline-none cursor-pointer"
+            >
+          </fieldset>
+          <p class="text-[10.5px] text-slate-400 mt-1 pl-1">Optional - leave blank if there is no fixed deadline</p>
+        </div>
+      </div>
+
+      <!-- Logo Upload Row -->
+      <div class="pt-1">
+        <div class="flex items-center gap-3">
+          <!-- Icon Preview / Code mark box -->
+          <div id="projectIconPreview" class="w-11 h-11 rounded-xl bg-[#eef2ff] dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-center text-[#4f46e5] dark:text-indigo-400 shrink-0 font-bold text-sm overflow-hidden shadow-2xs">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+
+          <div>
+            <label class="h-8 px-3 rounded-lg border border-[#dbeafe] hover:border-[#bfdbfe] bg-white dark:bg-[#141a25] hover:bg-indigo-50/60 text-[#4f46e5] dark:text-indigo-400 font-semibold text-[12px] inline-flex items-center gap-1.5 cursor-pointer transition shadow-2xs">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <span>Upload Logo</span>
+              <input type="file" id="projectIconInput" accept="image/*" onchange="handleIconUpload(this)" class="hidden">
+            </label>
+            <p class="text-[11px] text-slate-400 mt-1">Optional - falls back to a colored icon if none is uploaded</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons Footer (Cancel on left of Create Project, right aligned) -->
+      <div class="flex items-center justify-end gap-3 pt-3">
+        <button
+          type="button"
+          onclick="closeProjectModal()"
+          class="px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold text-[13px] transition cursor-pointer"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          id="projectSubmitBtn"
+          class="px-5 py-2 rounded-xl bg-[#4f46e5] hover:bg-[#4338ca] text-white font-semibold text-[13px] transition cursor-pointer shadow-xs active:scale-95"
+        >
+          Create Project
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Project Overview Details Modal (When clicking "Open Project") -->
+<div id="projectDetailsModal" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4">
+  <div class="card rounded-2xl max-w-xl w-full shadow-2xl p-6 bg-white dark:bg-[#141a25] animate-scale-up border bd space-y-5">
+    <div class="flex items-start justify-between pb-3 border-b bd">
+      <div class="flex items-center gap-3.5">
+        <div id="detailLogo" class="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden shrink-0 border bd"></div>
+        <div>
+          <h2 id="detailTitle" class="text-lg font-bold text-slate-900 dark:text-slate-100">Project Details</h2>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span id="detailStatus" class="px-2 py-0.5 text-[10.5px] font-bold rounded-full uppercase bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">In Progress</span>
+            <span class="text-xs text-slate-400">•</span>
+            <span id="detailDate" class="text-xs text-slate-500 dark:text-slate-400">Started: 16 Aug 2024</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="closeProjectDetails()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 flex items-center justify-center cursor-pointer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div>
+      <h4 class="text-[12px] font-bold uppercase text-slate-400 tracking-wider mb-1">Description</h4>
+      <p id="detailDesc" class="text-[13px] text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+    </div>
+
+    <!-- Project Metrics / Tasks -->
+    <div class="grid grid-cols-3 gap-3 pt-2">
+      <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border bd">
+        <div class="text-[11px] font-bold text-slate-400">Total Tasks</div>
+        <div id="detailTasks" class="text-[18px] font-black text-slate-800 dark:text-slate-100 mt-0.5">24</div>
+      </div>
+      <div class="p-3 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/60">
+        <div class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">Completed</div>
+        <div id="detailCompleted" class="text-[18px] font-black text-emerald-700 dark:text-emerald-300 mt-0.5">18</div>
+      </div>
+      <div class="p-3 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/60">
+        <div class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">Progress</div>
+        <div id="detailPercent" class="text-[18px] font-black text-indigo-700 dark:text-indigo-300 mt-0.5">75%</div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-end gap-2.5 pt-3 border-t bd">
+      <button onclick="closeProjectDetails()" class="h-9 px-4 rounded-xl border bd text-[12.5px] font-semibold hover:bg-slate-50 transition cursor-pointer">
+        Close
+      </button>
+      <button onclick="toast('Opening Jira / DCS board view for ' + currentDetailProject?.name)" class="h-9 px-4 rounded-xl bg-[#4f46e5] hover:bg-[#4338ca] text-white text-[12.5px] font-semibold transition cursor-pointer shadow-xs">
+        View Project Board
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4">
+  <div class="card rounded-2xl max-w-sm w-full p-5 bg-white dark:bg-[#141a25] shadow-2xl animate-scale-up border bd">
+    <h3 class="font-bold text-[14.5px] text-slate-900 dark:text-slate-100 mb-1">Delete Project?</h3>
+    <p class="text-xs text-slate-500 mb-4">This project and associated records will be removed.</p>
+    <div class="flex gap-2">
+      <button onclick="closeDeleteModal()" class="flex-1 h-9 rounded-lg border bd text-xs font-semibold hover:bg-slate-50 transition cursor-pointer">Cancel</button>
+      <button onclick="confirmDeleteProject()" class="flex-1 h-9 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition cursor-pointer">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] hidden px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-lg pointer-events-none transition-all"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function toast(msg){
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  clearTimeout(t._tm);
+  t._tm = setTimeout(() => t.classList.add('hidden'), 2500);
+}
+
+function theme(){
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+}
+
+const makeSvgUri = (s) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s.trim());
+
+// High-fidelity Project Logo SVGs exactly matching screenshot
+const svgDCS = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="20" fill="#ffffff"/>
+  <path d="M18 48 L48 18 C52 14 58 14 62 18 L85 41 C89 45 89 51 85 55 L72 68 C68 72 62 72 58 68 L35 45" fill="none" stroke="#ea580c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="20" y="60" width="22" height="22" rx="4" fill="#f97316"/>
+  <circle cx="31" cy="71" r="5" fill="#ffffff"/>
+</svg>`);
+
+const svgMS = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#ede9fe"/>
+  <rect x="24" y="30" width="10" height="10" rx="2.5" fill="#7c3aed"/>
+  <rect x="42" y="32" width="34" height="6" rx="3" fill="#7c3aed"/>
+  <rect x="24" y="46" width="10" height="10" rx="2.5" fill="#7c3aed"/>
+  <rect x="42" y="48" width="34" height="6" rx="3" fill="#7c3aed"/>
+  <rect x="24" y="62" width="10" height="10" rx="2.5" fill="#7c3aed"/>
+  <rect x="42" y="64" width="26" height="6" rx="3" fill="#7c3aed"/>
+</svg>`);
+
+const svgBizConnect = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#fef3c7"/>
+  <rect x="26" y="52" width="11" height="26" rx="3" fill="#b45309"/>
+  <rect x="44" y="36" width="11" height="42" rx="3" fill="#b45309"/>
+  <rect x="62" y="24" width="11" height="54" rx="3" fill="#b45309"/>
+</svg>`);
+
+const svgCrezzle = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#ffedd5"/>
+  <rect x="32" y="22" width="36" height="56" rx="8" fill="none" stroke="#ea580c" stroke-width="6"/>
+  <circle cx="50" cy="68" r="3.5" fill="#ea580c"/>
+  <rect x="44" y="28" width="12" height="3" rx="1.5" fill="#ea580c"/>
+</svg>`);
+
+const svgTapForMeal = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#ea580c"/>
+  <circle cx="50" cy="50" r="28" fill="none" stroke="#ffffff" stroke-width="3" stroke-dasharray="4 4" opacity="0.6"/>
+  <path d="M48 30 C48 26 52 26 52 30 L52 48 L56 46 C58 45 61 46 62 48 L67 56 C68 58 68 60 67 62 L63 70 C61 74 57 76 52 76 L44 76 C38 76 34 71 34 65 L34 52 C34 49 37 49 37 52 L37 60 M44 48 L44 38 C44 35 48 35 48 38 L48 48" fill="#ffffff"/>
+</svg>`);
+
+const svgKLG = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#fff7ed"/>
+  <circle cx="50" cy="50" r="32" fill="none" stroke="#dc2626" stroke-width="3.5"/>
+  <path d="M30 42 C30 40 33 36 40 36 C48 36 50 42 50 48" stroke="#dc2626" stroke-width="2" fill="none"/>
+  <text x="50" y="58" font-family="'Times New Roman', serif, system-ui" font-size="24" font-weight="900" font-style="italic" text-anchor="middle" fill="#dc2626">klg</text>
+  <path d="M36 64 C42 67 58 67 64 64" stroke="#d97706" stroke-width="2" fill="none"/>
+</svg>`);
+
+let PROJECTS = [
+  {
+    num: "01",
+    name: "DCS",
+    desc: "DCS related tasks",
+    date: "16 Aug 2024",
+    status: "in_progress",
+    img: svgDCS,
+    tasks: 28,
+    completed: 21
+  },
+  {
+    num: "02",
+    name: "MS",
+    desc: "DCS all softwares manager",
+    date: "30 May 2026",
+    status: "in_progress",
+    img: svgMS,
+    tasks: 19,
+    completed: 12
+  },
+  {
+    num: "03",
+    name: "BizConnect",
+    desc: "BizConnect is a mobile and cloud-based contact management and CR...",
+    fullDesc: "BizConnect is a mobile and cloud-based contact management and CRM platform designed for automated lead assignment, card scanning, and sales follow-ups.",
+    date: "07 Sept 2026",
+    status: "planning",
+    img: svgBizConnect,
+    tasks: 34,
+    completed: 8
+  },
+  {
+    num: "04",
+    name: "CrezzLe",
+    desc: "Mobile app for seamless, QR-code based document printing at nearb...",
+    fullDesc: "Mobile app for seamless, QR-code based document printing at nearby print hubs with instant payment and zero-queue pickup.",
+    date: "19 Mar 2025",
+    status: "completed",
+    img: svgCrezzle,
+    tasks: 15,
+    completed: 15
+  },
+  {
+    num: "05",
+    name: "Tap For Meal",
+    desc: "Self-service food ordering and automatic billing for modern restaurant...",
+    fullDesc: "Self-service food ordering and automatic billing for modern restaurant chains, food courts, and corporate dining halls.",
+    date: "15 May 2026",
+    status: "in_progress",
+    img: svgTapForMeal,
+    tasks: 42,
+    completed: 31
+  },
+  {
+    num: "06",
+    name: "KLG",
+    desc: "Self-service food ordering and automatic billing for Krishna Leela Gra...",
+    fullDesc: "Self-service food ordering and automatic billing for Krishna Leela Grand hospitality suites and multi-cuisine banquets.",
+    date: "16 Jun 2026",
+    status: "in_progress",
+    img: svgKLG,
+    tasks: 22,
+    completed: 14
+  }
+];
+
+let searchQuery = "";
+let categoryFilter = "all";
+let isBoardMode = false;
+let uploadedIconData = null;
+let currentDetailProject = null;
+let deletingProjectIndex = null;
+let activeDropdownIndex = null;
+
+function renderTable(){
+  const tbody = $('projectTableBody');
+  const filtered = PROJECTS.filter(p => {
+    const matchSearch = !searchQuery ||
+      p.name.toLowerCase().includes(searchQuery) ||
+      p.desc.toLowerCase().includes(searchQuery);
+    const matchCategory = categoryFilter === 'all' || p.status === categoryFilter;
+    return matchSearch && matchCategory;
+  });
+
+  if(!filtered.length){
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" class="py-12 text-center text-slate-400">
+          <p class="font-semibold text-slate-600 dark:text-slate-300">No projects found</p>
+          <p class="text-xs text-slate-400 mt-1">Try adjusting your search query or category filter.</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((p, idx) => `
+    <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition">
+      <td class="py-4 pl-6 font-semibold text-slate-500 dark:text-slate-400 text-xs">
+        ${p.num}
+      </td>
+      <td class="py-4 px-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border bd bg-slate-50 dark:bg-slate-900">
+            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-contain">
+          </div>
+          <span class="font-bold text-slate-900 dark:text-slate-100 text-[13.5px]">
+            ${p.name}
+          </span>
+        </div>
+      </td>
+      <td class="py-4 px-4 text-slate-600 dark:text-slate-300 max-w-[420px] truncate text-[12.5px]">
+        ${p.desc}
+      </td>
+      <td class="py-4 px-4 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap text-[12px]">
+        ${p.date}
+      </td>
+      <td class="py-4 pr-6 text-right whitespace-nowrap">
+        <div class="inline-flex items-center justify-end gap-2 relative">
+          <button
+            type="button"
+            onclick="openProjectDetails('${p.name}')"
+            class="h-7 px-3 rounded-lg border border-[#e0e7ff] hover:border-[#c7d2fe] bg-white dark:bg-[#141a25] hover:bg-indigo-50/70 text-[#4f46e5] dark:text-indigo-400 font-semibold text-[11.5px] transition cursor-pointer shadow-2xs"
+          >
+            Open Project
+          </button>
+          
+          <div class="relative">
+            <button
+              type="button"
+              onclick="toggleDropdown(event, ${idx})"
+              class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition cursor-pointer"
+              title="More actions"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+            <div id="drop-${idx}" class="hidden absolute right-0 top-8 z-30 w-36 py-1.5 rounded-xl card bg-white dark:bg-[#141a25] border bd shadow-xl text-left text-xs animate-scale-up">
+              <button onclick="openProjectDetails('${p.name}')" class="w-full px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-200">
+                <svg class="w-3.5 h-3.5 text-indigo-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                <span>View Details</span>
+              </button>
+              <button onclick="editProject('${p.name}')" class="w-full px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-200">
+                <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                <span>Edit Project</span>
+              </button>
+              <div class="h-px bg-slate-100 dark:bg-slate-800 my-1"></div>
+              <button onclick="promptDelete('${p.name}')" class="w-full px-3 py-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 flex items-center gap-2 cursor-pointer">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span>Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderBoard(){
+  const cols = {
+    planning: $('boardTodo'),
+    in_progress: $('boardInProgress'),
+    review: $('boardReview'),
+    completed: $('boardCompleted')
+  };
+
+  const filtered = PROJECTS.filter(p => {
+    return (!searchQuery || p.name.toLowerCase().includes(searchQuery) || p.desc.toLowerCase().includes(searchQuery)) &&
+           (categoryFilter === 'all' || p.status === categoryFilter);
+  });
+
+  const counts = { planning: 0, in_progress: 0, review: 0, completed: 0 };
+  Object.keys(cols).forEach(k => cols[k].innerHTML = '');
+
+  filtered.forEach(p => {
+    const colKey = p.status === 'planning' ? 'planning' : p.status === 'completed' ? 'completed' : 'in_progress';
+    counts[colKey]++;
+    const card = document.createElement('div');
+    card.className = "p-3.5 rounded-xl border bd bg-slate-50/70 dark:bg-slate-900/50 hover:shadow-sm transition space-y-2.5 cursor-pointer";
+    card.onclick = () => openProjectDetails(p.name);
+    card.innerHTML = `
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded overflow-hidden shrink-0">
+            <img src="${p.img}" alt="" class="w-full h-full object-contain">
+          </div>
+          <span class="font-bold text-xs text-slate-900 dark:text-slate-100">${p.name}</span>
+        </div>
+        <span class="text-[10px] font-semibold text-slate-400">#${p.num}</span>
+      </div>
+      <p class="text-[11.5px] text-slate-500 line-clamp-2">${p.desc}</p>
+      <div class="flex items-center justify-between pt-1 border-t bd text-[10.5px] text-slate-400">
+        <span>${p.date}</span>
+        <span class="text-indigo-600 dark:text-indigo-400 font-semibold">${p.completed}/${p.tasks} Tasks</span>
+      </div>
+    `;
+    cols[colKey].appendChild(card);
+  });
+
+  $('countTodo').textContent = counts.planning;
+  $('countInProgress').textContent = counts.in_progress;
+  $('countReview').textContent = counts.review;
+  $('countCompleted').textContent = counts.completed;
+}
+
+function renderAll(){
+  renderTable();
+  renderBoard();
+}
+
+function handleSearch(val){
+  searchQuery = val.trim().toLowerCase();
+  renderAll();
+}
+
+function handleFilter(val){
+  categoryFilter = val;
+  renderAll();
+}
+
+function toggleViewMode(){
+  isBoardMode = !isBoardMode;
+  if(isBoardMode){
+    $('tableView').classList.add('hidden');
+    $('boardView').classList.remove('hidden');
+    $('viewToggleText').textContent = 'Table View';
+  } else {
+    $('tableView').classList.remove('hidden');
+    $('boardView').classList.add('hidden');
+    $('viewToggleText').textContent = 'Go to Board';
+  }
+}
+
+function toggleDropdown(e, idx){
+  e.stopPropagation();
+  closeAllDropdowns();
+  const d = $(`drop-${idx}`);
+  if(d) d.classList.toggle('hidden');
+}
+
+function closeAllDropdowns(){
+  document.querySelectorAll('[id^="drop-"]').forEach(el => el.classList.add('hidden'));
+}
+window.addEventListener('click', closeAllDropdowns);
+
+function openProjectDetails(name){
+  const p = PROJECTS.find(x => x.name === name);
+  if(!p) return;
+  currentDetailProject = p;
+  $('detailLogo').innerHTML = `<img src="${p.img}" class="w-full h-full object-contain">`;
+  $('detailTitle').textContent = p.name;
+  $('detailStatus').textContent = p.status.replace('_', ' ');
+  $('detailDate').textContent = 'Started: ' + p.date;
+  $('detailDesc').textContent = p.fullDesc || p.desc;
+  $('detailTasks').textContent = p.tasks;
+  $('detailCompleted').textContent = p.completed;
+  const pct = Math.round((p.completed / p.tasks) * 100);
+  $('detailPercent').textContent = pct + '%';
+  $('projectDetailsModal').classList.remove('hidden');
+}
+
+function closeProjectDetails(){
+  $('projectDetailsModal').classList.add('hidden');
+  currentDetailProject = null;
+}
+
+const svgCodeIcon = `<svg class="w-5 h-5 text-[#4f46e5] dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`;
+
+const PALETTES = [
+  { bg: '#ede9fe', fg: '#7c3aed' },
+  { bg: '#fef3c7', fg: '#b45309' },
+  { bg: '#ffedd5', fg: '#ea580c' },
+  { bg: '#e0f2fe', fg: '#0284c7' },
+  { bg: '#dcfce7', fg: '#15803d' },
+  { bg: '#ffe4e6', fg: '#e11d48' },
+  { bg: '#f3e8ff', fg: '#9333ea' }
+];
+
+function generateFallbackIcon(name){
+  const color = PALETTES[Math.abs(name.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % PALETTES.length];
+  const initials = name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'PR';
+  return makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+    <rect width="100" height="100" rx="22" fill="${color.bg}"/>
+    <text x="50" y="62" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" text-anchor="middle" fill="${color.fg}">${initials}</text>
+  </svg>`);
+}
+
+function formatInputDate(dStr){
+  if(!dStr) return new Date().toISOString().split('T')[0];
+  const d = new Date(dStr);
+  if(!isNaN(d.getTime())) return d.toISOString().split('T')[0];
+  return new Date().toISOString().split('T')[0];
+}
+
+function formatDisplayDate(dStr){
+  if(!dStr) return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  if(dStr.includes('-')){
+    const parts = dStr.split('-');
+    if(parts.length === 3){
+      const d = new Date(parts[0], parts[1]-1, parts[2]);
+      if(!isNaN(d.getTime())) return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+  }
+  return dStr;
+}
+
+function openCreateProjectModal(){
+  $('editProjectId').value = '';
+  $('projectModalHeading').textContent = 'Create New Project';
+  $('projectSubmitBtn').textContent = 'Create Project';
+  $('projectName').value = '';
+  $('projectDesc').value = '';
+  $('projectDate').value = new Date().toISOString().split('T')[0];
+  $('projectDeadline').value = '';
+  uploadedIconData = null;
+  $('projectIconPreview').innerHTML = svgCodeIcon;
+  $('projectModal').classList.remove('hidden');
+}
+
+function editProject(name){
+  const p = PROJECTS.find(x => x.name === name);
+  if(!p) return;
+  $('editProjectId').value = p.name;
+  $('projectModalHeading').textContent = 'Edit Project - ' + p.name;
+  $('projectSubmitBtn').textContent = 'Save Changes';
+  $('projectName').value = p.name;
+  $('projectDesc').value = p.fullDesc || p.desc;
+  $('projectDate').value = formatInputDate(p.date);
+  $('projectDeadline').value = p.deadline ? formatInputDate(p.deadline) : '';
+  uploadedIconData = p.img;
+  $('projectIconPreview').innerHTML = `<img src="${p.img}" class="w-full h-full object-contain">`;
+  $('projectModal').classList.remove('hidden');
+}
+
+function closeProjectModal(){
+  $('projectModal').classList.add('hidden');
+}
+
+function handleIconUpload(input){
+  const file = input.files && input.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = e => {
+      uploadedIconData = e.target.result;
+      $('projectIconPreview').innerHTML = `<img src="${uploadedIconData}" class="w-full h-full object-contain">`;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function saveProject(e){
+  e.preventDefault();
+  const id = $('editProjectId').value;
+  const name = $('projectName').value.trim();
+  const desc = $('projectDesc').value.trim();
+  const rawDate = $('projectDate').value;
+  const rawDeadline = $('projectDeadline').value;
+  const date = formatDisplayDate(rawDate);
+  const deadline = rawDeadline ? formatDisplayDate(rawDeadline) : '';
+  const img = uploadedIconData || generateFallbackIcon(name);
+
+  if(!name || !desc){
+    toast('Please fill all required fields');
+    return;
+  }
+
+  if(id){
+    const target = PROJECTS.find(x => x.name === id);
+    if(target){
+      target.name = name;
+      target.desc = desc;
+      target.fullDesc = desc;
+      target.date = date;
+      target.deadline = deadline;
+      if(uploadedIconData) target.img = uploadedIconData;
+    }
+    toast('Project updated successfully');
+  } else {
+    const nextNum = (PROJECTS.length + 1).toString().padStart(2, '0');
+    PROJECTS.push({
+      num: nextNum,
+      name,
+      desc,
+      fullDesc: desc,
+      date,
+      deadline,
+      status: 'in_progress',
+      img,
+      tasks: 10,
+      completed: 2
+    });
+    toast('Project created successfully');
+  }
+
+  closeProjectModal();
+  renderAll();
+}
+
+function promptDelete(name){
+  deletingProjectIndex = name;
+  $('deleteModal').classList.remove('hidden');
+}
+
+function closeDeleteModal(){
+  $('deleteModal').classList.add('hidden');
+  deletingProjectIndex = null;
+}
+
+function confirmDeleteProject(){
+  if(deletingProjectIndex){
+    PROJECTS = PROJECTS.filter(p => p.name !== deletingProjectIndex);
+    toast('Project deleted');
+    closeDeleteModal();
+    renderAll();
+  }
+}
+
+const P = {
+  Banners: { path: 'Banner management.html', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14"/>' },
+  Gallery: { path: 'Gallery management.html', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>' },
+  Blogs: { path: 'Blog management.html', icon: '<path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 4v16"/>' },
+  Contacts: { path: 'Contact management.html', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 10h4M15 14h4"/>' },
+  'Client Logos': { path: 'Client logos.html', icon: '<path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>' },
+  Websites: { path: 'Website management.html', icon: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+  Employees: { path: 'Employee management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Documents Validation': { path: 'Documents validation.html', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/>' },
+  Team: { path: 'Team management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Project Manager': { path: 'Project manager.html', icon: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/>' },
+  Access: { path: 'Access management.html', icon: '<path stroke-width="3" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/>' }
+};
+
+function renderNavHTML(activeName){
+  return Object.keys(P).map(k => {
+    const on = k === activeName;
+    const item = P[k];
+    return `<a href="${item.path}" title="${k}" class="w-full flex items-center gap-2.5 h-9 px-2.5 rounded-lg text-[12.5px] transition cursor-pointer ${
+      on ? 'border border-orange-400/90 bg-indigo-50/70 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-semibold' : 'font-medium text-[var(--tx)] hover:bg-slate-100 dark:hover:bg-slate-800'
+    }">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${on ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}">${item.icon}</svg>
+      <span>${k}</span>
+    </a>`;
+  }).join('');
+}
+
+$('desktopNav').innerHTML = renderNavHTML('Project Manager');
+$('drawerNav').innerHTML = renderNavHTML('Project Manager');
+
+function toggleSidebar(){
+  const s = $('desktopSidebar');
+  s.classList.toggle('sidebar-collapsed');
+  if(window.innerWidth < 1024){
+    $('mobileNav').classList.remove('-translate-x-full');
+    $('backdrop').classList.remove('hidden');
+  }
+}
+function closeNav(){
+  $('mobileNav').classList.add('-translate-x-full');
+  $('backdrop').classList.add('hidden');
+}
+
+// Initial render
+renderAll();
+</script>
+</body>
+</html>
+

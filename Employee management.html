@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Dashboard - Employee Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{
+  --bg:#f8fafc;--card:#ffffff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--tile:#fffdf5;
+  --surface:#ffffff;--ink:#1c2230;--muted:#667085;--line:#e2e5ea;
+  --brand:#e8590c;--brand-ink:#ffffff;--brand-soft:#fff0e6;
+  --pending:#b45309;--pending-bg:#fef3c7;
+  --interview:#1d4ed8;--interview-bg:#dbeafe;
+  --accepted:#15803d;--accepted-bg:#dcfce7;
+  --rejected:#b91c1c;--rejected-bg:#fee2e2;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712;
+  --surface:#1b1f29;--ink:#eef0f4;--muted:#9aa3b2;--line:#2a3040;
+  --brand:#ff7a2f;--brand-ink:#1b1206;--brand-soft:#3a2314;
+  --pending:#fbbf24;--pending-bg:#3a2d0b;--interview:#93c5fd;--interview-bg:#16294d;
+  --accepted:#86efac;--accepted-bg:#0f3320;--rejected:#fca5a5;--rejected-bg:#3d1616;
+}
+body{background:var(--bg);color:var(--tx);font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.card{background:var(--card);border:1px solid var(--bd)}
+.mu{color:var(--mu)} .bd{border-color:var(--bd)}
+.soft{box-shadow:0 4px 20px -4px rgba(15,23,42,.06)}
+.btn{border:1px solid var(--bd);background:var(--card)}
+
+#desktopSidebar{transition:width .25s cubic-bezier(.4,0,.2,1)}
+#desktopSidebar.sidebar-collapsed{width:54px!important;min-width:54px!important}
+#desktopSidebar.sidebar-collapsed .logo-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .logo-mini{display:block!important}
+#desktopSidebar.sidebar-collapsed .sidebar-header-box{padding:1.25rem .25rem!important}
+#desktopSidebar.sidebar-collapsed nav a{justify-content:center!important;padding:0!important;width:36px!important;height:36px!important;margin-left:auto!important;margin-right:auto!important}
+#desktopSidebar.sidebar-collapsed nav a span{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-mini{display:block!important}
+
+/* Section Switcher */
+.sections{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.sec{padding:10px 2px 8px;border-radius:12px;text-align:center;color:var(--muted);transition:background .15s,color .15s;border:none;background:transparent;cursor:pointer}
+.sec b{display:block;font-size:18px;font-weight:800;color:var(--ink);line-height:1.1}
+.sec span{display:block;font-size:11.5px;font-weight:600;margin-top:2px}
+.sec[aria-selected="true"]{background:var(--brand);color:var(--brand-ink)}
+.sec[aria-selected="true"] b{color:var(--brand-ink)}
+.sec .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#e8590c;margin-left:4px;vertical-align:middle}
+.sec[aria-selected="true"] .dot{background:var(--brand-ink)}
+
+/* Search + Chips */
+.search{position:relative}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted)}
+.search input{width:100%;height:46px;padding:0 14px 0 42px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px}
+.search input::placeholder{color:var(--muted)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.chip em{font-style:normal;font-size:12px;background:#f1f2f4;padding:1px 7px;border-radius:999px;color:var(--ink)}
+:root[data-theme="dark"] .chip em{background:#2a3040;color:#e2e8f0}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.chip[aria-pressed="true"] em{background:rgba(255,255,255,.25);color:inherit}
+
+/* Cards */
+.emp-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 1px 3px rgba(16,24,40,.06);transition:transform .15s,box-shadow .15s}
+.emp-card:hover{box-shadow:0 6px 18px -4px rgba(16,24,40,.1)}
+.emp-row{display:flex;gap:12px;align-items:center}
+.av{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:17px;background:var(--brand-soft);color:var(--brand)}
+.who{min-width:0;flex:1}
+.who h3{margin:0;font-size:15.5px;font-weight:700;line-height:1.25;overflow-wrap:anywhere;color:var(--ink)}
+.who small{color:var(--muted);font-size:13px}
+.badge{flex:none;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;align-self:flex-start}
+.s-pending{background:var(--pending-bg);color:var(--pending)}
+.s-interview{background:var(--interview-bg);color:var(--interview)}
+.s-accepted{background:var(--accepted-bg);color:var(--accepted)}
+.s-rejected{background:var(--rejected-bg);color:var(--rejected)}
+.contact{margin:12px 0 0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;gap:6px;font-size:13.5px}
+.contact a{color:var(--ink);text-decoration:none;display:flex;gap:8px;align-items:center;overflow-wrap:anywhere}
+.contact a:hover{color:var(--brand)}
+.contact svg{flex:none;width:15px;height:15px;color:var(--muted)}
+.acts{display:flex;gap:8px;margin-top:14px}
+.acts button{flex:1;height:38px;border-radius:12px;font-weight:700;font-size:13.5px;border:1px solid var(--line);background:var(--surface);cursor:pointer;transition:background .15s,color .15s}
+.acts .go{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.acts .go:hover{opacity:.95}
+.acts .no{color:var(--rejected)}
+.acts .no:hover{background:var(--rejected-bg)}
+.empty-box{margin:24px 0;padding:36px 20px;text-align:center;background:var(--surface);border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
+.empty-box b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+</style>
+</head>
+<body class="min-h-screen flex bg-[var(--bg)] text-[var(--tx)]">
+
+<!-- Desktop Persistent Left Sidebar -->
+<aside id="desktopSidebar" class="hidden lg:flex flex-col w-[220px] border-r bd h-screen sticky top-0 bg-white dark:bg-[#141a25] z-30 shrink-0">
+  <div class="sidebar-header-box pt-5 pb-5 px-3 flex items-center justify-center">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="logo-full h-[54px] w-auto max-w-[185px] object-contain">
+    <img src="logo-mini.png" alt="DCS" class="logo-mini hidden w-7 h-7 object-contain">
+  </div>
+  <nav class="flex-1 overflow-y-auto px-2.5 space-y-1" id="desktopNav"></nav>
+  <div class="py-3 border-t bd text-center">
+    <p class="sidebar-footer-full text-[10.5px] mu">DCS Admin v1.0.0</p>
+    <p class="sidebar-footer-mini hidden text-[10px] mu font-semibold">v1.0</p>
+  </div>
+</aside>
+
+<!-- Right Side Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+
+  <!-- Top Header Bar -->
+  <header class="sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 h-14 border-b bd bg-white dark:bg-[#141a25]">
+    <div class="flex items-center gap-2.5">
+      <button onclick="toggleSidebar()" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle sidebar" title="Toggle sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" y2="6"/>
+          <line x1="4" x2="20" y1="12" y2="12"/>
+          <line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+      <span class="text-[13.5px] font-bold tracking-tight">Admin Dashboard</span>
+    </div>
+    <div class="flex items-center gap-2.5">
+      <button onclick="theme()" id="tbtn" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button onclick="toast('Logged out successfully')" class="h-8 px-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-xs">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 flex-1">
+    <!-- Enclosing Card -->
+    <div class="card rounded-2xl p-5 sm:p-7 soft bg-white dark:bg-[#141a25]">
+      
+      <!-- Top Title Row: Icon + Title & Add Button -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
+        <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3.5">
+          <div class="w-11 h-11 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm" style="background:linear-gradient(135deg,#ff9a3c,#ff7a45)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-[20px] sm:text-[22px] font-extrabold tracking-tight text-[var(--tx)]">Employee management</h1>
+            <p class="mu text-[12.5px] mt-0.5">Employees, interns and freelancers</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 w-full sm:w-auto sm:self-center justify-center sm:justify-end">
+          <button 
+            type="button" 
+            onclick="openAddModal()"
+            class="h-10 px-5 rounded-xl font-bold text-[13.5px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95"
+            style="background:var(--brand);box-shadow:0 6px 16px -4px rgba(232,89,12,0.4)"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Add Member</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Employee Management Content Block -->
+      <div class="space-y-5 pt-1">
+        <!-- 4 Section Switcher (New, Candidates, Relieving, Team) -->
+        <nav class="sections" id="sections" role="tablist" aria-label="Sections"></nav>
+
+        <!-- Search Bar and Status Chips -->
+        <div class="space-y-3 pt-1">
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="q" type="search" placeholder="Search by name, email or phone" aria-label="Search">
+          </div>
+          <div class="chips" id="chips" role="group" aria-label="Filter by status"></div>
+        </div>
+
+        <!-- Meta counter row -->
+        <div class="text-[13px] font-semibold text-slate-500 dark:text-slate-400 px-1" id="meta"></div>
+
+        <!-- Applicants Table -->
+        <div class="overflow-x-auto rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#141a25] shadow-xs">
+          <table class="w-full text-left border-collapse min-w-[960px]">
+            <thead>
+              <tr class="border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/40 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none">
+                <th class="py-3.5 px-5">APPLICANT</th>
+                <th class="py-3.5 px-4">ROLE</th>
+                <th class="py-3.5 px-4">POSITION APPLIED</th>
+                <th class="py-3.5 px-4">EXPERIENCE / QUALIFICATION</th>
+                <th class="py-3.5 px-4">APPLIED DATE</th>
+                <th class="py-3.5 px-4 text-center">STATUS</th>
+                <th class="py-3.5 px-5 text-center sm:text-left">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="list" class="divide-y divide-slate-100 dark:divide-slate-800/80 text-[13px]"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Mobile Slide-out Drawer -->
+<div id="backdrop" onclick="closeNav()" class="fixed inset-0 z-[70] bg-black/40 backdrop-blur-xs hidden lg:hidden"></div>
+<aside id="mobileNav" class="fixed left-0 top-0 z-[71] h-full w-72 max-w-[85vw] flex flex-col card border-y-0 border-l-0 -translate-x-full transition-transform duration-200 lg:hidden">
+  <div class="flex items-center justify-between px-5 pt-4 pb-3">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="h-10 w-auto max-w-[170px] object-contain">
+    <button onclick="closeNav()" class="w-8 h-8 rounded-lg mu flex items-center justify-center hover:opacity-75 cursor-pointer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="flex-1 overflow-y-auto px-2.5 py-2 space-y-0.5" id="drawerNav"></nav>
+  <p class="text-center text-[11px] mu py-3 border-t bd">DCS Admin v1.0.0</p>
+</aside>
+
+<!-- Add Member Modal -->
+<div id="addModal" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4">
+  <div class="card rounded-2xl max-w-md w-full shadow-2xl overflow-hidden bg-white dark:bg-[#141a25]">
+    <div class="bg-[#ea580c] py-4 px-6 text-white text-center">
+      <h3 class="font-bold text-[16px]">Add Member</h3>
+      <p class="text-[11.5px] text-orange-100 mt-0.5">Enter member details and assign section</p>
+    </div>
+    <div class="p-6 space-y-3.5">
+      <div>
+        <label class="block text-[12px] font-bold text-slate-800 dark:text-slate-200 mb-1">Full Name *</label>
+        <input type="text" id="addName" placeholder="e.g. Vaishnavi R" class="w-full h-10 px-3 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:border-[#ea580c]">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[12px] font-bold text-slate-800 dark:text-slate-200 mb-1">Role Type *</label>
+          <select id="addRoleType" class="w-full h-10 px-3 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:border-[#ea580c]">
+            <option value="Employee">Employee</option>
+            <option value="Intern">Intern</option>
+            <option value="Freelancer">Freelancer</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-[12px] font-bold text-slate-800 dark:text-slate-200 mb-1">Position Applied *</label>
+          <input type="text" id="addPos" placeholder="e.g. Graphic Designer" class="w-full h-10 px-3 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:border-[#ea580c]">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[12px] font-bold text-slate-800 dark:text-slate-200 mb-1">Experience *</label>
+          <input type="text" id="addExp" placeholder="e.g. 0-2 yrs or Fresher" class="w-full h-10 px-3 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:border-[#ea580c]">
+        </div>
+        <div>
+          <label class="block text-[12px] font-bold text-slate-800 dark:text-slate-200 mb-1">Qualification Detail</label>
+          <input type="text" id="addSubExp" placeholder="e.g. 7th Sem - Cse" class="w-full h-10 px-3 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:border-[#ea580c]">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[12px] font-bold text-slate-800 dark:text-slate-200 mb-1">Email *</label>
+          <input type="email" id="addEmail" placeholder="vvaish0407@gmail.com" class="w-full h-10 px-3 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:border-[#ea580c]">
+        </div>
+        <div>
+          <label class="block text-[12px] font-bold text-slate-800 dark:text-slate-200 mb-1">Phone *</label>
+          <input type="tel" id="addPhone" placeholder="7411268077" class="w-full h-10 px-3 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:border-[#ea580c]">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[12px] font-bold text-slate-800 dark:text-slate-200 mb-1">Section</label>
+          <select id="addSec" class="w-full h-10 px-3 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:border-[#ea580c]">
+            <option value="apps">New (Applications)</option>
+            <option value="cand">Candidates</option>
+            <option value="rel">Relieving</option>
+            <option value="team">Team (Active)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-[12px] font-bold text-slate-800 dark:text-slate-200 mb-1">Initial Status</label>
+          <select id="addStatus" class="w-full h-10 px-3 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:border-[#ea580c]">
+            <option value="pending">PENDING</option>
+            <option value="accepted">ACCEPTED</option>
+            <option value="interview">INTERVIEW</option>
+            <option value="rejected">REJECTED</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 pt-3">
+        <button type="button" onclick="closeAddModal()" class="flex-1 h-10 rounded-lg font-bold text-[13.5px] text-white bg-[#94a3b8] hover:bg-[#64748b] transition cursor-pointer">Cancel</button>
+        <button type="button" onclick="submitAddMember()" class="flex-1 h-10 rounded-lg font-bold text-[13.5px] text-white bg-[#00a86b] hover:bg-[#059669] transition cursor-pointer">Save Member</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Applicant Modal -->
+<div id="viewModal" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4">
+  <div class="card rounded-2xl max-w-[640px] w-full shadow-2xl overflow-hidden bg-white dark:bg-[#141a25] animate-scale-up border border-slate-100 dark:border-slate-800">
+    <!-- Header -->
+    <div class="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+      <div class="flex items-center gap-2 flex-wrap">
+        <h3 class="font-bold text-[15px] text-slate-900 dark:text-slate-100">
+          New Application Details - <span id="viewHeadName" class="text-[#ea580c]">Vaishnavi R</span>
+        </h3>
+        <span id="viewHeadStatus" class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#fff7ed] text-[#ea580c] dark:bg-orange-950/40 dark:text-orange-400 border border-[#ffedd5] dark:border-orange-900/60">
+          PENDING
+        </span>
+      </div>
+      <button type="button" onclick="closeViewModal()" class="w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center justify-center text-slate-500 hover:text-slate-800 dark:text-slate-400 transition cursor-pointer">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-4 space-y-3">
+      <!-- Applicant Profile Card -->
+      <div class="rounded-xl border border-slate-100 dark:border-slate-800/80 bg-[#fbfcfd] dark:bg-slate-900/40 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div id="viewAvatar" class="w-10 h-10 rounded-full bg-[#f97316] text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-xs">
+            V
+          </div>
+          <div class="min-w-0">
+            <div id="viewCardName" class="font-bold text-[14px] text-slate-900 dark:text-slate-100">Vaishnavi R</div>
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+              <span class="inline-flex items-center gap-1">
+                <svg class="w-3 h-3 text-[#ea580c]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                <span id="viewEmail">vvaish0407@gmail.com</span>
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <svg class="w-3 h-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+                <span id="viewPhone">7411268077</span>
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <svg class="w-3 h-3 text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                <span id="viewPosTag">Graphic Designer</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 self-start sm:self-center shrink-0">
+          <span id="viewRoleBadge" class="inline-block px-2 py-0.5 rounded-md text-[10.5px] font-semibold bg-[#fff7ed] text-[#ea580c] dark:bg-orange-950/40 dark:text-orange-400 border border-[#ffedd5] dark:border-orange-900/60">
+            Employee
+          </span>
+          <span id="viewStatusBadge" class="inline-block px-2 py-0.5 rounded-md text-[10.5px] font-bold uppercase bg-[#fff7ed] text-[#ea580c] dark:bg-orange-950/40 dark:text-orange-400 border border-[#ffedd5] dark:border-orange-900/60">
+            PENDING
+          </span>
+        </div>
+      </div>
+
+      <!-- Main Application Details Card -->
+      <div class="rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-4 space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">POSITION APPLIED</span>
+            <span id="viewPosApplied" class="font-bold text-[13px] text-slate-800 dark:text-slate-100">Graphic Designer</span>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">ROLE / TYPE</span>
+            <span id="viewRoleType" class="font-bold text-[13px] text-slate-800 dark:text-slate-100">Employee</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">PREVIOUS EXPERIENCE (IN YEARS)</span>
+          <div class="font-bold text-[13px] text-slate-800 dark:text-slate-100" id="viewExp">0-2 yrs</div>
+          <div id="viewSubExp" class="text-[11px] text-slate-400 mt-0.5 hidden"></div>
+        </div>
+
+        <div>
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">APPLIED DATE</span>
+          <div id="viewDate" class="font-bold text-[13px] text-slate-800 dark:text-slate-100">21/10/2026</div>
+        </div>
+
+        <div>
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">RESUME / CV DOCUMENT</span>
+          <div class="rounded-lg border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-2xs">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+              </div>
+              <div class="min-w-0">
+                <div id="viewResumeName" class="font-bold text-[12.5px] text-slate-800 dark:text-slate-100 truncate">
+                  Vaishnavi R (Resume).pdf
+                </div>
+                <span class="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9.5px] font-medium bg-[#ecfdf5] text-[#059669] dark:bg-emerald-950/40 dark:text-emerald-400 border border-[#a7f3d0] dark:border-emerald-800">
+                  PDF Ready for View & Download
+                </span>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button type="button" onclick="handleResumeAction('view')" class="h-8 px-2.5 rounded-lg bg-[#0f172a] hover:bg-slate-800 text-white font-bold text-[11px] flex items-center gap-1 transition cursor-pointer shadow-xs">
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>View Resume</span>
+              </button>
+              <button type="button" onclick="handleResumeAction('download')" class="h-8 px-2.5 rounded-lg bg-[#2563eb] hover:bg-blue-700 text-white font-bold text-[11px] flex items-center gap-1 transition cursor-pointer shadow-xs">
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Download PDF</span>
+              </button>
+              <button type="button" onclick="handleResumeAction('share')" class="h-8 px-2.5 rounded-lg bg-[#10b981] hover:bg-emerald-600 text-white font-bold text-[11px] flex items-center gap-1 transition cursor-pointer shadow-xs">
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <span>Share</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="pt-2 flex items-center justify-end">
+        <button type="button" onclick="closeViewModal()" class="h-8 px-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-[12px] transition cursor-pointer shadow-2xs">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Schedule Interview Modal -->
+<div id="scheduleModal" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4">
+  <div class="card rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden bg-white dark:bg-[#141a25] animate-scale-up border border-slate-100 dark:border-slate-800">
+    <!-- Header -->
+    <div class="p-6 pb-4 flex items-start justify-between border-b border-slate-100 dark:border-slate-800">
+      <div class="flex items-center gap-3.5">
+        <div id="schHeaderIcon" class="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-[18px] text-slate-900 dark:text-slate-100 leading-tight">Schedule Interview</h3>
+          <p class="text-[12.5px] text-slate-500 dark:text-slate-400 mt-0.5">Applicant: <span id="schApplicantTitle" class="font-semibold text-slate-700 dark:text-slate-300"></span></p>
+        </div>
+      </div>
+      <button type="button" onclick="closeScheduleModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center justify-center text-slate-500 hover:text-slate-800 dark:text-slate-400 transition cursor-pointer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6 space-y-4">
+      <!-- Applicant Summary Card -->
+      <div class="rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-4 flex items-center gap-3.5">
+        <div id="schAvatar" class="w-12 h-12 rounded-xl bg-[#ea580c] text-white flex items-center justify-center font-bold text-xl shrink-0 shadow-xs">V</div>
+        <div class="min-w-0 flex-1">
+          <div id="schName" class="font-bold text-[15px] text-slate-900 dark:text-slate-100">Vaishnavi R</div>
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-slate-500 dark:text-slate-400 mt-1">
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              <span id="schEmail">vvaish0407@gmail.com</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+              <span id="schPhone">7411268077</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              <span id="schPos">Graphic Designer</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode of Interview Dropdown -->
+      <div>
+        <label class="block text-[13px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+          Mode of Interview <span class="text-red-500">*</span>
+        </label>
+        <select id="schMode" onchange="onInterviewModeChange(this.value)" class="w-full h-12 px-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-[13.5px] font-medium focus:outline-none focus:border-indigo-500 cursor-pointer">
+          <option value="">-- Select Mode of Interview --</option>
+          <option value="offline">🏢 Offline (In-Person / Office)</option>
+          <option value="online">🌐 Online (Virtual Meeting)</option>
+        </select>
+      </div>
+
+      <!-- Offline Fields -->
+      <div id="schOfflineFields" class="hidden space-y-4">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+              <span class="text-red-500">📍</span>
+              <span>Location / Office Address <span class="text-red-500">*</span></span>
+            </label>
+            <button type="button" onclick="useDcsAddress()" class="px-2.5 py-1 rounded-lg border border-orange-300 bg-orange-50 dark:bg-orange-950/40 text-[#ea580c] dark:text-orange-400 text-[11.5px] font-semibold hover:bg-orange-100 transition cursor-pointer flex items-center gap-1">
+              <span>🏢 Use DCS Office Address</span>
+            </button>
+          </div>
+          <input type="text" id="schAddress" value="1st floor, 88, KR Defense Colony, Cheemasandra, Bengaluru, Karnataka, India - 560049" class="w-full h-11 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-[13px] focus:outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 mb-2">
+            <span class="text-orange-500">🕒</span>
+            <span>Timing / Date & Time <span class="text-red-500">*</span></span>
+          </label>
+          <input type="datetime-local" id="schOfflineDateTime" class="w-full h-11 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-[13px] focus:outline-none focus:border-indigo-500" />
+        </div>
+      </div>
+
+      <!-- Online Fields -->
+      <div id="schOnlineFields" class="hidden space-y-4">
+        <div>
+          <label class="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 mb-2">
+            <span class="text-indigo-600">📹</span>
+            <span>Meeting Link <span class="text-red-500">*</span></span>
+          </label>
+          <input type="text" id="schMeetingLink" placeholder="e.g., https://meet.google.com/abc-defg-hij or Zoom link" class="w-full h-11 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-[13px] focus:outline-none focus:border-indigo-500 placeholder:text-slate-400 placeholder:italic" />
+        </div>
+        <div>
+          <label class="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 mb-2">
+            <span class="text-indigo-600">🕒</span>
+            <span>Timing / Date & Time <span class="text-red-500">*</span></span>
+          </label>
+          <input type="datetime-local" id="schOnlineDateTime" class="w-full h-11 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-[13px] focus:outline-none focus:border-indigo-500" />
+        </div>
+      </div>
+
+      <!-- Official Email Dispatch Delivery Card -->
+      <div class="rounded-2xl border border-blue-100 dark:border-blue-900/60 bg-[#f8fbff] dark:bg-slate-900/40 p-4 space-y-2 text-[12.5px]">
+        <div class="flex items-center gap-2 font-bold text-slate-800 dark:text-slate-200 text-[13px]">
+          <svg class="w-4 h-4 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <span>Official Email Dispatch Delivery:</span>
+        </div>
+        <div class="space-y-1.5 pt-1 text-[12px]">
+          <div class="flex items-start gap-2">
+            <span class="text-slate-500 dark:text-slate-400 w-28 shrink-0 font-medium">To (Applicant):</span>
+            <span id="schDispatchEmail" class="font-bold text-slate-900 dark:text-slate-100">vvaish0407@gmail.com</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-slate-500 dark:text-slate-400 w-28 shrink-0 font-medium">Cc (HR & Admin):</span>
+            <span class="text-slate-700 dark:text-slate-300 font-medium">hr@devcreationsblr.com, devcreationsblr@gmail.com</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-slate-500 dark:text-slate-400 w-28 shrink-0 font-medium">Reply-To:</span>
+            <span class="text-slate-700 dark:text-slate-300 font-medium">hr@devcreationsblr.com</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="pt-2 flex items-center justify-end gap-3">
+        <button type="button" onclick="closeScheduleModal()" class="px-6 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-[13.5px] transition cursor-pointer">
+          Cancel
+        </button>
+        <button type="button" onclick="submitScheduleInterview()" class="px-6 py-2.5 rounded-xl bg-[#fca26e] hover:bg-[#fb923c] text-white font-bold text-[13.5px] shadow-sm flex items-center gap-2 transition cursor-pointer">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Preview Schedule</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] hidden px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-lg pointer-events-none transition-all"></div>
+
+<script>
+const D = {
+  apps: [
+    { n: "Vaishnavi R", e: "vvaish0407@gmail.com", p: "7411268077", roleType: "Employee", pos: "Graphic Designer", exp: "0-2 yrs", subExp: "", date: "21/10/2026", s: "pending" },
+    { n: "Darshit Godhani", e: "darshitgodhani13@gmail.com", p: "9033284839", roleType: "Freelancer", pos: "Web Developer", exp: "3-5 yrs", subExp: "", date: "16/10/2026", s: "pending" },
+    { n: "santosh", e: "santoshchalageri1999@gmail.com", p: "9880020224", roleType: "Freelancer", pos: "Web Developer", exp: "2-3 yrs", subExp: "", date: "10/10/2026", s: "pending" },
+    { n: "Testing", e: "roshanpappu4@gmail.com", p: "1234567890", roleType: "Intern", pos: "Web Developer", exp: "Fresher", subExp: "7th Sem - Cse", date: "05/11/2026", s: "accepted" },
+    { n: "Harsha", e: "gmganashree99@gmail.com", p: "6366755774", roleType: "Intern", pos: "Web Developer", exp: "Fresher", subExp: "7th Sem - Mech", date: "05/11/2026", s: "accepted" },
+    { n: "Khushi", e: "msahanasahana47@gmail.com", p: "6366755774", roleType: "Intern", pos: "Web Developer", exp: "Fresher", subExp: "5th Sem - Cse", date: "05/11/2026", s: "accepted" },
+    { n: "kushi", e: "harshasahana47@gmail.com", p: "7411268077", roleType: "Intern", pos: "Web Developer", exp: "Fresher", subExp: "7th Sem - Cse", date: "04/11/2026", s: "accepted" }
+  ],
+  cand: [
+    { n: "Pradeep Shetty", e: "pradeep.s@mail.com", p: "9035671122", roleType: "Intern", pos: "Operations Intern", exp: "Fresher", subExp: "8th Sem - Cse", date: "01/11/2026", s: "pending" }
+  ],
+  rel: [
+    { n: "Venkatesh R", e: "venkatesh.r@mail.com", p: "9448123300", roleType: "Employee", pos: "Tipper Driver", exp: "4 yrs", subExp: "Last day 30 Nov", date: "28/10/2026", s: "pending" }
+  ],
+  team: [
+    { n: "Anil Kumar", e: "anil.k@mail.com", p: "9880011122", roleType: "Employee", pos: "Operations Manager", exp: "6+ yrs", subExp: "Full-time", date: "12/03/2024", s: "accepted" },
+    { n: "Basavaraj H", e: "basavaraj.h@mail.com", p: "9845099001", roleType: "Employee", pos: "Senior Operator", exp: "5 yrs", subExp: "Full-time", date: "15/06/2024", s: "accepted" },
+    { n: "Chandru S", e: "chandru.s@mail.com", p: "9742233445", roleType: "Freelancer", pos: "Mechanic Lead", exp: "3 yrs", subExp: "Contract", date: "01/08/2024", s: "accepted" }
+  ]
+};
+
+const SECS = [
+  {k:"apps",t:"New",c:3,dot:1},{k:"cand",t:"Candidates",c:1,dot:1},
+  {k:"rel",t:"Relieving",c:1,dot:1},{k:"team",t:"Team",c:82}
+];
+
+const LABEL = {pending:"Pending",interview:"Interview",accepted:"Accepted",rejected:"Rejected"};
+const ST = ["all","pending","interview","accepted","rejected"];
+let sec="apps", st="all", q="";
+
+const $ = id => document.getElementById(id);
+const ic = {
+  mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+  tel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>',
+  mailSm:'<svg class="w-3 h-3 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+  telSm:'<svg class="w-3 h-3 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>'
+};
+
+function toast(m){
+  const t = $('toast');
+  t.textContent = m;
+  t.classList.remove('hidden');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.add('hidden'), 2200);
+}
+
+function theme(){
+  const r = document.documentElement;
+  const d = getComputedStyle(r).colorScheme.includes('dark');
+  r.dataset.theme = d ? 'light' : 'dark';
+  $('tbtn').innerHTML = ico(d ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>' : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>', 16);
+}
+
+const ico = (p, z=18) => `<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+
+function roleIcon(type) {
+  if (type === 'Intern') {
+    return '<svg class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>';
+  }
+  if (type === 'Employee') {
+    return '<svg class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a8.5 8.5 0 0 1 13 0"/></svg>';
+  }
+  return '<svg class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
+}
+
+function statusBadgeHTML(status) {
+  const s = (status || '').toLowerCase();
+  if (s === 'accepted' || s === 'active') {
+    return '<span class="inline-block px-3 py-1 rounded-full text-[10.5px] font-extrabold tracking-wider uppercase bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-800/60 shadow-2xs">ACCEPTED</span>';
+  }
+  if (s === 'interview') {
+    return '<span class="inline-block px-3 py-1 rounded-full text-[10.5px] font-extrabold tracking-wider uppercase bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 border border-blue-200/80 dark:border-blue-800/60 shadow-2xs">INTERVIEW</span>';
+  }
+  if (s === 'rejected') {
+    return '<span class="inline-block px-3 py-1 rounded-full text-[10.5px] font-extrabold tracking-wider uppercase bg-rose-50 text-rose-600 dark:bg-rose-950/50 dark:text-rose-400 border border-rose-200/80 dark:border-rose-800/60 shadow-2xs">REJECTED</span>';
+  }
+  return '<span class="inline-block px-3 py-1 rounded-full text-[10.5px] font-extrabold tracking-wider uppercase bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400 border border-amber-200/80 dark:border-amber-800/60 shadow-2xs">PENDING</span>';
+}
+
+function actionsHTML(a) {
+  const s = (a.s || '').toLowerCase();
+  if (s === 'accepted' || s === 'active') {
+    return `
+      <div class="flex items-center gap-1.5">
+        <button type="button" onclick="viewApplicant('${a.n}')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-[11.5px] font-semibold hover:bg-slate-50 transition cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>View</span>
+        </button>
+        <button type="button" onclick="openScheduleModal('${a.n}')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300 text-[11.5px] font-semibold hover:bg-violet-100 transition cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span>Interviewed</span>
+        </button>
+        <button type="button" onclick="actApplicant('${a.n}', 'rejected')" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white text-[11.5px] font-bold shadow-xs transition cursor-pointer">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          <span>Reject</span>
+        </button>
+      </div>
+    `;
+  }
+  return `
+    <div class="flex items-center gap-1.5">
+      <button type="button" onclick="viewApplicant('${a.n}')" class="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-[11.5px] font-semibold hover:bg-slate-50 transition cursor-pointer">View</button>
+      <button type="button" onclick="openScheduleModal('${a.n}')" class="px-2.5 py-1 rounded-lg border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300 text-[11.5px] font-semibold hover:bg-violet-100 transition cursor-pointer">Interview</button>
+      <button type="button" onclick="actApplicant('${a.n}', 'accepted')" class="px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-[11.5px] font-semibold hover:bg-emerald-100 transition cursor-pointer">Accept</button>
+      <button type="button" onclick="actApplicant('${a.n}', 'rejected')" class="px-2.5 py-1 rounded-lg border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-[11.5px] font-semibold hover:bg-rose-100 transition cursor-pointer">Reject</button>
+    </div>
+  `;
+}
+
+function drawSections(){
+  $('sections').innerHTML = SECS.map(s =>
+    `<button class="sec" role="tab" aria-selected="${s.k===sec}" data-k="${s.k}"><b>${s.c}${s.dot && s.k!==sec ? '<i class="dot"></i>' : ''}</b><span>${s.t}</span></button>`
+  ).join('');
+}
+
+function drawChips(){
+  const box = $('chips');
+  if(sec !== 'apps'){ box.style.display = 'none'; return; }
+  box.style.display = '';
+  const all = D.apps;
+  box.innerHTML = ST.map(k => {
+    const n = k === 'all' ? all.length : all.filter(a => a.s === k).length;
+    return `<button class="chip" aria-pressed="${k===st}" data-s="${k}">${k==='all'?'All':LABEL[k]}<em>${n}</em></button>`;
+  }).join('');
+}
+
+function drawList(){
+  let rows = D[sec].filter(a => (sec !== 'apps' || st === 'all' || a.s === st));
+  const t = q.trim().toLowerCase();
+  if(t) rows = rows.filter(a => (a.n + a.e + a.p + (a.pos || '') + (a.roleType || '') + (a.exp || '')).toLowerCase().includes(t));
+  const total = sec === 'team' ? SECS[3].c : rows.length;
+  $('meta').textContent = sec === 'team' ? `Showing ${rows.length} of ${total} members` : `${rows.length} ${rows.length === 1 ? 'person' : 'people'}`;
+  
+  if(!rows.length){
+    $('list').innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-400 font-semibold"><p class="text-base text-slate-700 dark:text-slate-200 font-bold">${t ? 'No matches' : 'Nothing here yet'}</p><p class="text-xs mt-1">${t ? 'Try a different name, email or number.' : 'New items will appear in this list.'}</p></td></tr>`;
+    return;
+  }
+  
+  $('list').innerHTML = rows.map((a, i) => `
+    <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition">
+      <!-- APPLICANT -->
+      <td class="py-3.5 px-5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white font-extrabold text-[15px] flex items-center justify-center shrink-0 shadow-xs">
+            ${a.n[0].toUpperCase()}
+          </div>
+          <div class="min-w-0">
+            <div class="font-bold text-[14px] text-slate-900 dark:text-slate-100 leading-snug">${a.n}</div>
+            <a href="mailto:${a.e}" class="flex items-center gap-1.5 text-[11.5px] text-slate-400 hover:text-indigo-600 transition truncate mt-0.5">
+              ${ic.mailSm}<span>${a.e}</span>
+            </a>
+            <a href="tel:${a.p}" class="flex items-center gap-1.5 text-[11.5px] text-slate-400 hover:text-indigo-600 transition mt-0.5">
+              ${ic.telSm}<span>${a.p}</span>
+            </a>
+          </div>
+        </div>
+      </td>
+
+      <!-- ROLE -->
+      <td class="py-3.5 px-4 whitespace-nowrap">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-violet-50 text-violet-700 dark:bg-violet-950/40 dark:text-violet-300 border border-violet-100 dark:border-violet-900/50">
+          ${roleIcon(a.roleType)}
+          <span>${a.roleType}</span>
+        </span>
+      </td>
+
+      <!-- POSITION APPLIED -->
+      <td class="py-3.5 px-4">
+        <div class="font-bold text-[13.5px] text-slate-800 dark:text-slate-100 leading-tight">
+          ${a.pos}
+        </div>
+      </td>
+
+      <!-- EXPERIENCE / QUALIFICATION -->
+      <td class="py-3.5 px-4">
+        <div class="font-bold text-[13px] text-slate-800 dark:text-slate-100 leading-tight">${a.exp}</div>
+        ${a.subExp ? `<div class="text-[11px] text-slate-400 font-normal mt-0.5">${a.subExp}</div>` : ''}
+      </td>
+
+      <!-- APPLIED DATE -->
+      <td class="py-3.5 px-4 whitespace-nowrap">
+        <div class="text-[12.5px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1.5">
+          <span class="text-slate-300 dark:text-slate-600 font-black">·</span>
+          <span>${a.date}</span>
+        </div>
+      </td>
+
+      <!-- STATUS -->
+      <td class="py-3.5 px-4 text-center whitespace-nowrap">
+        ${statusBadgeHTML(a.s)}
+      </td>
+
+      <!-- ACTIONS -->
+      <td class="py-3.5 px-5 whitespace-nowrap">
+        ${actionsHTML(a)}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function render(){
+  drawSections();
+  drawChips();
+  drawList();
+}
+
+$('sections').addEventListener('click', e => {
+  const b = e.target.closest('.sec');
+  if(!b) return;
+  sec = b.dataset.k;
+  st = 'all';
+  q = '';
+  $('q').value = '';
+  $('q').placeholder = sec === 'team' ? 'Search team directory' : 'Search by name, email or phone';
+  render();
+});
+
+$('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip');
+  if(!b) return;
+  st = b.dataset.s;
+  drawChips();
+  drawList();
+});
+
+$('q').addEventListener('input', e => {
+  q = e.target.value;
+  drawList();
+});
+
+let currentViewingApplicant = null;
+
+function viewApplicant(name){
+  let item = null;
+  for (const k in D) {
+    const it = D[k].find(x => x.n === name);
+    if(it){ item = it; break; }
+  }
+  if(!item) return;
+  currentViewingApplicant = item;
+  $('viewHeadName').textContent = item.n;
+  $('viewHeadStatus').textContent = (item.s || 'pending').toUpperCase();
+  $('viewCardName').textContent = item.n;
+  $('viewAvatar').textContent = item.n ? item.n[0].toUpperCase() : 'V';
+  $('viewEmail').textContent = item.e || 'applicant@example.com';
+  $('viewPhone').textContent = item.p || '7411268077';
+  $('viewPosTag').textContent = item.pos || 'Graphic Designer';
+  $('viewRoleBadge').textContent = item.roleType || 'Employee';
+  $('viewStatusBadge').textContent = (item.s || 'pending').toUpperCase();
+  $('viewPosApplied').textContent = item.pos || 'Graphic Designer';
+  $('viewRoleType').textContent = item.roleType || 'Employee';
+  $('viewExp').textContent = item.exp || 'Fresher';
+  if (item.subExp) {
+    $('viewSubExp').textContent = item.subExp;
+    $('viewSubExp').classList.remove('hidden');
+  } else {
+    $('viewSubExp').classList.add('hidden');
+  }
+  $('viewDate').textContent = item.date || '21/10/2026';
+  $('viewResumeName').textContent = `${item.n} (Resume).pdf`;
+
+  const st = (item.s || 'pending').toLowerCase();
+  const isAccepted = st === 'accepted' || st === 'active';
+  const isInterview = st === 'interview';
+  const isRejected = st === 'rejected';
+
+  const badgeCls = isAccepted
+    ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-200/80'
+    : isInterview
+    ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 border-blue-200/80'
+    : isRejected
+    ? 'bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 border-rose-200/80'
+    : 'bg-orange-50 text-orange-600 dark:bg-orange-950/40 dark:text-orange-400 border-orange-200/80';
+
+  $('viewHeadStatus').className = `inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase border ${badgeCls}`;
+  $('viewStatusBadge').className = `inline-block px-3 py-1 rounded-lg text-xs font-bold uppercase border ${badgeCls}`;
+
+  $('viewModal').classList.remove('hidden');
+}
+
+function closeViewModal(){
+  $('viewModal').classList.add('hidden');
+  currentViewingApplicant = null;
+}
+
+function handleResumeAction(action) {
+  if (!currentViewingApplicant) return;
+  const n = currentViewingApplicant.n;
+  if (action === 'view') {
+    toast(`Opening resume for ${n}`);
+  } else if (action === 'download') {
+    toast(`Downloading ${n} (Resume).pdf`);
+  } else if (action === 'share') {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      toast(`Resume share link copied to clipboard`);
+    } else {
+      toast(`Share link ready`);
+    }
+  }
+}
+
+function actApplicant(name, newStatus){
+  let found = null;
+  for (const k in D) {
+    const it = D[k].find(x => x.n === name);
+    if(it){
+      it.s = newStatus;
+      found = it;
+      break;
+    }
+  }
+  if(found){
+    drawChips();
+    drawList();
+    toast(`${name}: Marked as ${LABEL[newStatus] || newStatus}`);
+  }
+}
+
+let currentSchedulingApplicant = null;
+
+function openScheduleModal(name) {
+  let item = null;
+  for (const k in D) {
+    const it = D[k].find(x => x.n === name);
+    if (it) { item = it; break; }
+  }
+  if (!item) return;
+  currentSchedulingApplicant = item;
+  $('schApplicantTitle').textContent = `${item.n} (${item.pos || 'Graphic Designer'})`;
+  $('schAvatar').textContent = item.n ? item.n[0].toUpperCase() : 'V';
+  $('schName').textContent = item.n;
+  $('schEmail').textContent = item.e || 'applicant@example.com';
+  $('schPhone').textContent = item.p || '7411268077';
+  $('schPos').textContent = item.pos || 'Graphic Designer';
+  $('schDispatchEmail').textContent = item.e || 'applicant@example.com';
+  $('schMode').value = '';
+  onInterviewModeChange('');
+  $('scheduleModal').classList.remove('hidden');
+}
+
+function closeScheduleModal() {
+  $('scheduleModal').classList.add('hidden');
+  currentSchedulingApplicant = null;
+}
+
+function onInterviewModeChange(mode) {
+  const iconBox = $('schHeaderIcon');
+  const offlineBox = $('schOfflineFields');
+  const onlineBox = $('schOnlineFields');
+  
+  if (mode === 'offline') {
+    offlineBox.classList.remove('hidden');
+    onlineBox.classList.add('hidden');
+    iconBox.innerHTML = '<svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
+  } else if (mode === 'online') {
+    offlineBox.classList.add('hidden');
+    onlineBox.classList.remove('hidden');
+    iconBox.innerHTML = '<svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>';
+  } else {
+    offlineBox.classList.add('hidden');
+    onlineBox.classList.add('hidden');
+    iconBox.innerHTML = '<svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>';
+  }
+}
+
+function useDcsAddress() {
+  $('schAddress').value = '1st floor, 88, KR Defense Colony, Cheemasandra, Bengaluru, Karnataka, India - 560049';
+  toast('DCS Office address applied');
+}
+
+function submitScheduleInterview() {
+  if (!currentSchedulingApplicant) return;
+  const name = currentSchedulingApplicant.n;
+  actApplicant(name, 'interview');
+  closeScheduleModal();
+  toast(`Interview scheduled & invitation sent to ${name}`);
+}
+
+function openAddModal(){
+  $('addName').value = '';
+  $('addRoleType').value = 'Employee';
+  $('addPos').value = '';
+  $('addExp').value = '';
+  $('addSubExp').value = '';
+  $('addEmail').value = '';
+  $('addPhone').value = '';
+  $('addSec').value = sec;
+  $('addStatus').value = 'pending';
+  $('addModal').classList.remove('hidden');
+  setTimeout(() => $('addName').focus(), 100);
+}
+
+function closeAddModal(){
+  $('addModal').classList.add('hidden');
+}
+
+function submitAddMember(){
+  const name = $('addName').value.trim();
+  const roleType = $('addRoleType').value;
+  const pos = $('addPos').value.trim();
+  const exp = $('addExp').value.trim();
+  const subExp = $('addSubExp').value.trim();
+  const email = $('addEmail').value.trim();
+  const phone = $('addPhone').value.trim();
+  const targetSec = $('addSec').value;
+  const initStatus = $('addStatus').value;
+
+  if(!name){ toast('Please enter full name'); $('addName').focus(); return; }
+  if(!pos){ toast('Please enter position applied'); $('addPos').focus(); return; }
+  if(!email){ toast('Please enter email'); $('addEmail').focus(); return; }
+  if(!phone){ toast('Please enter phone number'); $('addPhone').focus(); return; }
+
+  const d = new Date();
+  const dateStr = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+
+  D[targetSec].unshift({
+    n: name,
+    roleType: roleType,
+    pos: pos,
+    exp: exp || 'Fresher',
+    subExp: subExp || '',
+    e: email,
+    p: phone,
+    date: dateStr,
+    s: initStatus
+  });
+
+  const secObj = SECS.find(x => x.k === targetSec);
+  if(secObj) secObj.c += 1;
+
+  closeAddModal();
+  sec = targetSec;
+  st = 'all';
+  render();
+  toast(`${name} added to ${secObj ? secObj.t : 'list'}`);
+}
+
+const P = {
+  Banners: { path: 'Banner management.html', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14"/>' },
+  Gallery: { path: 'Gallery management.html', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>' },
+  Blogs: { path: 'Blog management.html', icon: '<path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 4v16"/>' },
+  Contacts: { path: 'Contact management.html', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 10h4M15 14h4"/>' },
+  'Client Logos': { path: 'Client logos.html', icon: '<path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>' },
+  Websites: { path: 'Website management.html', icon: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+  Employees: { path: 'Employee management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Documents Validation': { path: 'Documents validation.html', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/>' },
+  Team: { path: 'Team management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Project Manager': { path: 'Project manager.html', icon: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/>' },
+  Access: { path: 'Access management.html', icon: '<path stroke-width="3" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/>' }
+};
+
+function renderNavHTML(activeName){
+  return Object.keys(P).map(k => {
+    const on = k === activeName;
+    const item = P[k];
+    return `<a href="${item.path}" title="${k}" class="w-full flex items-center gap-2.5 h-9 px-2.5 rounded-lg text-[12.5px] transition cursor-pointer ${
+      on ? 'border border-orange-400/90 bg-indigo-50/70 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-semibold' : 'font-medium text-[var(--tx)] hover:bg-slate-100 dark:hover:bg-slate-800'
+    }">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${on ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}">${item.icon}</svg>
+      <span>${k}</span>
+    </a>`;
+  }).join('');
+}
+
+$('desktopNav').innerHTML = renderNavHTML('Employees');
+$('drawerNav').innerHTML = renderNavHTML('Employees');
+
+function toggleSidebar(){
+  const s = $('desktopSidebar');
+  s.classList.toggle('sidebar-collapsed');
+}
+
+function openNav(){
+  $('mobileNav').classList.remove('-translate-x-full');
+  $('backdrop').classList.remove('hidden');
+}
+
+function closeNav(){
+  $('mobileNav').classList.add('-translate-x-full');
+  $('backdrop').classList.add('hidden');
+}
+
+render();
+</script>
+</body>
+</html>
+

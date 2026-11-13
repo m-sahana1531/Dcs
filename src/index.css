@@ -207,4 +207,76 @@ body {
   }
 }
 
+/* ========================================================================== */
+/* Mobile Smoothness & Native App Touch Polish                                */
+/* ========================================================================== */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Eliminate iOS auto-zoom on input focus */
+input, select, textarea {
+  font-size: 16px;
+}
+@media (min-width: 640px) {
+  input, select, textarea {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Clean horizontal scrolling for mobile chip filters */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Native Mobile Bottom Sheet Slide-Up Animation */
+@keyframes slideUpSheet {
+  from {
+    transform: translateY(100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.mobile-bottom-sheet {
+  animation: slideUpSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Smooth Touch Feedback */
+.touch-press {
+  transition: transform 0.12s cubic-bezier(0.2, 0, 0, 1), opacity 0.12s ease;
+  user-select: none;
+}
+.touch-press:active {
+  transform: scale(0.96);
+  opacity: 0.92;
+}
+
+/* Native drag handle bar for mobile sheets */
+.sheet-drag-handle {
+  width: 38px;
+  height: 4.5px;
+  border-radius: 9999px;
+  background-color: #cbd5e1;
+  margin: 0.25rem auto 0.75rem auto;
+}
+:root[data-theme="dark"] .sheet-drag-handle {
+  background-color: #475569;
+}
+
+
 

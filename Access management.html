@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Dashboard - Application Access</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{
+  --bg:#f8fafc;--card:#ffffff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--tile:#fffdf5;
+  --surface:#ffffff;--ink:#1c2230;--muted:#667085;--line:#e2e5ea;
+  --brand:#ea580c;--brand-ink:#ffffff;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712;
+  --surface:#1b1f29;--ink:#eef0f4;--muted:#9aa3b2;--line:#2a3040;
+  --brand:#f97316;--brand-ink:#ffffff;
+}
+body{background:var(--bg);color:var(--tx);font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.card{background:var(--card);border:1px solid var(--bd)}
+.mu{color:var(--mu)} .bd{border-color:var(--bd)}
+.soft{box-shadow:0 4px 20px -4px rgba(15,23,42,.06)}
+.btn{border:1px solid var(--bd);background:var(--card)}
+
+#desktopSidebar{transition:width .25s cubic-bezier(.4,0,.2,1)}
+#desktopSidebar.sidebar-collapsed{width:54px!important;min-width:54px!important}
+#desktopSidebar.sidebar-collapsed .logo-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .logo-mini{display:block!important}
+#desktopSidebar.sidebar-collapsed .sidebar-header-box{padding:1.25rem .25rem!important}
+#desktopSidebar.sidebar-collapsed nav a{justify-content:center!important;padding:0!important;width:36px!important;height:36px!important;margin-left:auto!important;margin-right:auto!important}
+#desktopSidebar.sidebar-collapsed nav a span{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-mini{display:block!important}
+
+@keyframes scaleUp{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.animate-scale-up{animation:scaleUp .15s ease-out forwards}
+
+/* Mobile Smoothness Polish */
+* { -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+input, select, textarea { font-size: 16px; }
+@media (min-width: 640px) { input, select, textarea { font-size: 13px; } }
+@keyframes slideUpSheet { from { transform: translateY(100%); opacity: 0.6; } to { transform: translateY(0); opacity: 1; } }
+.mobile-bottom-sheet { animation: slideUpSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.touch-press { transition: transform 0.12s cubic-bezier(0.2, 0, 0, 1), opacity 0.12s ease; user-select: none; }
+.touch-press:active { transform: scale(0.96); opacity: 0.92; }
+.sheet-drag-handle { width: 38px; height: 4.5px; border-radius: 9999px; background-color: #cbd5e1; margin: 0.25rem auto 0.75rem auto; }
+:root[data-theme="dark"] .sheet-drag-handle { background-color: #475569; }
+</style>
+</head>
+<body class="min-h-screen flex bg-[var(--bg)] text-[var(--tx)]">
+
+<!-- Desktop Persistent Left Sidebar -->
+<aside id="desktopSidebar" class="hidden lg:flex flex-col w-[220px] border-r bd h-screen sticky top-0 bg-white dark:bg-[#141a25] z-30 shrink-0">
+  <div class="sidebar-header-box pt-5 pb-5 px-3 flex items-center justify-center">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="logo-full h-[54px] w-auto max-w-[185px] object-contain">
+    <img src="logo-mini.png" alt="DCS" class="logo-mini hidden w-7 h-7 object-contain">
+  </div>
+  <nav class="flex-1 overflow-y-auto px-2.5 space-y-1" id="desktopNav"></nav>
+  <div class="py-3 border-t bd text-center">
+    <p class="sidebar-footer-full text-[10.5px] mu">DCS Admin v1.0.0</p>
+    <p class="sidebar-footer-mini hidden text-[10px] mu font-semibold">v1.0</p>
+  </div>
+</aside>
+
+<!-- Right Side Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+
+  <!-- Top Header Bar -->
+  <header class="sticky top-0 z-30 flex items-center justify-between px-3.5 sm:px-6 h-14 border-b bd bg-white/85 dark:bg-[#141a25]/85 backdrop-blur-md">
+    <div class="flex items-center gap-2.5">
+      <button onclick="toggleSidebar()" class="btn w-9 h-9 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 touch-press transition" aria-label="Toggle sidebar" title="Toggle sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" x2="6"/>
+          <line x1="4" x2="20" y1="12" y2="12"/>
+          <line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+      <span class="text-[13.5px] font-bold tracking-tight">Admin Dashboard</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="theme()" id="tbtn" class="btn w-9 h-9 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 touch-press transition" aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button onclick="toast('Logged out successfully')" class="h-8.5 px-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-xs touch-press">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="max-w-7xl w-full mx-auto px-3.5 sm:px-6 py-8 flex-1 space-y-8 pb-24 lg:pb-8">
+
+    <!-- Top Centered Heading (Matches media_1794561004086_f7f4418f.png) -->
+    <div class="text-center space-y-1.5">
+      <h1 class="text-2xl sm:text-[32px] font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+        Application Access
+      </h1>
+      <p class="text-[13.5px] text-[#64748b] dark:text-slate-400">
+        Quick access to external applications and services
+      </p>
+    </div>
+
+    <!-- 6 Cards Grid (Matches media_1794561004086_f7f4418f.png) -->
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+
+      <!-- CARD 1: GitHub -->
+      <div class="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+        <!-- Top Visual Area -->
+        <div class="h-44 bg-[#f4f5f7] dark:bg-slate-800/50 border-b bd flex items-center justify-center p-6">
+          <svg class="w-16 h-16 text-[#181717] dark:text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        </div>
+        <!-- Content Area -->
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-1">
+            <h3 class="text-[18px] font-bold text-slate-900 dark:text-slate-100">GitHub</h3>
+            <p class="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+              Version control and code repository management
+            </p>
+          </div>
+          <button
+            type="button"
+            onclick="openAccessModal('GitHub', 'Version control and code repository management')"
+            class="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+          >
+            Give Access
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 2: Firebase -->
+      <div class="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+        <!-- Top Visual Area -->
+        <div class="h-44 bg-[#fffbf0] dark:bg-amber-950/20 border-b bd flex items-center justify-center p-6">
+          <svg class="w-16 h-16" viewBox="0 0 40 40" fill="none">
+            <path d="M7.8 28.5L14.2 4.8C14.4 4.1 15.3 3.9 15.8 4.5L20.2 11.2L7.8 28.5Z" fill="#FFA000"/>
+            <path d="M24.8 14.9L20.2 6.1C19.8 5.4 18.8 5.5 18.5 6.2L7.8 28.5L24.8 14.9Z" fill="#F57C00"/>
+            <path d="M21.2 36.1C26.5 36.1 30.8 31.8 30.8 26.5C30.8 21.2 26 18.5 24.5 15.2C23.2 18.4 18.8 21.5 18.8 26.5C18.8 31.8 21.2 36.1 21.2 36.1Z" fill="#FFCA28"/>
+            <path d="M30.6 28.5L24.8 14.9L7.8 28.5C9.8 33 14.5 36.1 20 36.1C25.5 36.1 28.8 33.5 30.6 28.5Z" fill="#FFA000"/>
+          </svg>
+        </div>
+        <!-- Content Area -->
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-1">
+            <h3 class="text-[18px] font-bold text-slate-900 dark:text-slate-100">Firebase</h3>
+            <p class="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+              Backend as a Service platform by Google
+            </p>
+          </div>
+          <button
+            type="button"
+            onclick="openAccessModal('Firebase', 'Backend as a Service platform by Google')"
+            class="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+          >
+            Give Access
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 3: AWS -->
+      <div class="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+        <!-- Top Visual Area -->
+        <div class="h-44 bg-[#fffdf7] dark:bg-amber-950/20 border-b bd flex items-center justify-center p-6">
+          <svg class="w-20 h-20" viewBox="0 0 100 100" fill="none">
+            <path d="M52 48.5c-4.2 0-7.8 1.2-10 2.5l1.6 5.2c1.8-1 4.5-1.9 7.4-1.9 4.8 0 7 2.4 7 6.4v1.8c-2.4-.4-5.2-.6-8.2-.6-7.8 0-12.8 4.2-12.8 10.6 0 6.2 4.6 10.1 11.4 10.1 5.2 0 8.6-2.4 10.4-5.5h.4l.6 4.7h6.6V58.8c0-7.4-4.8-10.3-14.4-10.3zm5.8 21.2c0 1.6-.6 3.2-1.8 4.4-1.6 1.6-4.2 2.6-7 2.6-4 0-6.4-2.2-6.4-5.4 0-3.6 2.8-5.6 7.4-5.6 2.6 0 5.4.4 7.8.8v3.2z" fill="#232F3E"/>
+            <path d="M33 76.8c11.8 8.8 28.2 9.2 40.8 1.4.6-.4.4-1.2-.2-1.4-1.8-.8-5.6-2.2-5.6-2.2-.4-.2-.8 0-1 .4-9.8 6.4-23 6-32.2-.8-.4-.4-1-.2-1.2.2 0 0-.4 1.6-.6 2.4z" fill="#FF9900"/>
+            <path d="M74.8 74.6c.4-.6 1.8-2 2.2-2.6.4-.6.2-1.2-.4-1.4l-6.8-2.6c-.6-.2-1.2.2-1 1 .6 2 1.4 4.8 2 6.8.2.6.8.8 1.4.4.8-.4 2.2-1.2 2.6-1.6z" fill="#FF9900"/>
+          </svg>
+        </div>
+        <!-- Content Area -->
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-1">
+            <h3 class="text-[18px] font-bold text-slate-900 dark:text-slate-100">AWS</h3>
+            <p class="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+              Amazon Web Services cloud platform
+            </p>
+          </div>
+          <button
+            type="button"
+            onclick="openAccessModal('AWS', 'Amazon Web Services cloud platform')"
+            class="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+          >
+            Give Access
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 4: MongoDB -->
+      <div class="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+        <!-- Top Visual Area -->
+        <div class="h-44 bg-[#f8fafc] dark:bg-slate-800/40 border-b bd flex items-center justify-center p-6">
+          <svg class="h-12 w-auto max-w-[210px]" viewBox="0 0 240 70" fill="none">
+            <g transform="translate(10, 5)">
+              <path d="M28 2C27.5 2 24.5 9 23.5 13C21 23 15 31 15 42C15 50.5 21 57.5 28 60C35 57.5 41 50.5 41 42C41 31 35 23 32.5 13C31.5 9 28.5 2 28 2Z" fill="#13AA52"/>
+              <path d="M28 2V60C35 57.5 41 50.5 41 42C41 31 35 23 32.5 13C31.5 9 28.5 2 28 2Z" fill="#116149"/>
+              <path d="M28 50C27.5 50 27 48 27.2 45C27.6 38 28 30 28 22V50Z" fill="#FFFFFF" opacity="0.3"/>
+            </g>
+            <text x="68" y="46" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="34" fill="#001E2B" class="dark:fill-slate-100" letter-spacing="-0.5">MongoDB</text>
+          </svg>
+        </div>
+        <!-- Content Area -->
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-1">
+            <h3 class="text-[18px] font-bold text-slate-900 dark:text-slate-100">MongoDB</h3>
+            <p class="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+              NoSQL document database for scalable modern web apps
+            </p>
+          </div>
+          <button
+            type="button"
+            onclick="openAccessModal('MongoDB', 'NoSQL document database for modern applications')"
+            class="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+          >
+            Give Access
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 5: TiDB -->
+      <div class="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+        <!-- Top Visual Area -->
+        <div class="h-44 bg-[#f8fafc] dark:bg-slate-800/40 border-b bd flex items-center justify-center p-6">
+          <svg class="h-12 w-auto max-w-[190px]" viewBox="0 0 200 65" fill="none">
+            <g transform="translate(12, 4)">
+              <path d="M24 0L48 14V42L24 56L0 42V14L24 0Z" fill="#E30C34"/>
+              <path d="M24 10L40 19.5V36.5L24 46L8 36.5V19.5L24 10Z" fill="#FFFFFF"/>
+              <path d="M24 13L36 20.5V26H27V42H21V26H12V20.5L24 13Z" fill="#E30C34"/>
+            </g>
+            <text x="74" y="44" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="38" fill="#17233D" class="dark:fill-slate-100" letter-spacing="-0.5">TiDB</text>
+          </svg>
+        </div>
+        <!-- Content Area -->
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-1">
+            <h3 class="text-[18px] font-bold text-slate-900 dark:text-slate-100">TiDB</h3>
+            <p class="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+              Distributed SQL database for real-time elastic transactions
+            </p>
+          </div>
+          <button
+            type="button"
+            onclick="openAccessModal('TiDB', 'Distributed SQL database for hybrid transactional and analytical processing')"
+            class="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+          >
+            Give Access
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 6: DCS -->
+      <div class="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+        <!-- Top Visual Area -->
+        <div class="h-44 bg-[#f0fdf4] dark:bg-emerald-950/20 border-b bd flex items-center justify-center p-6">
+          <svg class="w-18 h-18 text-[#059669]" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <!-- Content Area -->
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-1">
+            <h3 class="text-[18px] font-bold text-slate-900 dark:text-slate-100">DCS</h3>
+            <p class="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+              Internal Dev Creations &amp; Solutions core infrastructure &amp; secure portal
+            </p>
+          </div>
+          <button
+            type="button"
+            onclick="openAccessModal('DCS', 'Dev Creations core administrative and cloud infrastructure')"
+            class="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+          >
+            Give Access
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal Backdrop -->
+<div id="backdrop" class="hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-xs transition-opacity" onclick="closeAccessModal()"></div>
+
+<!-- Give Access Modal (Native Bottom Sheet on Mobile) -->
+<div id="accessModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+  <div class="card rounded-t-3xl sm:rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 bg-white dark:bg-[#141a25] mobile-bottom-sheet sm:animate-scale-up border-t sm:border bd space-y-5" onclick="event.stopPropagation()">
+    <div class="sheet-drag-handle sm:hidden -mt-2 mb-2"></div>
+    <!-- Modal Header -->
+    <div class="flex items-start justify-between pb-3 border-b bd">
+      <div>
+        <h3 class="font-bold text-[16px] text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <span>Grant Access:</span>
+          <span id="modalServiceName" class="text-[#5c56d6]">GitHub</span>
+        </h3>
+        <p class="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5" id="modalServiceDesc">
+          Version control and code repository management
+        </p>
+      </div>
+      <button
+        type="button"
+        onclick="closeAccessModal()"
+        class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer touch-press"
+      >
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form onsubmit="handleGrantAccess(event)" class="space-y-4">
+      <div>
+        <label class="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+          Select Team Member / Employee *
+        </label>
+        <select
+          id="accessMember"
+          required
+          class="w-full h-10 px-3.5 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] font-medium focus:outline-none focus:border-[#5c56d6] cursor-pointer shadow-2xs"
+        >
+          <option value="Padmavathi H M">Padmavathi H M (Managing Director)</option>
+          <option value="Devaraj H M">Devaraj H M (Managing Director)</option>
+          <option value="kushi">kushi (Web Developer Intern - DIN069)</option>
+          <option value="Ganashree GM">Ganashree GM (Web Developer - DIN068)</option>
+          <option value="M Sahana">M Sahana (Web Developer Intern - DIN067)</option>
+          <option value="Sai Venkat">Sai Venkat (Technical Advisor)</option>
+          <option value="All Engineering Team">All Engineering Team</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+            Permission Role *
+          </label>
+          <select
+            id="accessRole"
+            class="w-full h-10 px-3 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[12.5px] font-medium focus:outline-none focus:border-[#5c56d6] cursor-pointer shadow-2xs"
+          >
+            <option value="Admin">Admin (Full Access)</option>
+            <option value="Developer" selected>Developer / Contributor</option>
+            <option value="Read Only">Read Only / Viewer</option>
+            <option value="DevOps">DevOps Engineer</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+            Environment *
+          </label>
+          <select
+            id="accessEnv"
+            class="w-full h-10 px-3 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[12.5px] font-medium focus:outline-none focus:border-[#5c56d6] cursor-pointer shadow-2xs"
+          >
+            <option value="All Environments" selected>All Environments</option>
+            <option value="Production Only">Production</option>
+            <option value="Staging Only">Staging</option>
+            <option value="Development Only">Development</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+          Access Expiration (Optional)
+        </label>
+        <select
+          id="accessExpiry"
+          class="w-full h-10 px-3.5 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[12.5px] font-medium focus:outline-none focus:border-[#5c56d6] cursor-pointer shadow-2xs"
+        >
+          <option value="Never Expires" selected>Never Expires (Standing Access)</option>
+          <option value="30 Days">Expires in 30 Days</option>
+          <option value="90 Days">Expires in 90 Days</option>
+          <option value="1 Year">Expires in 1 Year</option>
+        </select>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-3">
+        <button
+          type="button"
+          onclick="closeAccessModal()"
+          class="px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold text-[13px] transition cursor-pointer touch-press"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2.5 rounded-xl bg-[#5c56d6] hover:bg-[#4f48cb] text-white font-semibold text-[13px] transition cursor-pointer shadow-xs touch-press"
+        >
+          Grant Access
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Floating Mobile Bottom Navigation Bar -->
+<nav class="lg:hidden fixed bottom-3 inset-x-3 z-40 h-[58px] rounded-2xl bg-white/90 dark:bg-[#141a25]/90 backdrop-blur-xl border bd shadow-2xl flex items-center justify-around px-1 pb-[env(safe-area-inset-bottom)]">
+  <a href="Gallery management.html" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all touch-press">
+    <div class="w-8 h-8 rounded-lg flex items-center justify-center">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+    </div>
+    <span class="text-[10px] tracking-tight -mt-0.5">Gallery</span>
+  </a>
+  <a href="Employee management.html" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all touch-press">
+    <div class="w-8 h-8 rounded-lg flex items-center justify-center">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/></svg>
+    </div>
+    <span class="text-[10px] tracking-tight -mt-0.5">Employees</span>
+  </a>
+  <a href="Documents validation.html" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all touch-press">
+    <div class="w-8 h-8 rounded-lg flex items-center justify-center">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+    </div>
+    <span class="text-[10px] tracking-tight -mt-0.5">Docs</span>
+  </a>
+  <a href="Team management.html" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all touch-press">
+    <div class="w-8 h-8 rounded-lg flex items-center justify-center">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/></svg>
+    </div>
+    <span class="text-[10px] tracking-tight -mt-0.5">Team</span>
+  </a>
+  <a href="Project manager.html" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all touch-press">
+    <div class="w-8 h-8 rounded-lg flex items-center justify-center">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/></svg>
+    </div>
+    <span class="text-[10px] tracking-tight -mt-0.5">Projects</span>
+  </a>
+  <a href="Access management.html" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-orange-600 dark:text-orange-400 font-bold transition-all touch-press">
+    <div class="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-950/60 scale-105 flex items-center justify-center">
+      <svg class="w-4 h-4 stroke-[2.4]" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2.6" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/></svg>
+    </div>
+    <span class="text-[10px] tracking-tight -mt-0.5">Access</span>
+  </a>
+</nav>
+
+<!-- Toast Box Container -->
+<div id="toastBox" class="fixed bottom-20 sm:bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+<script>
+function $(id){ return document.getElementById(id); }
+
+// Theme Logic
+function applyTheme(t){
+  if(t === 'dark'){
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    document.documentElement.classList.remove('dark');
+  }
+  localStorage.setItem('dcs-theme', t);
+}
+
+function theme(){
+  const cur = localStorage.getItem('dcs-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+}
+
+(function initTheme(){
+  const saved = localStorage.getItem('dcs-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(saved);
+})();
+
+// Toast Helper
+function toast(msg){
+  const el = document.createElement('div');
+  el.className = 'px-4 py-3 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-medium text-[13px] shadow-lg animate-scale-up pointer-events-auto flex items-center gap-2 border border-slate-700/50';
+  el.innerHTML = `
+    <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span>${msg}</span>
+  `;
+  $('toastBox').appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
+
+// Sidebar Navigation
+const P = {
+  Banners: { path: 'Banner management.html', icon: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>' },
+  Gallery: { path: 'Gallery management.html', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>' },
+  Blogs: { path: 'Blog management.html', icon: '<path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 4v16"/>' },
+  Contacts: { path: 'Contact management.html', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 10h4M15 14h4"/>' },
+  'Client Logos': { path: 'Client logos.html', icon: '<path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>' },
+  Websites: { path: 'Website management.html', icon: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+  Employees: { path: 'Employee management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Documents Validation': { path: 'Documents validation.html', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/>' },
+  Team: { path: 'Team management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Project Manager': { path: 'Project manager.html', icon: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/>' },
+  Access: { path: 'Access management.html', icon: '<path stroke-width="3" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/>' }
+};
+
+function renderNavHTML(activeName){
+  return Object.keys(P).map(k => {
+    const on = k === activeName;
+    const item = P[k];
+    return `<a href="${item.path}" title="${k}" class="w-full flex items-center gap-2.5 h-9 px-2.5 rounded-lg text-[12.5px] transition cursor-pointer ${
+      on ? 'border border-orange-400/90 bg-indigo-50/70 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-semibold' : 'font-medium text-[var(--tx)] hover:bg-slate-100 dark:hover:bg-slate-800'
+    }">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${on ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}">${item.icon}</svg>
+      <span>${k}</span>
+    </a>`;
+  }).join('');
+}
+
+$('desktopNav').innerHTML = renderNavHTML('Access');
+
+function toggleSidebar(){
+  $('desktopSidebar').classList.toggle('sidebar-collapsed');
+}
+
+// Modal Logic
+let currentService = '';
+function openAccessModal(serviceName, serviceDesc){
+  currentService = serviceName;
+  $('modalServiceName').textContent = serviceName;
+  $('modalServiceDesc').textContent = serviceDesc;
+  $('accessModal').classList.remove('hidden');
+  $('backdrop').classList.remove('hidden');
+}
+
+function closeAccessModal(){
+  $('accessModal').classList.add('hidden');
+  $('backdrop').classList.add('hidden');
+}
+
+function handleGrantAccess(e){
+  e.preventDefault();
+  const member = $('accessMember').value;
+  const role = $('accessRole').value;
+  closeAccessModal();
+  toast(`Access to ${currentService} (${role}) granted to ${member}!`);
+}
+</script>
+</body>
+</html>
+

@@ -140,26 +140,13 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
             <span id="formBannerTitle">Add Website</span>
           </div>
           <p id="formBannerSubtitle" class="text-[12px] text-white/90 mt-1 font-normal">
-            Enter the website title, live URL, and upload the preview screenshot
+            Enter the website URL and upload an image
           </p>
         </div>
 
         <!-- Form Body -->
         <div class="p-6 sm:p-8 space-y-6">
-          <!-- Field 1: Website Title * -->
-          <div>
-            <label class="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
-              Website Title <span class="text-slate-700 dark:text-slate-300 font-bold">*</span>
-            </label>
-            <input 
-              type="text" 
-              id="websiteTitleInput" 
-              placeholder="e.g. GeoTrackMee" 
-              class="w-full h-11 px-3.5 rounded-lg border bd bg-white dark:bg-slate-900 text-[13px] text-slate-800 dark:text-slate-100 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-[#ea580c] transition"
-            >
-          </div>
-
-          <!-- Field 2: Website URL * -->
+          <!-- Field 1: Website URL * -->
           <div>
             <label class="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
               Website URL <span class="text-slate-700 dark:text-slate-300 font-bold">*</span>
@@ -167,15 +154,28 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
             <input 
               type="url" 
               id="websiteUrlInput" 
-              placeholder="e.g. https://gtm.devcreationsblr.com/" 
+              placeholder="https://example.com" 
               class="w-full h-11 px-3.5 rounded-lg border bd bg-white dark:bg-slate-900 text-[13px] text-slate-800 dark:text-slate-100 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-[#ea580c] transition"
             >
           </div>
 
-          <!-- Field 3: Website Screenshot Image * -->
+          <!-- Field 2: Website Name * -->
           <div>
             <label class="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
-              Website Screenshot Image <span class="text-slate-700 dark:text-slate-300 font-bold">*</span>
+              Website Name <span class="text-slate-700 dark:text-slate-300 font-bold">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="websiteTitleInput" 
+              placeholder="Example Website" 
+              class="w-full h-11 px-3.5 rounded-lg border bd bg-white dark:bg-slate-900 text-[13px] text-slate-800 dark:text-slate-100 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-[#ea580c] transition"
+            >
+          </div>
+
+          <!-- Field 3: Website Image * -->
+          <div>
+            <label class="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+              Website Image <span class="text-slate-700 dark:text-slate-300 font-bold">*</span>
             </label>
             
             <input type="file" id="websiteFileInput" accept="image/*" class="hidden" onchange="handleFileSelected(this)">
@@ -191,10 +191,12 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
                   type="button" 
                   class="h-9 px-5 rounded-lg font-semibold text-[12.5px] text-white bg-[#ea580c] hover:opacity-95 shadow-sm inline-flex items-center gap-2 cursor-pointer pointer-events-none"
                 >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2"/>
+                    <circle cx="9" cy="9" r="2"/>
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
                   </svg>
-                  Select Website Image
+                  Select Image
                 </button>
               </div>
 
@@ -218,7 +220,7 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
             </div>
           </div>
 
-          <!-- Action Buttons at bottom: Cancel (grey) & Upload Website (green) -->
+          <!-- Action Buttons at bottom: Cancel (grey) & Save Website (green) -->
           <div class="flex items-center gap-4 pt-2">
             <button 
               type="button" 
@@ -231,9 +233,12 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
               type="button" 
               id="formSubmitBtn"
               onclick="submitWebsite()" 
-              class="flex-1 h-11 rounded-lg font-bold text-[14px] text-white bg-[#00a86b] hover:bg-[#059669] transition cursor-pointer flex items-center justify-center shadow-sm active:scale-95"
+              class="flex-1 h-11 rounded-lg font-bold text-[14px] text-white bg-[#00a86b] hover:bg-[#059669] transition cursor-pointer flex items-center justify-center gap-2 shadow-sm active:scale-95"
             >
-              Add Website
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+              </svg>
+              <span id="formSubmitBtnText">Save Website</span>
             </button>
           </div>
         </div>
@@ -252,7 +257,7 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
               <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
             </svg>
             <h2 class="text-[13.5px] sm:text-[14px] font-bold tracking-tight">
-              Website Information (<span id="count">17</span>)
+              Website Information (<span id="count">3</span>)
             </h2>
           </div>
           <p class="text-[11px] sm:text-[11.5px] mu mt-0.5">
@@ -411,195 +416,10 @@ const svgMhidhil = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="
   <text x="100" y="255" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" text-anchor="middle" fill="#052e16">Download Brochure</text>
 </svg>`);
 
-const svgNbt = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#0f172a"/>
-  <rect width="480" height="42" fill="#1e293b"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#f59e0b">Namma Bengaluru Trekkers</text>
-  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#cbd5e1">Upcoming Treks   Gallery   Safety   Reviews</text>
-  <polygon points="120,300 240,110 360,300" fill="#1e293b"/>
-  <polygon points="260,300 370,140 480,300" fill="#334155"/>
-  <circle cx="380" cy="90" r="35" fill="#f59e0b" opacity="0.8"/>
-  <text x="35" y="110" font-family="system-ui, sans-serif" font-size="26" font-weight="900" fill="#ffffff">Conquer the</text>
-  <text x="35" y="140" font-family="system-ui, sans-serif" font-size="26" font-weight="900" fill="#f59e0b">Western Ghats</text>
-  <text x="35" y="170" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Weekend getaways, summit camps, and wilderness trails.</text>
-  <rect x="35" y="195" width="115" height="32" rx="6" fill="#ea580c"/>
-  <text x="92" y="215" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">View Treks</text>
-</svg>`);
-
-const svgTridalaSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#fefce8"/>
-  <rect width="480" height="42" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#dc2626">TRIDALA HERBAL</text>
-  <text x="240" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#713f12">Herbal Oils   Ayurvedic Extracts   Wellness   Shop</text>
-  <text x="35" y="115" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#166534">Pure Ayurvedic Wellness</text>
-  <text x="35" y="142" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#854d0e">Rooted in Tradition</text>
-  <text x="35" y="175" font-family="system-ui, sans-serif" font-size="11" fill="#713f12">100% natural cold-pressed botanicals for holistic care.</text>
-  <rect x="35" y="200" width="110" height="32" rx="6" fill="#15803d"/>
-  <text x="90" y="220" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Shop Products</text>
-</svg>`);
-
-const svgEcoTrekSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#f0fdf4"/>
-  <rect width="480" height="42" fill="#166534"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#86efac">ECO-TREK ADVENTURES</text>
-  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#bbf7d0">Himalayas   Expeditions   Leave No Trace</text>
-  <text x="35" y="118" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#14532d">Zero-Waste Expeditions</text>
-  <text x="35" y="145" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#16a34a">In The Great Himalayas</text>
-  <text x="35" y="175" font-family="system-ui, sans-serif" font-size="11" fill="#374151">Sustainable high-altitude mountaineering camps &amp; tours.</text>
-  <rect x="35" y="200" width="125" height="32" rx="6" fill="#16a34a"/>
-  <text x="97" y="220" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Plan Expedition</text>
-</svg>`);
-
-const svgNexusSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#0b0f19"/>
-  <rect width="480" height="42" fill="#111827"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#38bdf8">NEXUS INNOVATIONS</text>
-  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">AI Platform   Cloud Mesh   Docs</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="25" font-weight="900" fill="#ffffff">Next-Gen Distributed</text>
-  <text x="35" y="150" font-family="system-ui, sans-serif" font-size="25" font-weight="900" fill="#38bdf8">AI Infrastructure</text>
-  <text x="35" y="180" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Sub-millisecond inference pipelines for modern tech enterprises.</text>
-  <rect x="35" y="205" width="115" height="32" rx="6" fill="#0284c7"/>
-  <text x="92" y="225" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Get Started</text>
-</svg>`);
-
-const svgApexSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#ffffff"/>
-  <rect width="480" height="42" fill="#881337"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#ffffff">APEX GLOBAL</text>
-  <text x="250" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#fecdd3">Consulting   Advisory   M&amp;A   Insights</text>
-  <text x="35" y="118" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0f172a">Strategic Advisory for</text>
-  <text x="35" y="145" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#e11d48">Global Scale</text>
-  <text x="35" y="175" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Empowering Fortune 500 enterprises through digital transformation.</text>
-  <rect x="35" y="200" width="115" height="32" rx="6" fill="#e11d48"/>
-  <text x="92" y="220" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Contact Partner</text>
-</svg>`);
-
-const svgZenithSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#f0f9ff"/>
-  <rect width="480" height="42" fill="#0369a1"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#ffffff">ZENITH CLOUD</text>
-  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#bae6fd">Kubernetes   Storage   CDN   Pricing</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0c4a6e">Ultra-Fast Serverless</text>
-  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0284c7">Cloud Hosting</text>
-  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#475569">99.999% uptime with global edge clusters across 40 regions.</text>
-  <rect x="35" y="202" width="120" height="32" rx="6" fill="#0284c7"/>
-  <text x="95" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Deploy Cluster</text>
-</svg>`);
-
-const svgVanguardSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#2e1065"/>
-  <rect width="480" height="42" fill="#1e1b4b"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#c084fc">VANGUARD MEDIA</text>
-  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Commercials   3D VFX   Brand Reels</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#ffffff">Cinematic Storytelling &amp;</text>
-  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#a855f7">Brand Experience</text>
-  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#cbd5e1">Award-winning commercial film and digital visual design.</text>
-  <rect x="35" y="202" width="115" height="32" rx="6" fill="#9333ea"/>
-  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Watch Showreel</text>
-</svg>`);
-
-const svgCyberShieldSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#0f172a"/>
-  <rect width="480" height="42" fill="#020617"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#10b981">CYBERSHIELD</text>
-  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">SOC Monitoring   Pen-Testing   Compliance</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#ffffff">24/7 Managed Threat</text>
-  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#10b981">Detection &amp; Response</text>
-  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Zero-trust architecture protecting cloud-native enterprise assets.</text>
-  <rect x="35" y="202" width="120" height="32" rx="6" fill="#059669"/>
-  <text x="95" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Request Audit</text>
-</svg>`);
-
-const svgGreenPulseSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#f7fee7"/>
-  <rect width="480" height="42" fill="#365314"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#bef264">GREENPULSE ENERGY</text>
-  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#d9f99d">Solar Farms   Grid Storage   ESG</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#1a2e05">Utility-Scale Solar &amp;</text>
-  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#65a30d">Clean Wind Power</text>
-  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#4d7c0f">Accelerating industrial net-zero carbon transition.</text>
-  <rect x="35" y="202" width="115" height="32" rx="6" fill="#65a30d"/>
-  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Calculate ROI</text>
-</svg>`);
-
-const svgAuraSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#fff1f2"/>
-  <rect width="480" height="42" fill="#ffffff" stroke="#ffe4e6" stroke-width="1"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#be123c">AURA WELLNESS</text>
-  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#9f1239">Clinics   Treatments   Specialists   Book</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#881337">Personalized Holistic</text>
-  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#e11d48">Health &amp; Aesthetic Care</text>
-  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#701a75">Integrative therapy with world-class clinical practitioners.</text>
-  <rect x="35" y="202" width="115" height="32" rx="6" fill="#e11d48"/>
-  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Book Appointment</text>
-</svg>`);
-
-const svgQuantumSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#1e1b4b"/>
-  <rect width="480" height="42" fill="#0f0e26"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#818cf8">QUANTUM LOGIC</text>
-  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#c7d2fe">Quantum SDK   Simulators   Research</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#ffffff">Accelerating Quantum</text>
-  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#818cf8">Circuit Simulation</text>
-  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#a5b4fc">Algorithmic optimization on 128-qubit quantum hardware.</text>
-  <rect x="35" y="202" width="115" height="32" rx="6" fill="#6366f1"/>
-  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Read Whitepaper</text>
-</svg>`);
-
-const svgBlueSkySite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#f8fafc"/>
-  <rect width="480" height="42" fill="#0284c7"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#ffffff">BLUESKY LOGISTICS</text>
-  <text x="260" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#e0f2fe">Air Freight   Ocean Cargo   Track Consignment</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0f172a">Seamless Worldwide</text>
-  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0284c7">Freight &amp; Supply Chain</text>
-  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Real-time GPS tracking across 140 countries and 500 ports.</text>
-  <rect x="35" y="202" width="115" height="32" rx="6" fill="#0284c7"/>
-  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Track Shipment</text>
-</svg>`);
-
-const svgStarlightSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#fffbeb"/>
-  <rect width="480" height="42" fill="#78350f"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#fde68a">STARLIGHT RESORTS</text>
-  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#fef3c7">Suites   Dining   Spa &amp; Wellness   Book</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#451a03">Exquisite Luxury</text>
-  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#b45309">Island Escapes</text>
-  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">Private beachfront villas with personalized Michelin culinary service.</text>
-  <rect x="35" y="202" width="115" height="32" rx="6" fill="#b45309"/>
-  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Reserve Suite</text>
-</svg>`);
-
-const svgNovaSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%">
-  <rect width="480" height="300" fill="#f0fdfa"/>
-  <rect width="480" height="42" fill="#0f766e"/>
-  <text x="25" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="900" fill="#ccfbf1">NOVA FINTECH</text>
-  <text x="270" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#e6fffa">Multi-Currency   Virtual Cards   API</text>
-  <text x="35" y="120" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#134e4a">Borderless Global</text>
-  <text x="35" y="148" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#0d9488">Digital Payments</text>
-  <text x="35" y="178" font-family="system-ui, sans-serif" font-size="11" fill="#0f766e">Instant cross-border settlement with zero hidden FX markup.</text>
-  <rect x="35" y="202" width="115" height="32" rx="6" fill="#0d9488"/>
-  <text x="92" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Open Account</text>
-</svg>`);
-
 let websites = [
   { id: 1, title: 'GeoTrackMee', url: 'https://gtm.devcreationsblr.com/', date: '9/8/2026', img: svgGeoTrackMee },
   { id: 2, title: 'Invora - Billing and Inventory', url: 'https://billing.devcreationsblr.com/', date: '9/8/2026', img: svgInvora },
-  { id: 3, title: 'MhidhilPolymers', url: 'https://mhidhilpolymers.com/', date: '9/8/2026', img: svgMhidhil },
-  { id: 4, title: 'Namma Bengaluru Trekkers', url: 'https://nammabengalurutrekkers.org/', date: '8/24/2026', img: svgNbt },
-  { id: 5, title: 'Tridala Herbal Solutions', url: 'https://tridalaherbal.com/', date: '8/15/2026', img: svgTridalaSite },
-  { id: 6, title: 'Eco-Trek Adventures', url: 'https://ecotrekadventures.in/', date: '8/02/2026', img: svgEcoTrekSite },
-  { id: 7, title: 'Nexus Innovations', url: 'https://nexusinnovations.tech/', date: '7/28/2026', img: svgNexusSite },
-  { id: 8, title: 'Apex Global Consulting', url: 'https://apexglobal.co/', date: '7/19/2026', img: svgApexSite },
-  { id: 9, title: 'Zenith Cloud Corp', url: 'https://zenithcloud.io/', date: '7/10/2026', img: svgZenithSite },
-  { id: 10, title: 'Vanguard Media Labs', url: 'https://vanguardcreative.agency/', date: '6/30/2026', img: svgVanguardSite },
-  { id: 11, title: 'CyberShield Security', url: 'https://cybershieldsec.net/', date: '6/22/2026', img: svgCyberShieldSite },
-  { id: 12, title: 'GreenPulse Renewable Energy', url: 'https://greenpulseenergy.com/', date: '6/15/2026', img: svgGreenPulseSite },
-  { id: 13, title: 'Aura Health & Wellness Clinic', url: 'https://aurahealthwell.com/', date: '6/08/2026', img: svgAuraSite },
-  { id: 14, title: 'Quantum Logic Systems', url: 'https://quantumlogicsys.com/', date: '5/29/2026', img: svgQuantumSite },
-  { id: 15, title: 'BlueSky Logistics', url: 'https://blueskylogistics.in/', date: '5/18/2026', img: svgBlueSkySite },
-  { id: 16, title: 'Starlight Luxury Resorts', url: 'https://starlighthospitality.com/', date: '5/10/2026', img: svgStarlightSite },
-  { id: 17, title: 'Nova Fintech Platform', url: 'https://novafintech.global/', date: '4/25/2026', img: svgNovaSite }
+  { id: 3, title: 'MhidhilPolymers', url: 'https://mhidhilpolymers.com/', date: '9/8/2026', img: svgMhidhil }
 ];
 
 let isUploadFormVisible = false;
@@ -624,22 +444,26 @@ function showUploadForm(){
   $('uploadFormSection').classList.remove('hidden');
   $('websiteListSection').classList.add('hidden');
   
-  $('topActionIcon').textContent = '✕';
-  $('topActionLabel').textContent = 'Cancel';
+  // Top button shows as disabled/light grey in screenshot
+  $('topActionBtn').className = 'w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition text-white shadow-none bg-[#cbd5e1] dark:bg-slate-700 cursor-not-allowed opacity-90';
+  $('topActionBtn').style.background = '#cbd5e1';
+  $('topActionBtn').style.boxShadow = 'none';
+  $('topActionIcon').textContent = '+';
+  $('topActionLabel').textContent = 'Add Website';
 
   $('formBannerTitle').textContent = 'Add Website';
-  $('formBannerSubtitle').textContent = 'Enter the website title, live URL, and upload the preview screenshot';
-  $('formSubmitBtn').textContent = 'Add Website';
+  $('formBannerSubtitle').textContent = 'Enter the website URL and upload an image';
+  $('formSubmitBtnText').textContent = 'Save Website';
   
-  $('websiteTitleInput').value = '';
   $('websiteUrlInput').value = '';
+  $('websiteTitleInput').value = '';
   selectedWebsiteFile = null;
   selectedWebsiteDataUrl = null;
   $('websiteFileInput').value = '';
   $('dropzoneEmpty').classList.remove('hidden');
   $('dropzoneSelected').classList.add('hidden');
   
-  setTimeout(() => $('websiteTitleInput').focus(), 100);
+  setTimeout(() => $('websiteUrlInput').focus(), 100);
 }
 
 function hideUploadForm(){
@@ -648,12 +472,15 @@ function hideUploadForm(){
   $('uploadFormSection').classList.add('hidden');
   $('websiteListSection').classList.remove('hidden');
   
+  $('topActionBtn').className = 'w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95';
+  $('topActionBtn').style.background = '#ea580c';
+  $('topActionBtn').style.boxShadow = '0 6px 16px -4px rgba(234,88,12,0.5)';
   $('topActionIcon').textContent = '+';
   $('topActionLabel').textContent = 'Add Website';
 
   $('formBannerTitle').textContent = 'Add Website';
-  $('formBannerSubtitle').textContent = 'Enter the website title, live URL, and upload the preview screenshot';
-  $('formSubmitBtn').textContent = 'Add Website';
+  $('formBannerSubtitle').textContent = 'Enter the website URL and upload an image';
+  $('formSubmitBtnText').textContent = 'Save Website';
 }
 
 function editWebsite(id){
@@ -665,15 +492,18 @@ function editWebsite(id){
   $('uploadFormSection').classList.remove('hidden');
   $('websiteListSection').classList.add('hidden');
 
-  $('topActionIcon').textContent = '✕';
-  $('topActionLabel').textContent = 'Cancel';
+  $('topActionBtn').className = 'w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition text-white shadow-none bg-[#cbd5e1] dark:bg-slate-700 cursor-not-allowed opacity-90';
+  $('topActionBtn').style.background = '#cbd5e1';
+  $('topActionBtn').style.boxShadow = 'none';
+  $('topActionIcon').textContent = '+';
+  $('topActionLabel').textContent = 'Add Website';
 
   $('formBannerTitle').textContent = 'Edit Website';
-  $('formBannerSubtitle').textContent = 'Update the website title, URL, and screenshot';
-  $('formSubmitBtn').textContent = 'Update Website';
+  $('formBannerSubtitle').textContent = 'Update the website URL and upload an image';
+  $('formSubmitBtnText').textContent = 'Save Website';
 
-  $('websiteTitleInput').value = item.title;
   $('websiteUrlInput').value = item.url;
+  $('websiteTitleInput').value = item.title;
   selectedWebsiteDataUrl = item.img;
   selectedWebsiteFile = { name: `${item.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}-screenshot.png`, size: 120 * 1024 };
 
@@ -684,7 +514,7 @@ function editWebsite(id){
   $('dropzoneSelected').classList.remove('hidden');
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  setTimeout(() => $('websiteTitleInput').focus(), 100);
+  setTimeout(() => $('websiteUrlInput').focus(), 100);
 }
 
 function handleFileSelected(input){
@@ -714,19 +544,19 @@ function submitWebsite(){
   const title = $('websiteTitleInput').value.trim();
   const url = $('websiteUrlInput').value.trim();
 
-  if(!title){
-    toast('Please enter website title');
-    $('websiteTitleInput').focus();
-    return;
-  }
   if(!url){
     toast('Please enter website URL');
     $('websiteUrlInput').focus();
     return;
   }
+  if(!title){
+    toast('Please enter website name');
+    $('websiteTitleInput').focus();
+    return;
+  }
 
   if(!selectedWebsiteDataUrl){
-    toast('Please select a website screenshot');
+    toast('Please select a website image');
     return;
   }
 
@@ -892,11 +722,11 @@ const P = {
   Contacts: { path: 'Contact management.html', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 10h4M15 14h4"/>' },
   'Client Logos': { path: 'Client logos.html', icon: '<path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>' },
   Websites: { path: 'Website management.html', icon: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
-  Employees: { path: '#', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
-  'Documents Validation': { path: '#', icon: '<path d="M12 3l2.5 1.8 3-.2 1 2.9 2.5 1.7-1 2.9 1 2.9-2.5 1.7-1 2.9-3-.2L12 21l-2.5-1.8-3 .2-1-2.9L3 14.8l1-2.9-1-2.9 2.5-1.7 1-2.9 3 .2z"/><path d="m9 12 2 2 4-4"/>' },
-  Team: { path: '#', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
-  'Project Manager': { path: '#', icon: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/>' },
-  Access: { path: '#', icon: '<path stroke-width="3" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/>' }
+  Employees: { path: 'Employee management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Documents Validation': { path: 'Documents validation.html', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/>' },
+  Team: { path: 'Team management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Project Manager': { path: 'Project manager.html', icon: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/>' },
+  Access: { path: 'Access management.html', icon: '<path stroke-width="3" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/>' }
 };
 
 function renderNavHTML(activeName){

@@ -26,7 +26,28 @@ import {
   FolderKanban,
   Key,
   Bookmark,
-  Tag
+  Tag,
+  Settings,
+  RotateCw,
+  AlertTriangle,
+  CheckCircle2,
+  Send as SendIcon,
+  XCircle,
+  Clock,
+  ChevronDown,
+  Lock,
+  ArrowRight,
+  Download,
+  Share2,
+  Calendar,
+  MapPin,
+  Video,
+  Phone,
+  Mail,
+  UserCheck,
+  MoreVertical,
+  LayoutGrid,
+  ClipboardList
 } from 'lucide-react';
 
 const SIZE = {
@@ -57,19 +78,7 @@ const INITIAL_CLIENT_LOGOS = [
   { id: 1, title: 'Namma Bengaluru Trekkers', file: 'logo (1).png', date: '5/26/2026', img: svgTrekkers },
   { id: 2, title: 'Tridala', file: 'resize-17713241921671281798TridalaLogo8112025.jpg', date: '2/17/2026', img: svgTridala },
   { id: 3, title: 'Unnamed Client', file: 'LOGO.png', date: '2/14/2026', img: svgEcoTrek },
-  { id: 4, title: 'Nexus Innovations', file: 'nexus-tech-vector.png', date: '2/10/2026', img: svgNexus },
-  { id: 5, title: 'Apex Global Solutions', file: 'apex_branding_2026.png', date: '2/05/2026', img: svgApex },
-  { id: 6, title: 'Zenith Cloud Corp', file: 'zenith_logo_hq.png', date: '1/28/2026', img: svgZenith },
-  { id: 7, title: 'Vanguard Media', file: 'vanguard_final.png', date: '1/22/2026', img: svgVanguard },
-  { id: 8, title: 'CyberShield Security', file: 'cybershield_vector.png', date: '1/18/2026', img: svgCyberShield },
-  { id: 9, title: 'GreenPulse Energy', file: 'greenpulse_eco.png', date: '1/15/2026', img: svgGreenPulse },
-  { id: 10, title: 'Aura Health & Wellness', file: 'aura-logo-trans.png', date: '1/10/2026', img: svgAura },
-  { id: 11, title: 'Quantum Logic Labs', file: 'quantum_symbol.png', date: '1/05/2026', img: svgQuantum },
-  { id: 12, title: 'BlueSky Logistics', file: 'bluesky_logistics_v2.png', date: '12/28/2025', img: svgBlueSky },
-  { id: 13, title: 'Starlight Hospitality', file: 'starlight_hotel_group.png', date: '12/20/2025', img: svgStarlight },
-  { id: 14, title: 'Nova Fintech', file: 'nova_fintech_brand.png', date: '12/14/2025', img: svgNova },
-  { id: 15, title: 'Terra Prime Real Estate', file: 'terra_prime_logo.png', date: '12/08/2025', img: svgTerra },
-  { id: 16, title: 'Urban Spark Studios', file: 'urban_spark_art.png', date: '11/30/2025', img: svgUrban }
+  { id: 4, title: 'Nexus Innovations', file: 'nexus-tech-vector.png', date: '2/10/2026', img: svgNexus }
 ];
 
 const svgGeoTrackMee = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="100%" height="100%"><rect width="480" height="300" fill="#f8fafc"/><rect width="480" height="42" fill="#2563eb"/><circle cx="28" cy="21" r="7" fill="#ffffff" opacity="0.9"/><text x="44" y="26" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">GeoTrackMee</text><text x="250" y="25" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#dbeafe">Home   About Us   Features   Pricing   Contact Us</text><rect x="40" y="65" width="130" height="215" rx="16" fill="#0f172a"/><rect x="44" y="69" width="122" height="207" rx="13" fill="#ffffff"/><rect x="80" y="73" width="50" height="4" rx="2" fill="#0f172a"/><rect x="52" y="88" width="106" height="58" rx="8" fill="#1e293b"/><text x="60" y="105" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#38bdf8">Live Attendance</text><text x="60" y="122" font-family="system-ui, sans-serif" font-size="15" font-weight="900" fill="#ffffff">09:42 AM</text><text x="60" y="136" font-family="system-ui, sans-serif" font-size="8" fill="#94a3b8">Office Geofence Active</text><rect x="52" y="154" width="106" height="30" rx="6" fill="#f1f5f9"/><circle cx="64" cy="169" r="6" fill="#22c55e"/><text x="76" y="173" font-family="system-ui, sans-serif" font-size="8.5" font-weight="600" fill="#0f172a">Check-in Verified</text><rect x="52" y="190" width="106" height="30" rx="6" fill="#f1f5f9"/><circle cx="64" cy="205" r="6" fill="#3b82f6"/><text x="76" y="209" font-family="system-ui, sans-serif" font-size="8.5" font-weight="600" fill="#0f172a">GPS Route Logged</text><rect x="52" y="226" width="106" height="26" rx="6" fill="#2563eb"/><text x="105" y="242" font-family="system-ui, sans-serif" font-size="9" font-weight="700" text-anchor="middle" fill="#ffffff">Mark Attendance</text><text x="195" y="112" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0f172a">Simplify Attendance &amp;</text><text x="195" y="138" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#2563eb">Workforce Management</text><text x="195" y="165" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">AI-powered facial check-in, real-time geofence tracking,</text><text x="195" y="180" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">and automated shift rosters for modern distributed teams.</text><rect x="195" y="205" width="110" height="34" rx="8" fill="#2563eb"/><text x="250" y="226" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#ffffff">Book a Demo</text><rect x="315" y="205" width="85" height="34" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/><text x="357" y="226" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="#334155">Login</text></svg>`);
@@ -93,21 +102,476 @@ const svgNovaSite = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox=
 const INITIAL_WEBSITES = [
   { id: 1, title: 'GeoTrackMee', url: 'https://gtm.devcreationsblr.com/', date: '9/8/2026', img: svgGeoTrackMee },
   { id: 2, title: 'Invora - Billing and Inventory', url: 'https://billing.devcreationsblr.com/', date: '9/8/2026', img: svgInvora },
-  { id: 3, title: 'MhidhilPolymers', url: 'https://mhidhilpolymers.com/', date: '9/8/2026', img: svgMhidhil },
-  { id: 4, title: 'Namma Bengaluru Trekkers', url: 'https://nammabengalurutrekkers.org/', date: '8/24/2026', img: svgNbt },
-  { id: 5, title: 'Tridala Herbal Solutions', url: 'https://tridalaherbal.com/', date: '8/15/2026', img: svgTridalaSite },
-  { id: 6, title: 'Eco-Trek Adventures', url: 'https://ecotrekadventures.in/', date: '8/02/2026', img: svgEcoTrekSite },
-  { id: 7, title: 'Nexus Innovations', url: 'https://nexusinnovations.tech/', date: '7/28/2026', img: svgNexusSite },
-  { id: 8, title: 'Apex Global Consulting', url: 'https://apexglobal.co/', date: '7/19/2026', img: svgApexSite },
-  { id: 9, title: 'Zenith Cloud Corp', url: 'https://zenithcloud.io/', date: '7/10/2026', img: svgZenithSite },
-  { id: 10, title: 'Vanguard Media Labs', url: 'https://vanguardcreative.agency/', date: '6/30/2026', img: svgVanguardSite },
-  { id: 11, title: 'CyberShield Security', url: 'https://cybershieldsec.net/', date: '6/22/2026', img: svgCyberShieldSite },
-  { id: 12, title: 'GreenPulse Renewable Energy', url: 'https://greenpulseenergy.com/', date: '6/15/2026', img: svgGreenPulseSite },
-  { id: 13, title: 'Aura Health & Wellness Clinic', url: 'https://aurahealthwell.com/', date: '6/08/2026', img: svgAuraSite },
-  { id: 14, title: 'Quantum Logic Systems', url: 'https://quantumlogicsys.com/', date: '5/29/2026', img: svgQuantumSite },
-  { id: 15, title: 'BlueSky Logistics', url: 'https://blueskylogistics.in/', date: '5/18/2026', img: svgBlueSkySite },
-  { id: 16, title: 'Starlight Luxury Resorts', url: 'https://starlighthospitality.com/', date: '5/10/2026', img: svgStarlightSite },
-  { id: 17, title: 'Nova Fintech Platform', url: 'https://novafintech.global/', date: '4/25/2026', img: svgNovaSite }
+  { id: 3, title: 'MhidhilPolymers', url: 'https://mhidhilpolymers.com/', date: '9/8/2026', img: svgMhidhil }
+];
+
+const INITIAL_APPLICANTS = [
+  {
+    id: 1,
+    name: 'Vaishnavi R',
+    email: 'vvaish0407@gmail.com',
+    phone: '7411268077',
+    role: 'Employee',
+    position: 'Graphic Designer',
+    experience: '0-2 yrs',
+    subExperience: '',
+    date: '21/10/2026',
+    status: 'PENDING',
+    section: 'apps',
+    resume: 'Vaishnavi R (Resume).pdf'
+  },
+  {
+    id: 2,
+    name: 'Darshit Godhani',
+    email: 'darshitgodhani13@gmail.com',
+    phone: '9033284839',
+    role: 'Freelancer',
+    position: 'Web Developer',
+    experience: '3-5 yrs',
+    subExperience: '',
+    date: '16/10/2026',
+    status: 'PENDING',
+    section: 'apps',
+    resume: 'Darshit Godhani (Resume).pdf'
+  },
+  {
+    id: 3,
+    name: 'santosh',
+    email: 'santoshchalageri1999@gmail.com',
+    phone: '9880020224',
+    role: 'Freelancer',
+    position: 'Web Developer',
+    experience: '2-3 yrs',
+    subExperience: '',
+    date: '10/10/2026',
+    status: 'PENDING',
+    section: 'apps',
+    resume: 'santosh (Resume).pdf'
+  },
+  {
+    id: 4,
+    name: 'Testing',
+    email: 'roshanpappu4@gmail.com',
+    phone: '1234567890',
+    role: 'Intern',
+    position: 'Web Developer',
+    experience: 'Fresher',
+    subExperience: '7th Sem - Cse',
+    date: '05/11/2026',
+    status: 'ACCEPTED',
+    section: 'apps',
+    resume: 'Testing (Resume).pdf'
+  },
+  {
+    id: 5,
+    name: 'Harsha',
+    email: 'gmganashree99@gmail.com',
+    phone: '6366755774',
+    role: 'Intern',
+    position: 'Web Developer',
+    experience: 'Fresher',
+    subExperience: '7th Sem - Mech',
+    date: '05/11/2026',
+    status: 'ACCEPTED',
+    section: 'apps',
+    resume: 'Harsha (Resume).pdf'
+  },
+  {
+    id: 6,
+    name: 'Khushi',
+    email: 'msahanasahana47@gmail.com',
+    phone: '6366755774',
+    role: 'Intern',
+    position: 'Web Developer',
+    experience: 'Fresher',
+    subExperience: '5th Sem - Cse',
+    date: '05/11/2026',
+    status: 'ACCEPTED',
+    section: 'apps',
+    resume: 'Khushi (Resume).pdf'
+  },
+  {
+    id: 7,
+    name: 'kushi',
+    email: 'harshasahana47@gmail.com',
+    phone: '9880011223',
+    role: 'Intern',
+    position: 'Web Developer',
+    experience: 'Fresher',
+    subExperience: '7th Sem - CSE',
+    date: '04/11/2026',
+    status: 'ACCEPTED',
+    section: 'apps',
+    resume: 'kushi (Resume).pdf'
+  }
+];
+
+const SAMPLE_8_DOCS = [
+  {
+    id: 'offer',
+    name: 'Offer Letter',
+    version: 'Version 1',
+    status: 'Delivered To Candidate',
+    isDelivered: true,
+    submitted: '22/10/2026 by Admin',
+    reviewed: '22/10/2026 by Main Admin',
+    delivered: '23/10/2026 to candidate',
+    iconType: 'doc'
+  },
+  {
+    id: 'mou',
+    name: 'MOU',
+    version: 'Version 1',
+    status: 'Delivered To Candidate',
+    isDelivered: true,
+    submitted: '22/10/2026 by Admin',
+    reviewed: '22/10/2026 by Main Admin',
+    delivered: '03/11/2026 to candidate',
+    iconType: 'handshake'
+  },
+  {
+    id: 'idcard',
+    name: 'ID Card',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'id'
+  },
+  {
+    id: 'intern-compl-letter',
+    name: 'Internship Completion Letter',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'doc'
+  },
+  {
+    id: 'intern-compl-cert',
+    name: 'Internship Completion Certificate',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'award'
+  },
+  {
+    id: 'proj-compl-letter',
+    name: 'Project Completion Letter',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'check'
+  },
+  {
+    id: 'intern-ongoing',
+    name: 'Internship Ongoing Letter',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'hourglass'
+  },
+  {
+    id: 'relieving',
+    name: 'Relieving Letter',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'doc'
+  }
+];
+
+const INITIAL_DOC_CANDIDATES = [
+  {
+    id: 1,
+    name: "kushi",
+    din: "DIN069",
+    roleType: "INTERN",
+    position: "Web Developer Intern",
+    email: "harshasahana47@gmail.com",
+    stats: { awaiting: 0, sentToHr: 0, validated: 0, sentToCandidate: 1 },
+    totalDocs: 8,
+    category: "Intern",
+    statusFilter: "sent-candidate",
+    docItems: JSON.parse(JSON.stringify(SAMPLE_8_DOCS))
+  },
+  {
+    id: 2,
+    name: "Ganashree GM",
+    din: "DIN068",
+    roleType: "INTERN",
+    position: "Web Developer",
+    email: "gmganashree99@gmail.com",
+    stats: { awaiting: 0, sentToHr: 0, validated: 0, sentToCandidate: 2 },
+    totalDocs: 8,
+    category: "Intern",
+    statusFilter: "sent-candidate",
+    docItems: JSON.parse(JSON.stringify(SAMPLE_8_DOCS))
+  },
+  {
+    id: 3,
+    name: "M Sahana",
+    din: "DIN067",
+    roleType: "INTERN",
+    position: "Web Developer Intern",
+    email: "msahanasahana47@gmail.com",
+    stats: { awaiting: 0, sentToHr: 0, validated: 1, sentToCandidate: 2 },
+    totalDocs: 4,
+    category: "Intern",
+    statusFilter: "validated-hr",
+    docItems: JSON.parse(JSON.stringify(SAMPLE_8_DOCS))
+  },
+  {
+    id: 4,
+    name: "Vaishnavi R",
+    din: "DIN065",
+    roleType: "EMPLOYEE",
+    position: "Graphic Designer",
+    email: "vvaish0407@gmail.com",
+    stats: { awaiting: 1, sentToHr: 0, validated: 1, sentToCandidate: 0 },
+    totalDocs: 5,
+    category: "Employee",
+    statusFilter: "awaiting",
+    docItems: JSON.parse(JSON.stringify(SAMPLE_8_DOCS))
+  },
+  {
+    id: 5,
+    name: "Darshit Godhani",
+    din: "DIN064",
+    roleType: "FREELANCER",
+    position: "Web Developer",
+    email: "darshitgodhani13@gmail.com",
+    stats: { awaiting: 1, sentToHr: 0, validated: 1, sentToCandidate: 0 },
+    totalDocs: 4,
+    category: "Freelancer",
+    statusFilter: "awaiting",
+    docItems: JSON.parse(JSON.stringify(SAMPLE_8_DOCS))
+  }
+];
+
+const DOC_FILTER_TABS = [
+  { id: 'all', label: 'All Records' },
+  { id: 'awaiting', label: 'Sent for Validation' },
+  { id: 'correction', label: 'Sent to HR for Correction' },
+  { id: 'validated-hr', label: 'Validated & Sent to HR' },
+  { id: 'sent-candidate', label: 'Sent to Candidate' },
+  { id: 'issues', label: 'Issues' }
+];
+
+const svgPadmavathi = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
+  <circle cx="60" cy="60" r="58" fill="#fffbeb"/>
+  <path d="M35 50 C32 75 35 90 42 105 C46 108 74 108 78 105 C85 90 88 75 85 50 C85 30 75 22 60 22 C45 22 35 30 35 50 Z" fill="#1e293b"/>
+  <rect x="53" y="68" width="14" height="18" fill="#fbcfe8"/>
+  <ellipse cx="60" cy="55" rx="18" ry="20" fill="#fde047" opacity="0.2"/>
+  <ellipse cx="60" cy="55" rx="17" ry="19" fill="#fbcfe8"/>
+  <ellipse cx="53" cy="53" rx="2" ry="2.5" fill="#0f172a"/>
+  <ellipse cx="67" cy="53" rx="2" ry="2.5" fill="#0f172a"/>
+  <path d="M55 64 Q60 68 65 64" stroke="#e11d48" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M50 48 Q54 46 57 48" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+  <path d="M63 48 Q66 46 70 48" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+  <path d="M42 42 C46 32 54 28 60 28 C66 28 74 32 78 42 C74 38 68 35 60 35 C52 35 46 38 42 42 Z" fill="#0f172a"/>
+  <path d="M40 45 C42 58 45 68 46 78 C44 65 42 55 40 45 Z" fill="#0f172a"/>
+  <path d="M80 45 C78 58 75 68 74 78 C76 65 78 55 80 45 Z" fill="#0f172a"/>
+  <path d="M30 115 C34 95 44 86 52 84 L56 100 L64 100 L68 84 C76 86 86 95 90 115 Z" fill="#0f172a"/>
+  <polygon points="54,84 66,84 60,98" fill="#ffffff"/>
+</svg>`);
+
+const svgDevaraj = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
+  <circle cx="60" cy="60" r="58" fill="#fffbeb"/>
+  <path d="M10 90 Q60 70 110 90 L110 120 L10 120 Z" fill="#e2e8f0" opacity="0.4"/>
+  <rect x="52" y="66" width="16" height="18" fill="#fed7aa"/>
+  <ellipse cx="60" cy="54" rx="18" ry="21" fill="#fed7aa"/>
+  <path d="M40 45 C40 28 50 20 60 20 C70 20 80 28 80 45 C75 32 65 27 60 27 C55 27 45 32 40 45 Z" fill="#1e293b"/>
+  <path d="M45 54 C45 68 50 78 60 78 C70 78 75 68 75 54 C72 62 68 66 60 66 C52 66 48 62 45 54 Z" fill="#1e293b"/>
+  <path d="M52 62 Q60 64 68 62 Q60 60 52 62" fill="#1e293b"/>
+  <circle cx="52" cy="50" r="2.5" fill="#0f172a"/>
+  <circle cx="68" cy="50" r="2.5" fill="#0f172a"/>
+  <rect x="46" y="44" width="12" height="11" rx="3" fill="none" stroke="#334155" stroke-width="1.8"/>
+  <rect x="62" y="44" width="12" height="11" rx="3" fill="none" stroke="#334155" stroke-width="1.8"/>
+  <line x1="58" y1="49" x2="62" y2="49" stroke="#334155" stroke-width="1.8"/>
+  <path d="M28 115 C32 92 42 84 50 82 L55 98 L65 98 L70 82 C78 84 88 92 92 115 Z" fill="#1e293b"/>
+  <polygon points="52,82 68,82 60,96" fill="#ffffff"/>
+  <polygon points="57,84 63,84 60,94" fill="#0f172a"/>
+</svg>`);
+
+const INITIAL_TEAM_MEMBERS = [
+  {
+    id: 1,
+    name: "Padmavathi H M",
+    role: "MANAGING DIRECTOR",
+    bio: "",
+    section: "minds",
+    img: svgPadmavathi
+  },
+  {
+    id: 2,
+    name: "Devaraj H M",
+    role: "MANAGING DIRECTOR",
+    bio: "Managing Director at Dev Creations",
+    section: "minds",
+    img: svgDevaraj
+  },
+  {
+    id: 3,
+    name: "Dr. K. Srinivas",
+    role: "STRATEGIC ADVISOR",
+    bio: "Former VP at Enterprise Systems, 20+ yrs scaling IT delivery",
+    section: "mentors",
+    img: svgDevaraj
+  },
+  {
+    id: 4,
+    name: "Rohan Verma",
+    role: "TECHNICAL ARCHITECT",
+    bio: "Distributed cloud infrastructure & scalable microservices mentor",
+    section: "mentors",
+    img: svgPadmavathi
+  },
+  {
+    id: 5,
+    name: "Ananya Sharma",
+    role: "HEAD OF DESIGN",
+    bio: "Leading creative UI/UX & cross-platform product experience",
+    section: "team",
+    img: svgPadmavathi
+  },
+  {
+    id: 6,
+    name: "Vikram R",
+    role: "LEAD FULL STACK ENGINEER",
+    bio: "Full stack ecosystem, React, Node.js & high throughput APIs",
+    section: "team",
+    img: svgDevaraj
+  }
+];
+
+const svgDCS = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="20" fill="#ffffff"/>
+  <path d="M18 48 L48 18 C52 14 58 14 62 18 L85 41 C89 45 89 51 85 55 L72 68 C68 72 62 72 58 68 L35 45" fill="none" stroke="#ea580c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="20" y="60" width="22" height="22" rx="4" fill="#f97316"/>
+  <circle cx="31" cy="71" r="5" fill="#ffffff"/>
+</svg>`);
+
+const svgMS = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#ede9fe"/>
+  <rect x="24" y="30" width="10" height="10" rx="2.5" fill="#7c3aed"/>
+  <rect x="42" y="32" width="34" height="6" rx="3" fill="#7c3aed"/>
+  <rect x="24" y="46" width="10" height="10" rx="2.5" fill="#7c3aed"/>
+  <rect x="42" y="48" width="34" height="6" rx="3" fill="#7c3aed"/>
+  <rect x="24" y="62" width="10" height="10" rx="2.5" fill="#7c3aed"/>
+  <rect x="42" y="64" width="26" height="6" rx="3" fill="#7c3aed"/>
+</svg>`);
+
+const svgBizConnect = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#fef3c7"/>
+  <rect x="26" y="52" width="11" height="26" rx="3" fill="#b45309"/>
+  <rect x="44" y="36" width="11" height="42" rx="3" fill="#b45309"/>
+  <rect x="62" y="24" width="11" height="54" rx="3" fill="#b45309"/>
+</svg>`);
+
+const svgCrezzle = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#ffedd5"/>
+  <rect x="32" y="22" width="36" height="56" rx="8" fill="none" stroke="#ea580c" stroke-width="6"/>
+  <circle cx="50" cy="68" r="3.5" fill="#ea580c"/>
+  <rect x="44" y="28" width="12" height="3" rx="1.5" fill="#ea580c"/>
+</svg>`);
+
+const svgTapForMeal = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#ea580c"/>
+  <circle cx="50" cy="50" r="28" fill="none" stroke="#ffffff" stroke-width="3" stroke-dasharray="4 4" opacity="0.6"/>
+  <path d="M48 30 C48 26 52 26 52 30 L52 48 L56 46 C58 45 61 46 62 48 L67 56 C68 58 68 60 67 62 L63 70 C61 74 57 76 52 76 L44 76 C38 76 34 71 34 65 L34 52 C34 49 37 49 37 52 L37 60 M44 48 L44 38 C44 35 48 35 48 38 L48 48" fill="#ffffff"/>
+</svg>`);
+
+const svgKLG = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#fff7ed"/>
+  <circle cx="50" cy="50" r="32" fill="none" stroke="#dc2626" stroke-width="3.5"/>
+  <path d="M30 42 C30 40 33 36 40 36 C48 36 50 42 50 48" stroke="#dc2626" stroke-width="2" fill="none"/>
+  <text x="50" y="58" font-family="'Times New Roman', serif, system-ui" font-size="24" font-weight="900" font-style="italic" text-anchor="middle" fill="#dc2626">klg</text>
+  <path d="M36 64 C42 67 58 67 64 64" stroke="#d97706" stroke-width="2" fill="none"/>
+</svg>`);
+
+const PALETTES = [
+  { bg: '#ede9fe', fg: '#7c3aed' },
+  { bg: '#fef3c7', fg: '#b45309' },
+  { bg: '#ffedd5', fg: '#ea580c' },
+  { bg: '#e0f2fe', fg: '#0284c7' },
+  { bg: '#dcfce7', fg: '#15803d' },
+  { bg: '#ffe4e6', fg: '#e11d48' },
+  { bg: '#f3e8ff', fg: '#9333ea' }
+];
+
+const generateFallbackIcon = (name) => {
+  const color = PALETTES[Math.abs(name.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % PALETTES.length];
+  const initials = name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'PR';
+  return makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+    <rect width="100" height="100" rx="22" fill="${color.bg}"/>
+    <text x="50" y="62" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" text-anchor="middle" fill="${color.fg}">${initials}</text>
+  </svg>`);
+};
+
+const INITIAL_PROJECTS = [
+  {
+    num: "01",
+    name: "DCS",
+    desc: "DCS related tasks",
+    date: "16 Aug 2024",
+    status: "in_progress",
+    img: svgDCS,
+    tasks: 28,
+    completed: 21
+  },
+  {
+    num: "02",
+    name: "MS",
+    desc: "DCS all softwares manager",
+    date: "30 May 2026",
+    status: "in_progress",
+    img: svgMS,
+    tasks: 19,
+    completed: 12
+  },
+  {
+    num: "03",
+    name: "BizConnect",
+    desc: "BizConnect is a mobile and cloud-based contact management and CR...",
+    fullDesc: "BizConnect is a mobile and cloud-based contact management and CRM platform designed for automated lead assignment, card scanning, and sales follow-ups.",
+    date: "07 Sept 2026",
+    status: "planning",
+    img: svgBizConnect,
+    tasks: 34,
+    completed: 8
+  },
+  {
+    num: "04",
+    name: "CrezzLe",
+    desc: "Mobile app for seamless, QR-code based document printing at nearb...",
+    fullDesc: "Mobile app for seamless, QR-code based document printing at nearby print hubs with instant payment and zero-queue pickup.",
+    date: "19 Mar 2025",
+    status: "completed",
+    img: svgCrezzle,
+    tasks: 15,
+    completed: 15
+  },
+  {
+    num: "05",
+    name: "Tap For Meal",
+    desc: "Self-service food ordering and automatic billing for modern restaurant...",
+    fullDesc: "Self-service food ordering and automatic billing for modern restaurant chains, food courts, and corporate dining halls.",
+    date: "15 May 2026",
+    status: "in_progress",
+    img: svgTapForMeal,
+    tasks: 42,
+    completed: 31
+  },
+  {
+    num: "06",
+    name: "KLG",
+    desc: "Self-service food ordering and automatic billing for Krishna Leela Gra...",
+    fullDesc: "Self-service food ordering and automatic billing for Krishna Leela Grand hospitality suites and multi-cuisine banquets.",
+    date: "16 Jun 2026",
+    status: "in_progress",
+    img: svgKLG,
+    tasks: 22,
+    completed: 14
+  }
 ];
 
 const NAV_ITEMS = [
@@ -120,8 +584,8 @@ const NAV_ITEMS = [
   { id: 'employees', name: 'Employees', icon: Users },
   { id: 'documents', name: 'Documents Validation', icon: ShieldCheck },
   { id: 'team', name: 'Team', icon: Briefcase },
-  { id: 'project-manager', name: 'Project Manager', icon: FolderKanban },
-  { id: 'access', name: 'Access', icon: Key }
+  { id: 'project-manager', name: 'Project Manager', icon: ClipboardList },
+  { id: 'access', name: 'Access', icon: LayoutGrid }
 ];
 
 export default function App() {
@@ -302,6 +766,71 @@ export default function App() {
   const [websiteSuccessAlert, setWebsiteSuccessAlert] = useState(null);
   const websiteSuccessTimerRef = useRef(null);
   const websiteFileInputRef = useRef(null);
+
+  // Employee Management State
+  const [empSection, setEmpSection] = useState('apps'); // 'apps', 'cand', 'rel', 'team'
+  const [empSearch, setEmpSearch] = useState('');
+  const [empRoleFilter, setEmpRoleFilter] = useState('All');
+  const [empStatusFilter, setEmpStatusFilter] = useState('All');
+  const [applicants, setApplicants] = useState(INITIAL_APPLICANTS);
+  const [viewingApplicant, setViewingApplicant] = useState(null);
+  const [schedulingApplicant, setSchedulingApplicant] = useState(null);
+  const [interviewMode, setInterviewMode] = useState(''); // 'offline' | 'online'
+  const [interviewAddress, setInterviewAddress] = useState('1st floor, 88, KR Defense Colony, Cheemasandra, Bengaluru, Karnataka, India - 560049');
+  const [interviewMeetingLink, setInterviewMeetingLink] = useState('');
+  const [interviewDateTime, setInterviewDateTime] = useState('');
+  const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
+  const [newMemberName, setNewMemberName] = useState('');
+  const [newMemberRole, setNewMemberRole] = useState('Employee');
+  const [newMemberPos, setNewMemberPos] = useState('');
+  const [newMemberEmail, setNewMemberEmail] = useState('');
+  const [newMemberPhone, setNewMemberPhone] = useState('');
+  const [newMemberExp, setNewMemberExp] = useState('0-2 yrs');
+
+  // Documents Validation State
+  const [docCandidates, setDocCandidates] = useState(INITIAL_DOC_CANDIDATES);
+  const [docFilterTab, setDocFilterTab] = useState('all');
+  const [docSearchQuery, setDocSearchQuery] = useState('');
+  const [docCategory, setDocCategory] = useState('all');
+  const [viewingDocCandidate, setViewingDocCandidate] = useState(null);
+  const [previewingDoc, setPreviewingDoc] = useState(null);
+
+  // Team Management State
+  const [teamMembers, setTeamMembers] = useState(INITIAL_TEAM_MEMBERS);
+  const [teamSearchQuery, setTeamSearchQuery] = useState('');
+  const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
+  const [editingMember, setEditingMember] = useState(null);
+  const [memberForm, setMemberForm] = useState({
+    name: '',
+    role: 'MANAGING DIRECTOR',
+    bio: '',
+    section: 'minds',
+    img: svgPadmavathi
+  });
+  const [deleteMemberTarget, setDeleteMemberTarget] = useState(null);
+
+  // Project Manager State
+  const [projects, setProjects] = useState(INITIAL_PROJECTS);
+  const [projectSearchQuery, setProjectSearchQuery] = useState('');
+  const [projectCategoryFilter, setProjectCategoryFilter] = useState('all');
+  const [isBoardView, setIsBoardView] = useState(false);
+  const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
+  const [viewingProjectDetail, setViewingProjectDetail] = useState(null);
+  const [deleteProjectTarget, setDeleteProjectTarget] = useState(null);
+  const [projectForm, setProjectForm] = useState({
+    name: '',
+    desc: '',
+    date: '16 Aug 2024',
+    status: 'in_progress',
+    img: svgDCS
+  });
+  const [openProjectMenuIndex, setOpenProjectMenuIndex] = useState(null);
+  // Access Management State
+  const [accessModalService, setAccessModalService] = useState(null);
+  const [accessMember, setAccessMember] = useState('Padmavathi H M');
+  const [accessRole, setAccessRole] = useState('Developer');
+  const [accessEnv, setAccessEnv] = useState('All Environments');
   // Common UI State
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [previewItem, setPreviewItem] = useState(null);
@@ -850,7 +1379,7 @@ export default function App() {
                 key={item.id}
                 title={item.name}
                 onClick={() => {
-                  if (item.id === 'banners' || item.id === 'gallery' || item.id === 'blogs' || item.id === 'contacts' || item.id === 'client-logos' || item.id === 'websites') {
+                  if (item.id === 'banners' || item.id === 'gallery' || item.id === 'blogs' || item.id === 'contacts' || item.id === 'client-logos' || item.id === 'websites' || item.id === 'employees' || item.id === 'documents' || item.id === 'team' || item.id === 'project-manager' || item.id === 'access') {
                     setActiveTab(item.id);
                   } else {
                     showToast(`${item.name} section`);
@@ -887,7 +1416,7 @@ export default function App() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Navbar */}
-        <header className="sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 h-14 border-b bd bg-white dark:bg-[#141a25]">
+        <header className="sticky top-0 z-30 flex items-center justify-between px-3.5 sm:px-6 h-14 border-b bd bg-white/85 dark:bg-[#141a25]/85 backdrop-blur-md">
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => {
@@ -897,19 +1426,19 @@ export default function App() {
                   setIsSidebarCollapsed((prev) => !prev);
                 }
               }}
-              className="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              className="btn w-9 h-9 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 touch-press transition"
               aria-label="Toggle sidebar"
               title="Toggle sidebar"
             >
-              <Menu className="w-4 h-4" />
+              <Menu className="w-4.5 h-4.5 sm:w-4 sm:h-4" />
             </button>
             <span className="text-[13.5px] font-bold tracking-tight">Admin Dashboard</span>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <button
               onClick={toggleTheme}
-              className="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              className="hidden sm:flex btn w-9 h-9 sm:w-8 sm:h-8 rounded-xl items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 touch-press transition"
               aria-label="Toggle theme"
             >
               {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
@@ -917,16 +1446,16 @@ export default function App() {
 
             <button
               onClick={() => showToast('Logout clicked')}
-              className="h-8 px-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-sm"
+              className="h-8.5 px-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-sm touch-press"
             >
               <LogOut className="w-3.5 h-3.5" />
-              Logout
+              <span>Logout</span>
             </button>
           </div>
         </header>
 
         {/* Main Content */}
-        <main className="max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 flex-1">
+        <main className="max-w-7xl w-full mx-auto px-3.5 sm:px-6 py-5 flex-1 pb-24 lg:pb-8">
           {/* ============================================================== */}
           {/* TAB 1: GALLERY MANAGEMENT                                      */}
           {/* ============================================================== */}
@@ -1399,29 +1928,31 @@ export default function App() {
           {/* ============================================================== */}
           {/* TAB 3: BLOG & ARTICLE MANAGEMENT                               */}
           {/* ============================================================== */}
+          {/* TAB 3: BLOG MANAGEMENT                                         */}
+          {/* ============================================================== */}
           {activeTab === 'blogs' && !isBlogEditorOpen && (
-            <div className="space-y-5 animate-fade-in">
+            <div className="space-y-4 sm:space-y-5 animate-fade-in">
               {/* Header Card */}
-              <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25]">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-start sm:items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-800 dark:text-slate-200 shrink-0">
-                      <FileText className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h1 className="text-[17px] font-bold tracking-tight text-[var(--tx)]">
+              <div className="card rounded-2xl p-4 sm:p-6 soft bg-white dark:bg-[#141a25]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg border border-blue-200 dark:border-blue-900/60 bg-blue-50/80 dark:bg-blue-950/40 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
+                        <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </div>
+                      <h1 className="text-[16px] sm:text-[17px] font-bold tracking-tight text-[var(--tx)]">
                         Blog & Article Management
                       </h1>
-                      <p className="text-[11.5px] text-[#64748b] mt-0.5">
-                        Write, optimize SEO, and publish blog articles for your company website
-                      </p>
                     </div>
+                    <p className="text-[11.5px] text-[#64748b] mt-1 sm:mt-0.5">
+                      Write, optimize SEO, and publish blog articles for your company website
+                    </p>
                   </div>
                   <button
                     onClick={handleOpenWriteBlog}
-                    className="w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] text-white bg-[#2563eb] hover:bg-blue-700 transition inline-flex items-center justify-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                    className="w-full sm:w-auto h-10 sm:h-9 px-4 rounded-xl sm:rounded-lg font-semibold text-[13px] sm:text-[12px] text-white bg-[#2563eb] hover:bg-blue-700 transition inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-95"
                   >
-                    <span className="text-sm font-bold leading-none">+</span>
+                    <span className="text-base font-bold leading-none">+</span>
                     Write Blog Post
                   </button>
                 </div>
@@ -1439,14 +1970,14 @@ export default function App() {
                       value={blogSearch}
                       onChange={(e) => setBlogSearch(e.target.value)}
                       placeholder="Search by title, summary..."
-                      className="w-full pl-9 pr-3 h-9 rounded-xl border bd text-[12.5px] bg-slate-50/50 dark:bg-slate-900/40 focus:outline-none focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-900 transition text-[var(--tx)] placeholder:text-slate-400"
+                      className="w-full pl-9 pr-3 h-10 sm:h-9 rounded-xl border bd text-[12.5px] bg-white dark:bg-[#141a25] focus:outline-none focus:border-indigo-500 transition text-[var(--tx)] placeholder:text-slate-400"
                     />
                   </div>
                   <div className="w-full sm:w-auto">
                     <select
                       value={blogStatusFilter}
                       onChange={(e) => setBlogStatusFilter(e.target.value)}
-                      className="w-full sm:w-44 h-9 px-3 rounded-xl border bd text-[12.5px] font-medium bg-white dark:bg-[#141a25] text-[var(--tx)] cursor-pointer focus:outline-none focus:border-indigo-500"
+                      className="w-full sm:w-44 h-10 sm:h-9 px-3 rounded-xl border bd text-[12.5px] font-medium bg-white dark:bg-[#141a25] text-[var(--tx)] cursor-pointer focus:outline-none focus:border-indigo-500"
                     >
                       <option value="all">All Statuses</option>
                       <option value="Published">Published</option>
@@ -1461,14 +1992,14 @@ export default function App() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b bd text-[11px] font-semibold text-slate-500 uppercase tracking-wider bg-slate-50/70 dark:bg-slate-900/50">
-                        <th className="py-3.5 px-4">Featured Image</th>
-                        <th className="py-3.5 px-4">Title</th>
-                        <th className="py-3.5 px-4">Author</th>
-                        <th className="py-3.5 px-4">Status</th>
-                        <th className="py-3.5 px-4">Tags</th>
-                        <th className="py-3.5 px-4 whitespace-nowrap">Published Date</th>
-                        <th className="py-3.5 px-4 text-right">Actions</th>
+                      <tr className="border-b bd text-[10.5px] sm:text-[11px] font-semibold text-slate-500 uppercase tracking-wider bg-slate-50/70 dark:bg-slate-900/50">
+                        <th className="py-3 px-3 sm:py-3.5 sm:px-4">Featured Image</th>
+                        <th className="py-3 px-3 sm:py-3.5 sm:px-4">Title</th>
+                        <th className="py-3 px-3 sm:py-3.5 sm:px-4">Author</th>
+                        <th className="py-3 px-3 sm:py-3.5 sm:px-4">Status</th>
+                        <th className="py-3.5 px-4 hidden lg:table-cell">Tags</th>
+                        <th className="py-3.5 px-4 whitespace-nowrap hidden lg:table-cell">Published Date</th>
+                        <th className="py-3.5 px-4 text-right hidden lg:table-cell">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y bd text-[12px]">
@@ -1490,43 +2021,46 @@ export default function App() {
                             className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition"
                           >
                             {/* Featured Image */}
-                            <td className="py-3.5 px-4 align-top">
+                            <td className="py-3 px-3 sm:py-3.5 sm:px-4 align-top w-20 sm:w-24">
                               {post.img ? (
                                 <img
                                   src={post.img}
                                   alt={post.title}
-                                  className="w-20 h-14 object-cover rounded-lg border bd"
+                                  className="w-16 h-12 sm:w-20 sm:h-14 object-cover rounded-lg border bd shadow-2xs"
                                 />
                               ) : (
-                                <div className="w-20 h-14 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-medium text-[11px] flex items-center justify-center border bd">
+                                <div className="w-16 h-12 sm:w-20 sm:h-14 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-medium text-[10.5px] sm:text-[11px] flex items-center justify-center border bd">
                                   No Image
                                 </div>
                               )}
                             </td>
 
                             {/* Title & Slug */}
-                            <td className="py-3.5 px-4 align-top">
-                              <h3 className="font-semibold text-[12.5px] text-[var(--tx)] max-w-sm line-clamp-2">
+                            <td className="py-3 px-3 sm:py-3.5 sm:px-4 align-top min-w-[130px] sm:min-w-0 max-w-xs">
+                              <h3
+                                onClick={() => handleEditBlog(post)}
+                                className="font-semibold text-[12px] sm:text-[12.5px] text-[var(--tx)] leading-snug cursor-pointer hover:text-blue-600 transition"
+                              >
                                 {post.title}
                               </h3>
-                              <p className="text-[11px] mu mt-0.5 max-w-sm truncate hover:underline cursor-pointer">
+                              <p className="text-[10px] sm:text-[11px] mu mt-1 break-all line-clamp-3">
                                 {post.slug}
                               </p>
                             </td>
 
                             {/* Author & Role */}
-                            <td className="py-3.5 px-4 align-top whitespace-nowrap">
-                              <div className="font-semibold text-slate-700 dark:text-slate-200">
+                            <td className="py-3 px-3 sm:py-3.5 sm:px-4 align-top whitespace-nowrap">
+                              <div className="font-semibold text-[12px] text-slate-700 dark:text-slate-200">
                                 {post.author}
                               </div>
-                              <div className="text-[11px] mu">{post.role}</div>
+                              <div className="text-[10.5px] sm:text-[11px] mu">{post.role}</div>
                             </td>
 
                             {/* Status */}
-                            <td className="py-3.5 px-4 align-top whitespace-nowrap">
-                              {post.status === 'Published' ? (
+                            <td className="py-3 px-3 sm:py-3.5 sm:px-4 align-top whitespace-nowrap">
+                              {post.status === 'Published' || post.status === 'Publish' ? (
                                 <span className="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#e6f9ed] text-[#16a34a] dark:bg-emerald-950/50 dark:text-emerald-400">
-                                  Published
+                                  Publish
                                 </span>
                               ) : (
                                 <span className="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
@@ -1536,7 +2070,7 @@ export default function App() {
                             </td>
 
                             {/* Tags */}
-                            <td className="py-3.5 px-4 align-top">
+                            <td className="py-3.5 px-4 align-top hidden lg:table-cell">
                               <div className="flex flex-wrap gap-1.5 max-w-[280px]">
                                 {post.tags.map((tag) => (
                                   <span
@@ -1550,12 +2084,12 @@ export default function App() {
                             </td>
 
                             {/* Published Date */}
-                            <td className="py-3.5 px-4 align-top text-slate-600 dark:text-slate-400 text-[11.5px] whitespace-nowrap">
+                            <td className="py-3.5 px-4 align-top text-slate-600 dark:text-slate-400 text-[11.5px] whitespace-nowrap hidden lg:table-cell">
                               {post.date}
                             </td>
 
                             {/* Actions */}
-                            <td className="py-3.5 px-4 align-top text-right whitespace-nowrap">
+                            <td className="py-3.5 px-4 align-top text-right whitespace-nowrap hidden lg:table-cell">
                               <div className="inline-flex items-center gap-1.5">
                                 <button
                                   onClick={() => handleEditBlog(post)}
@@ -2858,6 +3392,1663 @@ export default function App() {
               )}
             </div>
           )}
+
+{/* ============================================================== */}
+          {/* TAB 7: EMPLOYEE MANAGEMENT                                    */}
+          {/* ============================================================== */}
+          {activeTab === 'employees' && (
+            <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] space-y-5">
+              {/* Top Row: Title & Add Member */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm"
+                    style={{ background: 'linear-gradient(135deg, #ff9a3c, #ff7a45)' }}
+                  >
+                    <Users className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h1 className="text-[18px] sm:text-[20px] font-bold tracking-tight text-[var(--tx)]">Employee Management</h1>
+                    <p className="text-[11.5px] text-[#64748b] mt-0.5">
+                      Recruitment pipeline, applicant reviews, and team directory
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setIsAddMemberOpen(true)}
+                    className="h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition text-white shadow-sm hover:opacity-95 cursor-pointer bg-[#ea580c]"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Add Member</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* 4 Section Switcher Strip */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 border bd">
+                {[
+                  { id: 'apps', count: applicants.filter(a => a.section === 'apps').length, label: 'New Applications' },
+                  { id: 'cand', count: applicants.filter(a => a.section === 'cand').length, label: 'Candidate Applications' },
+                  { id: 'rel', count: applicants.filter(a => a.section === 'rel').length, label: 'Relieving Applications' },
+                  { id: 'team', count: 42, label: 'Team Directory' }
+                ].map((sec) => {
+                  const isSelected = empSection === sec.id;
+                  return (
+                    <button
+                      key={sec.id}
+                      onClick={() => setEmpSection(sec.id)}
+                      className={`py-2 px-3 rounded-xl text-center transition cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#ea580c] text-white shadow-xs'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-white/60 dark:hover:bg-slate-700/50'
+                      }`}
+                    >
+                      <b className="block text-[16px] font-black leading-tight">{sec.count}</b>
+                      <span className="block text-[11px] font-semibold mt-0.5 truncate">{sec.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Search & Filter Bar */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+                <div className="relative w-full sm:max-w-xs">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={empSearch}
+                    onChange={(e) => setEmpSearch(e.target.value)}
+                    placeholder="Search applicant or team member..."
+                    className="w-full h-9 pl-9 pr-3 rounded-xl border bd text-[12px] bg-slate-50/50 dark:bg-slate-900 text-[var(--tx)] focus:outline-none focus:border-[#ea580c]"
+                  />
+                </div>
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <select
+                    value={empRoleFilter}
+                    onChange={(e) => setEmpRoleFilter(e.target.value)}
+                    className="h-9 px-3 rounded-xl border bd text-[12px] font-medium bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#ea580c] cursor-pointer"
+                  >
+                    <option value="All">All Roles</option>
+                    <option value="Employee">Employee</option>
+                    <option value="Intern">Intern</option>
+                    <option value="Freelancer">Freelancer</option>
+                  </select>
+                  <select
+                    value={empStatusFilter}
+                    onChange={(e) => setEmpStatusFilter(e.target.value)}
+                    className="h-9 px-3 rounded-xl border bd text-[12px] font-medium bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#ea580c] cursor-pointer"
+                  >
+                    <option value="All">All Statuses</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="ACCEPTED">Accepted</option>
+                    <option value="INTERVIEW">Interview</option>
+                    <option value="REJECTED">Rejected</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Applicants Table matching media_1794549068671_dae32ffc.jpg */}
+              <div className="overflow-x-auto rounded-xl border bd">
+                <table className="w-full text-left text-[12px] border-collapse">
+                  <thead>
+                    <tr className="border-b bd bg-slate-50/80 dark:bg-slate-900/60 text-slate-400 text-[10.5px] font-bold uppercase tracking-wider">
+                      <th className="py-3 px-4">Applicant</th>
+                      <th className="py-3 px-3">Role</th>
+                      <th className="py-3 px-3">Position Applied</th>
+                      <th className="py-3 px-3">Experience / Qualification</th>
+                      <th className="py-3 px-3">Applied Date</th>
+                      <th className="py-3 px-3">Status</th>
+                      <th className="py-3 px-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y bd divide-slate-100 dark:divide-slate-800">
+                    {applicants
+                      .filter((a) => {
+                        if (empSection !== 'apps' && a.section !== empSection) return false;
+                        if (empRoleFilter !== 'All' && a.role !== empRoleFilter) return false;
+                        if (empStatusFilter !== 'All' && a.status !== empStatusFilter) return false;
+                        if (empSearch.trim()) {
+                          const q = empSearch.toLowerCase();
+                          return a.name.toLowerCase().includes(q) || a.email.toLowerCase().includes(q) || a.position.toLowerCase().includes(q);
+                        }
+                        return true;
+                      })
+                      .map((item) => {
+                        const avatarLetter = item.name.charAt(0).toUpperCase();
+                        const isPending = item.status === 'PENDING';
+                        const isAccepted = item.status === 'ACCEPTED';
+                        const isInterview = item.status === 'INTERVIEW';
+                        const isRejected = item.status === 'REJECTED';
+
+                        return (
+                          <tr key={item.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-900/30 transition">
+                            <td className="py-3 px-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                                  {avatarLetter}
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="font-bold text-[13px] text-slate-800 dark:text-slate-100 truncate">{item.name}</div>
+                                  <div className="text-[11px] text-slate-400 truncate flex items-center gap-1">
+                                    <Mail className="w-3 h-3 text-slate-400" />
+                                    <span>{item.email}</span>
+                                  </div>
+                                  {item.phone && (
+                                    <div className="text-[11px] text-slate-400 truncate flex items-center gap-1">
+                                      <Phone className="w-3 h-3 text-slate-400" />
+                                      <span>{item.phone}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="py-3 px-3">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10.5px] font-semibold bg-violet-50 text-violet-700 dark:bg-violet-950/40 dark:text-violet-300 border border-violet-100 dark:border-violet-900">
+                                <span className="w-1 h-1 rounded-full bg-violet-600"></span>
+                                {item.role}
+                              </span>
+                            </td>
+                            <td className="py-3 px-3">
+                              <span className="font-bold text-[12.5px] text-slate-800 dark:text-slate-200">{item.position}</span>
+                            </td>
+                            <td className="py-3 px-3">
+                              <div className="font-semibold text-slate-700 dark:text-slate-300">{item.experience}</div>
+                              {item.subExperience && (
+                                <div className="text-[10.5px] text-slate-400">{item.subExperience}</div>
+                              )}
+                            </td>
+                            <td className="py-3 px-3 text-slate-500 dark:text-slate-400 text-[11.5px]">
+                              • {item.date}
+                            </td>
+                            <td className="py-3 px-3">
+                              {isPending && (
+                                <span className="inline-block px-2.5 py-0.5 rounded-md text-[10.5px] font-bold tracking-wider uppercase bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200 dark:border-amber-900">
+                                  PENDING
+                                </span>
+                              )}
+                              {isAccepted && (
+                                <span className="inline-block px-2.5 py-0.5 rounded-md text-[10.5px] font-bold tracking-wider uppercase bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900">
+                                  ACCEPTED
+                                </span>
+                              )}
+                              {isInterview && (
+                                <span className="inline-block px-2.5 py-0.5 rounded-md text-[10.5px] font-bold tracking-wider uppercase bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 border border-blue-200 dark:border-blue-900">
+                                  INTERVIEW
+                                </span>
+                              )}
+                              {isRejected && (
+                                <span className="inline-block px-2.5 py-0.5 rounded-md text-[10.5px] font-bold tracking-wider uppercase bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 border border-rose-200 dark:border-rose-900">
+                                  REJECTED
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-3 px-4 text-right">
+                              <div className="inline-flex items-center gap-1.5 flex-wrap justify-end">
+                                <button
+                                  type="button"
+                                  onClick={() => setViewingApplicant(item)}
+                                  className="h-7 px-2 rounded-md border bd bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 font-semibold text-[11px] inline-flex items-center gap-1 cursor-pointer transition"
+                                >
+                                  <Eye className="w-3 h-3" />
+                                  <span>View</span>
+                                </button>
+                                {isPending ? (
+                                  <>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setSchedulingApplicant(item);
+                                        setInterviewMode('');
+                                      }}
+                                      className="h-7 px-2 rounded-md bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-semibold text-[11px] inline-flex items-center gap-1 cursor-pointer transition border border-indigo-200 dark:border-indigo-800"
+                                    >
+                                      <Calendar className="w-3 h-3" />
+                                      <span>Interview</span>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setApplicants(prev => prev.map(a => a.id === item.id ? { ...a, status: 'ACCEPTED' } : a));
+                                        showToast(`${item.name} marked as ACCEPTED`);
+                                      }}
+                                      className="h-7 px-2 rounded-md bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 font-semibold text-[11px] cursor-pointer transition border border-emerald-200 dark:border-emerald-800"
+                                    >
+                                      Accept
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setApplicants(prev => prev.map(a => a.id === item.id ? { ...a, status: 'REJECTED' } : a));
+                                        showToast(`${item.name} rejected`);
+                                      }}
+                                      className="h-7 px-2 rounded-md bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 font-semibold text-[11px] cursor-pointer transition border border-rose-200 dark:border-rose-800"
+                                    >
+                                      Reject
+                                    </button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setSchedulingApplicant(item);
+                                        setInterviewMode('');
+                                      }}
+                                      className="h-7 px-2 rounded-md bg-violet-50 hover:bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300 font-semibold text-[11px] inline-flex items-center gap-1 cursor-pointer transition border border-violet-200 dark:border-violet-800"
+                                    >
+                                      <Calendar className="w-3 h-3" />
+                                      <span>Interviewed</span>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setApplicants(prev => prev.map(a => a.id === item.id ? { ...a, status: 'REJECTED' } : a));
+                                        showToast(`${item.name} rejected`);
+                                      }}
+                                      className="h-7 px-2 rounded-md bg-rose-600 hover:bg-rose-700 text-white font-semibold text-[11px] inline-flex items-center gap-1 cursor-pointer transition shadow-xs"
+                                    >
+                                      <X className="w-3 h-3" />
+                                      <span>Reject</span>
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* ============================================================== */}
+          {/* TAB 8: DOCUMENTS VALIDATION                                    */}
+          {/* ============================================================== */}
+          {activeTab === 'documents' && (
+            viewingDocCandidate ? (
+              <div className="space-y-5">
+                {/* Candidate Detail Header Card */}
+                <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-black text-lg shrink-0 shadow-xs">
+                      {viewingDocCandidate.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h2 className="text-[18px] sm:text-[20px] font-extrabold text-[var(--tx)]">{viewingDocCandidate.name}</h2>
+                        <span className="text-[10.5px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded uppercase">
+                          {viewingDocCandidate.din}
+                        </span>
+                        <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200/80">
+                          {viewingDocCandidate.roleType}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-1 flex-wrap">
+                        <span className="font-medium">{viewingDocCandidate.position}</span>
+                        <span>•</span>
+                        <span className="inline-flex items-center gap-1 text-slate-400">
+                          <Lock className="w-3.5 h-3.5 text-slate-400" />
+                          <span>{viewingDocCandidate.email}</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2.5 self-start sm:self-center">
+                    <button
+                      type="button"
+                      onClick={() => setViewingDocCandidate(null)}
+                      className="h-9 px-4 rounded-xl font-bold text-[12.5px] text-white bg-[#4f46e5] hover:bg-[#4338ca] transition inline-flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      <span>Back to Candidates</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 8 Documents Grid (Exact replica of media_1794554914892_269fce53.jpg) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {(viewingDocCandidate.docItems || SAMPLE_8_DOCS).map((doc) => (
+                    <div
+                      key={doc.id}
+                      className="card rounded-2xl p-5 bg-white dark:bg-[#141a25] soft border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between transition hover:shadow-sm"
+                    >
+                      <div>
+                        {/* Top Row: Icon, Title/Version, Status Badge */}
+                        <div className="flex items-start justify-between gap-2.5">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 border border-purple-100 dark:border-purple-900/60 shadow-2xs">
+                              {doc.iconType === 'handshake' ? (
+                                <Briefcase className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                              ) : doc.iconType === 'id' ? (
+                                <Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                              ) : doc.iconType === 'award' ? (
+                                <Bookmark className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                              ) : doc.iconType === 'check' ? (
+                                <CheckCircle2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                              ) : doc.iconType === 'hourglass' ? (
+                                <Clock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                              ) : (
+                                <FileText className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                              )}
+                            </div>
+                            <div className="min-w-0">
+                              <h4 className="font-bold text-[14px] text-slate-800 dark:text-slate-100 leading-tight truncate">{doc.name}</h4>
+                              <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">{doc.version}</p>
+                            </div>
+                          </div>
+
+                          {doc.isDelivered ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shrink-0">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                              <Check className="w-3 h-3 text-emerald-600 stroke-[3]" />
+                              <span>Delivered To Candidate</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 shrink-0">
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                              <span>Draft (Not Submitted)</span>
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Timeline Details (if delivered / submitted) */}
+                        {doc.isDelivered && (
+                          <div className="mt-4 pt-3 border-t bd space-y-1.5 text-[11px] text-slate-600 dark:text-slate-300">
+                            <div className="flex items-center gap-2">
+                              <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span>Submitted: {doc.submitted}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-slate-700 dark:text-slate-200 shrink-0" />
+                              <span>Reviewed: {doc.reviewed}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <SendIcon className="w-3.5 h-3.5 text-slate-800 dark:text-slate-100 shrink-0" />
+                              <span>Delivered: {doc.delivered}</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Action Buttons Matching Reference Image */}
+                      <div className="mt-4 pt-3 border-t bd flex items-center justify-between gap-2 flex-wrap">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <button
+                            type="button"
+                            onClick={() => setPreviewingDoc({ doc, candidate: viewingDocCandidate })}
+                            className="h-8 px-2.5 rounded-lg border bd bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold inline-flex items-center gap-1 transition cursor-pointer shadow-2xs"
+                          >
+                            <Eye className="w-3.5 h-3.5 text-slate-500" />
+                            <span>Preview</span>
+                          </button>
+
+                          {doc.isDelivered && (
+                            <>
+                              <span className="h-8 px-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-semibold inline-flex items-center gap-1">
+                                <Check className="w-3 h-3 text-emerald-600 stroke-[3]" />
+                                <span>Sent to HR for Delivery</span>
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => showToast(`Downloading ${doc.name} for ${viewingDocCandidate.name}...`)}
+                                className="h-8 px-2.5 rounded-lg border bd bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold inline-flex items-center gap-1 transition cursor-pointer shadow-2xs"
+                              >
+                                <Download className="w-3.5 h-3.5 text-slate-500" />
+                                <span>Download</span>
+                              </button>
+                            </>
+                          )}
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => showToast(`Version history: ${doc.version} is active and certified`)}
+                          className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 flex items-center justify-center transition cursor-pointer"
+                          title="Version History"
+                        >
+                          <RotateCw className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-5">
+              {/* Top Header Card Matching media_1794552853854_cb431337.jpg */}
+              <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-start sm:items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0 shadow-xs">
+                    <ShieldCheck className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <h1 className="text-[20px] sm:text-[22px] font-extrabold tracking-tight text-[var(--tx)]">Documents Validation</h1>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800">
+                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                        <span>Main Admin Approver</span>
+                      </span>
+                    </div>
+                    <p className="text-[12px] text-slate-500 dark:text-slate-400 mt-1">
+                      Automated Document Certification, Main Admin Validation & Official Candidate Delivery Workflow
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2.5 self-start sm:self-center">
+                  <button
+                    type="button"
+                    onClick={() => showToast('Validation Settings')}
+                    className="h-9 px-3.5 rounded-xl border bd bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-700 dark:text-slate-200 text-xs font-semibold inline-flex items-center gap-1.5 transition cursor-pointer shadow-xs"
+                  >
+                    <Settings className="w-3.5 h-3.5 text-slate-500" />
+                    <span>Settings</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDocCandidates([...INITIAL_DOC_CANDIDATES]);
+                      showToast('Documents data refreshed');
+                    }}
+                    className="h-9 px-3.5 rounded-xl border bd bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-700 dark:text-slate-200 text-xs font-semibold inline-flex items-center gap-1.5 transition cursor-pointer shadow-xs"
+                  >
+                    <RotateCw className="w-3.5 h-3.5 text-slate-500" />
+                    <span>Refresh</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* 5 Summary KPI Cards Matching Reference Image */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+                {/* 1: Awaiting Validation */}
+                <div className="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-amber-400 soft flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center shrink-0 border border-amber-100 dark:border-amber-900/60">
+                    <Clock className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">AWAITING VALIDATION</span>
+                    <div className="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1">2</div>
+                    <span className="text-[10.5px] text-slate-400 block truncate">0 submitted in last 24h</span>
+                  </div>
+                </div>
+
+                {/* 2: Sent to HR for Correction */}
+                <div className="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-rose-500 soft flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-500 flex items-center justify-center shrink-0 border border-rose-100 dark:border-rose-900/60">
+                    <AlertTriangle className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">SENT TO HR FOR CORRECTION</span>
+                    <div className="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1">0</div>
+                    <span className="text-[10.5px] text-slate-400 block truncate">Needs HR review & correction</span>
+                  </div>
+                </div>
+
+                {/* 3: Validated & Sent to HR */}
+                <div className="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-emerald-500 soft flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 flex items-center justify-center shrink-0 border border-emerald-100 dark:border-emerald-900/60">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">VALIDATED & SENT TO HR</span>
+                    <div className="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1">3</div>
+                    <span className="text-[10.5px] text-slate-400 block truncate">Awaiting HR Candidate Dispatch</span>
+                  </div>
+                </div>
+
+                {/* 4: Sent to Candidate */}
+                <div className="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-blue-500 soft flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-500 flex items-center justify-center shrink-0 border border-blue-100 dark:border-blue-900/60">
+                    <SendIcon className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">SENT TO CANDIDATE</span>
+                    <div className="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1">5</div>
+                    <span className="text-[10.5px] text-slate-400 block truncate">Delivered to candidate's email</span>
+                  </div>
+                </div>
+
+                {/* 5: Delivery / Issues */}
+                <div className="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-slate-300 dark:border-slate-700 soft flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700">
+                    <XCircle className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">DELIVERY / ISSUES</span>
+                    <div className="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1">0</div>
+                    <span className="text-[10.5px] text-slate-400 block truncate">Retry available</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Search & Filter Card */}
+              <div className="card rounded-2xl p-4 soft bg-white dark:bg-[#141a25] space-y-3.5">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div className="relative w-full sm:max-w-md">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={docSearchQuery}
+                      onChange={(e) => setDocSearchQuery(e.target.value)}
+                      placeholder="Search by Employee ID, Name, Email, Job Title..."
+                      className="w-full h-10 pl-9 pr-3.5 rounded-xl border bd text-[12.5px] bg-slate-50/50 dark:bg-slate-900 text-[var(--tx)] focus:outline-none focus:border-indigo-500 placeholder:text-slate-400"
+                    />
+                  </div>
+                  <div className="w-full sm:w-auto">
+                    <select
+                      value={docCategory}
+                      onChange={(e) => setDocCategory(e.target.value)}
+                      className="w-full sm:w-auto h-10 px-3.5 rounded-xl border bd text-[12.5px] font-medium bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 focus:outline-none focus:border-indigo-500 cursor-pointer"
+                    >
+                      <option value="all">All Employment Categories</option>
+                      <option value="Intern">Intern</option>
+                      <option value="Employee">Employee</option>
+                      <option value="Freelancer">Freelancer</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Filter Tabs Strip */}
+                <div className="bg-slate-100/70 dark:bg-slate-800/60 p-1 rounded-xl flex items-center gap-1 overflow-x-auto">
+                  {DOC_FILTER_TABS.map((tab) => {
+                    const isActive = docFilterTab === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setDocFilterTab(tab.id)}
+                        className={`h-8 px-3 rounded-lg text-[12px] whitespace-nowrap transition cursor-pointer ${
+                          isActive
+                            ? 'bg-[#4f46e5] text-white shadow-xs font-semibold'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Candidate Document Cards Grid (3 Columns) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {docCandidates
+                  .filter((item) => {
+                    if (docCategory !== 'all' && item.category !== docCategory) return false;
+                    if (docFilterTab !== 'all' && item.statusFilter !== docFilterTab) return false;
+                    if (docSearchQuery.trim()) {
+                      const q = docSearchQuery.toLowerCase();
+                      return (
+                        item.name.toLowerCase().includes(q) ||
+                        item.din.toLowerCase().includes(q) ||
+                        item.email.toLowerCase().includes(q) ||
+                        item.position.toLowerCase().includes(q)
+                      );
+                    }
+                    return true;
+                  })
+                  .map((item) => {
+                    const avatarLetter = item.name.charAt(0).toUpperCase();
+
+                    return (
+                      <div
+                        key={item.id}
+                        className="card rounded-2xl p-5 soft bg-white dark:bg-[#141a25] border bd hover:border-indigo-300 dark:hover:border-indigo-700 transition flex flex-col justify-between"
+                      >
+                        <div>
+                          {/* Card Top: Avatar, Name, DIN, Role Badge */}
+                          <div className="flex items-start justify-between gap-2.5">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-300 flex items-center justify-center font-black text-base shrink-0 border border-purple-100 dark:border-purple-900/60">
+                                {avatarLetter}
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <h3 className="font-bold text-[15px] text-slate-900 dark:text-slate-100 leading-tight">{item.name}</h3>
+                                  <span className="text-[10px] font-bold text-slate-500 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded uppercase">
+                                    {item.din}
+                                  </span>
+                                </div>
+                                <p className="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">{item.position}</p>
+                              </div>
+                            </div>
+                            <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200/80 dark:border-purple-800 shrink-0">
+                              {item.roleType}
+                            </span>
+                          </div>
+
+                          {/* Email with Lock icon */}
+                          <div className="mt-3 text-[11.5px] text-slate-400 flex items-center gap-1.5">
+                            <Lock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <span className="truncate">{item.email}</span>
+                          </div>
+
+                          {/* 4-Stat Metric Box */}
+                          <div className="mt-4 grid grid-cols-4 rounded-xl bg-slate-50 dark:bg-slate-900/80 border bd p-2.5 text-center gap-1">
+                            <div>
+                              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tight block">AWAITING</span>
+                              <b className="text-[13px] font-black text-slate-800 dark:text-slate-100 mt-0.5 block">{item.stats.awaiting}</b>
+                            </div>
+                            <div>
+                              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tight block">SENT TO HR</span>
+                              <b className="text-[13px] font-black text-slate-800 dark:text-slate-100 mt-0.5 block">{item.stats.sentToHr}</b>
+                            </div>
+                            <div>
+                              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tight block">VALIDATED</span>
+                              <b className="text-[13px] font-black text-slate-800 dark:text-slate-100 mt-0.5 block">{item.stats.validated}</b>
+                            </div>
+                            <div>
+                              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tight block">SENT TO CANDIDATE</span>
+                              <b className={`text-[13px] font-black mt-0.5 block ${item.stats.sentToCandidate > 0 ? 'text-blue-600 dark:text-blue-400' : 'text-slate-800 dark:text-slate-100'}`}>
+                                {item.stats.sentToCandidate}
+                              </b>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* View Documents Button */}
+                        <div className="mt-4 pt-2">
+                          <button
+                            type="button"
+                            onClick={() => setViewingDocCandidate(item)}
+                            className="w-full h-10 rounded-xl bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold text-[12.5px] flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs active:scale-[0.98]"
+                          >
+                            <span>View Documents ({item.totalDocs})</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+
+              {docCandidates.length === 0 && (
+                <div className="card rounded-2xl p-10 text-center soft bg-white dark:bg-[#141a25]">
+                  <p className="text-base font-semibold">No records found</p>
+                  <p className="text-xs text-slate-400 mt-1">Try adjusting your search or category filters.</p>
+                </div>
+              )}
+            </div>
+            )
+          )}
+
+          {activeTab === 'team' && (
+            <div className="space-y-6">
+              {/* Top Header Card */}
+              <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3.5">
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm"
+                    style={{ background: 'linear-gradient(135deg, #ff9a3c, #ff7a45)' }}
+                  >
+                    <Users className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h1 className="text-[18px] sm:text-[20px] font-bold tracking-tight text-[var(--tx)]">
+                      About Us &amp; Team Management
+                    </h1>
+                    <p className="text-[11.5px] text-[#64748b] dark:text-slate-400 mt-0.5">
+                      Manage content across The Minds Behind Dev Creations, Mentors, and Team sections
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingMember(null);
+                      setMemberForm({
+                        name: '',
+                        role: '',
+                        bio: '',
+                        section: 'team',
+                        img: ''
+                      });
+                      setIsTeamModalOpen(true);
+                    }}
+                    className="h-9 px-4 rounded-lg font-semibold text-[12.5px] inline-flex items-center justify-center gap-1.5 transition text-white shadow-sm hover:opacity-95 cursor-pointer bg-[#ea580c] active:scale-95"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Add Member</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Add / Edit Member Inline Card (Matches media_1794560131461_2d8e410e.png) */}
+              {isTeamModalOpen && (
+                <div className="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd animate-scale-up shadow-sm">
+                  {/* Orange Header Bar */}
+                  <div className="bg-[#ea580c] px-6 py-4 flex items-center justify-between text-white">
+                    <div>
+                      <h2 className="text-[17px] font-bold">
+                        {editingMember ? 'Edit Member' : 'Add New Member'}
+                      </h2>
+                      <p className="text-[12px] text-white/80 mt-0.5">
+                        Fill in member details and photo below
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsTeamModalOpen(false)}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center text-white/80 hover:text-white hover:bg-black/10 transition cursor-pointer"
+                      title="Close"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Card Body */}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!memberForm.name.trim()) {
+                        showToast('Please enter member name');
+                        return;
+                      }
+                      if (!memberForm.role.trim()) {
+                        showToast('Please enter member designation');
+                        return;
+                      }
+                      if (editingMember) {
+                        setTeamMembers(prev => prev.map(m => m.id === editingMember.id ? { ...m, ...memberForm } : m));
+                        showToast('Member updated successfully');
+                      } else {
+                        const newM = {
+                          id: Date.now(),
+                          ...memberForm,
+                          img: memberForm.img || svgPadmavathi
+                        };
+                        setTeamMembers(prev => [...prev, newM]);
+                        showToast('Member added successfully');
+                      }
+                      setIsTeamModalOpen(false);
+                    }}
+                    className="p-6 space-y-5"
+                  >
+                    {/* 3 Columns Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* Target Section / Category */}
+                      <div>
+                        <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                          Target Section / Category *
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={memberForm.section}
+                            onChange={(e) => setMemberForm({ ...memberForm, section: e.target.value })}
+                            className="w-full h-10 px-3.5 pr-8 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] font-medium focus:outline-none focus:border-[#ea580c] cursor-pointer appearance-none shadow-2xs"
+                          >
+                            <option value="team">Team</option>
+                            <option value="minds">The Minds Behind Dev Creations</option>
+                            <option value="mentors">Mentors &amp; Strategic Advisors</option>
+                          </select>
+                          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+                            <ChevronDown className="w-4 h-4" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Full Name */}
+                      <div>
+                        <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                          Full Name *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={memberForm.name}
+                          onChange={(e) => setMemberForm({ ...memberForm, name: e.target.value })}
+                          placeholder="e.g. Devaraj H M, Sai Venkat"
+                          className="w-full h-10 px-3.5 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] placeholder:text-slate-400 focus:outline-none focus:border-[#ea580c] shadow-2xs"
+                        />
+                      </div>
+
+                      {/* Position / Designation */}
+                      <div>
+                        <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                          Position / Designation *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={memberForm.role}
+                          onChange={(e) => setMemberForm({ ...memberForm, role: e.target.value })}
+                          placeholder="e.g. MANAGING DIRECTOR, TECHNICAL ADVISOR"
+                          className="w-full h-10 px-3.5 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] placeholder:text-slate-400 focus:outline-none focus:border-[#ea580c] shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Member Photo / Avatar */}
+                    <div>
+                      <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+                        Member Photo / Avatar
+                      </label>
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 rounded-full border-2 border-dashed border-indigo-200 dark:border-indigo-800 bg-slate-50 dark:bg-slate-900 flex items-center justify-center text-slate-400 shrink-0 overflow-hidden">
+                          {memberForm.img ? (
+                            <img src={memberForm.img} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <ImageIcon className="w-7 h-7 text-slate-400" />
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="h-8 px-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#141a25] hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-[12px] inline-flex items-center gap-1.5 cursor-pointer transition shadow-2xs">
+                            <Upload className="w-3.5 h-3.5 text-slate-600 dark:text-slate-300" />
+                            <span>Choose Photo</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onload = (ev) => {
+                                    setMemberForm(prev => ({ ...prev, img: ev.target?.result }));
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }}
+                              className="hidden"
+                            />
+                          </label>
+                          <p className="text-[11px] text-slate-400 mt-1.5">
+                            Supported formats: PNG, JPG, JPEG (Max: 5MB)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bio / Description (Optional) */}
+                    <div>
+                      <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                        Bio / Description (Optional)
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={memberForm.bio}
+                        onChange={(e) => setMemberForm({ ...memberForm, bio: e.target.value })}
+                        placeholder="Enter member bio or description..."
+                        className="w-full p-3.5 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] placeholder:text-slate-400 focus:outline-none focus:border-[#ea580c] resize-y min-h-[90px] shadow-2xs"
+                      />
+                    </div>
+
+                    {/* Action Buttons (Right-aligned) */}
+                    <div className="flex items-center justify-end gap-3 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsTeamModalOpen(false)}
+                        className="px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold text-[13px] transition cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-5 py-2.5 rounded-xl bg-[#ea580c] hover:bg-[#c2410c] text-white font-semibold text-[13px] transition cursor-pointer shadow-xs active:scale-95"
+                      >
+                        Save Member
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {/* Search Bar */}
+              <div className="relative w-full sm:max-w-md">
+                <input
+                  type="text"
+                  value={teamSearchQuery}
+                  onChange={(e) => setTeamSearchQuery(e.target.value)}
+                  placeholder="Search members by name or title..."
+                  className="w-full h-10 px-4 rounded-xl border bd bg-white dark:bg-[#141a25] text-slate-800 dark:text-slate-100 text-[13px] placeholder:text-slate-400 focus:outline-none focus:border-[#ea580c] shadow-2xs"
+                />
+              </div>
+
+              {/* SECTION 1: The Minds Behind Dev Creations */}
+              <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] space-y-5">
+                <div className="flex items-center justify-between pb-3 border-b bd">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-[#ea580c] flex items-center justify-center border border-orange-100 dark:border-orange-900/60 shadow-2xs">
+                      <Users className="w-4.5 h-4.5" />
+                    </div>
+                    <h2 className="text-[16px] sm:text-[17px] font-bold text-slate-900 dark:text-slate-100">
+                      The Minds Behind Dev Creations
+                    </h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingMember(null);
+                      setMemberForm({
+                        name: '',
+                        role: 'MANAGING DIRECTOR',
+                        bio: '',
+                        section: 'minds',
+                        img: svgPadmavathi
+                      });
+                      setIsTeamModalOpen(true);
+                    }}
+                    className="h-8 px-3 rounded-lg border border-orange-200 dark:border-orange-900/60 bg-orange-50/60 dark:bg-orange-950/40 hover:bg-orange-100/70 text-[#ea580c] text-[11.5px] font-bold inline-flex items-center gap-1 transition cursor-pointer"
+                  >
+                    <span>+ Add Mind</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {teamMembers
+                    .filter(
+                      (m) =>
+                        m.section === 'minds' &&
+                        (!teamSearchQuery ||
+                          m.name.toLowerCase().includes(teamSearchQuery.toLowerCase()) ||
+                          m.role.toLowerCase().includes(teamSearchQuery.toLowerCase()) ||
+                          (m.bio && m.bio.toLowerCase().includes(teamSearchQuery.toLowerCase())))
+                    )
+                    .map((m) => (
+                      <div
+                        key={m.id}
+                        className="card rounded-2xl p-5 bg-white dark:bg-[#141a25] border border-slate-200/90 dark:border-slate-800 soft flex flex-col items-center text-center relative hover:shadow-md transition"
+                      >
+                        {/* Top Right Action Buttons */}
+                        <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingMember(m);
+                              setMemberForm({
+                                name: m.name,
+                                role: m.role,
+                                bio: m.bio || '',
+                                section: m.section,
+                                img: m.img
+                              });
+                              setIsTeamModalOpen(true);
+                            }}
+                            className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center transition cursor-pointer"
+                            title="Edit Member"
+                          >
+                            <EditIcon className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeleteMemberTarget(m)}
+                            className="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 text-rose-500 hover:text-rose-700 flex items-center justify-center transition cursor-pointer"
+                            title="Delete Member"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        {/* Circular Avatar with Warm Ring */}
+                        <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#fffbeb] dark:border-amber-950/40 shadow-xs mb-3.5 mt-1 flex items-center justify-center bg-amber-50 shrink-0">
+                          <img src={m.img} alt={m.name} className="w-full h-full object-cover select-none" />
+                        </div>
+
+                        {/* Name */}
+                        <h3 className="font-bold text-[15px] text-slate-900 dark:text-slate-100 mb-1.5 leading-snug">
+                          {m.name}
+                        </h3>
+
+                        {/* Role Badge */}
+                        <div className="mb-1">
+                          <span className="inline-block px-3 py-0.5 rounded-full text-[10px] font-extrabold tracking-wider uppercase bg-[#fff7ed] text-[#ea580c] dark:bg-orange-950/50 dark:text-orange-400 border border-[#ffedd5] dark:border-orange-900/60">
+                            {m.role}
+                          </span>
+                        </div>
+
+                        {/* Bio / Subtitle */}
+                        {m.bio ? (
+                          <p className="text-[11.5px] text-slate-500 dark:text-slate-400 mt-2 line-clamp-2 max-w-[220px]">
+                            {m.bio}
+                          </p>
+                        ) : null}
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              {/* SECTION 2: Mentors & Strategic Advisors */}
+              <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] space-y-5">
+                <div className="flex items-center justify-between pb-3 border-b bd">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 flex items-center justify-center border border-indigo-100 dark:border-indigo-900/60 shadow-2xs">
+                      <Bookmark className="w-4.5 h-4.5" />
+                    </div>
+                    <h2 className="text-[16px] sm:text-[17px] font-bold text-slate-900 dark:text-slate-100">
+                      Mentors &amp; Strategic Advisors
+                    </h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingMember(null);
+                      setMemberForm({
+                        name: '',
+                        role: 'STRATEGIC ADVISOR',
+                        bio: '',
+                        section: 'mentors',
+                        img: svgDevaraj
+                      });
+                      setIsTeamModalOpen(true);
+                    }}
+                    className="h-8 px-3 rounded-lg border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/60 dark:bg-indigo-950/40 hover:bg-indigo-100/70 text-indigo-600 dark:text-indigo-400 text-[11.5px] font-bold inline-flex items-center gap-1 transition cursor-pointer"
+                  >
+                    <span>+ Add Mentor</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {teamMembers
+                    .filter(
+                      (m) =>
+                        m.section === 'mentors' &&
+                        (!teamSearchQuery ||
+                          m.name.toLowerCase().includes(teamSearchQuery.toLowerCase()) ||
+                          m.role.toLowerCase().includes(teamSearchQuery.toLowerCase()) ||
+                          (m.bio && m.bio.toLowerCase().includes(teamSearchQuery.toLowerCase())))
+                    )
+                    .map((m) => (
+                      <div
+                        key={m.id}
+                        className="card rounded-2xl p-5 bg-white dark:bg-[#141a25] border border-slate-200/90 dark:border-slate-800 soft flex flex-col items-center text-center relative hover:shadow-md transition"
+                      >
+                        <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingMember(m);
+                              setMemberForm({
+                                name: m.name,
+                                role: m.role,
+                                bio: m.bio || '',
+                                section: m.section,
+                                img: m.img
+                              });
+                              setIsTeamModalOpen(true);
+                            }}
+                            className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center transition cursor-pointer"
+                            title="Edit Member"
+                          >
+                            <EditIcon className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeleteMemberTarget(m)}
+                            className="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 text-rose-500 hover:text-rose-700 flex items-center justify-center transition cursor-pointer"
+                            title="Delete Member"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#fffbeb] dark:border-amber-950/40 shadow-xs mb-3.5 mt-1 flex items-center justify-center bg-amber-50 shrink-0">
+                          <img src={m.img} alt={m.name} className="w-full h-full object-cover select-none" />
+                        </div>
+
+                        <h3 className="font-bold text-[15px] text-slate-900 dark:text-slate-100 mb-1.5 leading-snug">
+                          {m.name}
+                        </h3>
+
+                        <div className="mb-1">
+                          <span className="inline-block px-3 py-0.5 rounded-full text-[10px] font-extrabold tracking-wider uppercase bg-[#eef2ff] text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/60">
+                            {m.role}
+                          </span>
+                        </div>
+
+                        {m.bio ? (
+                          <p className="text-[11.5px] text-slate-500 dark:text-slate-400 mt-2 line-clamp-2 max-w-[220px]">
+                            {m.bio}
+                          </p>
+                        ) : null}
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              {/* SECTION 3: Core Engineering & Operations Team */}
+              <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] space-y-5">
+                <div className="flex items-center justify-between pb-3 border-b bd">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 flex items-center justify-center border border-emerald-100 dark:border-emerald-900/60 shadow-2xs">
+                      <Briefcase className="w-4.5 h-4.5" />
+                    </div>
+                    <h2 className="text-[16px] sm:text-[17px] font-bold text-slate-900 dark:text-slate-100">
+                      Core Engineering &amp; Operations Team
+                    </h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingMember(null);
+                      setMemberForm({
+                        name: '',
+                        role: 'LEAD ENGINEER',
+                        bio: '',
+                        section: 'team',
+                        img: svgPadmavathi
+                      });
+                      setIsTeamModalOpen(true);
+                    }}
+                    className="h-8 px-3 rounded-lg border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/60 dark:bg-emerald-950/40 hover:bg-emerald-100/70 text-emerald-600 dark:text-emerald-400 text-[11.5px] font-bold inline-flex items-center gap-1 transition cursor-pointer"
+                  >
+                    <span>+ Add Team Member</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {teamMembers
+                    .filter(
+                      (m) =>
+                        m.section === 'team' &&
+                        (!teamSearchQuery ||
+                          m.name.toLowerCase().includes(teamSearchQuery.toLowerCase()) ||
+                          m.role.toLowerCase().includes(teamSearchQuery.toLowerCase()) ||
+                          (m.bio && m.bio.toLowerCase().includes(teamSearchQuery.toLowerCase())))
+                    )
+                    .map((m) => (
+                      <div
+                        key={m.id}
+                        className="card rounded-2xl p-5 bg-white dark:bg-[#141a25] border border-slate-200/90 dark:border-slate-800 soft flex flex-col items-center text-center relative hover:shadow-md transition"
+                      >
+                        <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingMember(m);
+                              setMemberForm({
+                                name: m.name,
+                                role: m.role,
+                                bio: m.bio || '',
+                                section: m.section,
+                                img: m.img
+                              });
+                              setIsTeamModalOpen(true);
+                            }}
+                            className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center transition cursor-pointer"
+                            title="Edit Member"
+                          >
+                            <EditIcon className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeleteMemberTarget(m)}
+                            className="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 text-rose-500 hover:text-rose-700 flex items-center justify-center transition cursor-pointer"
+                            title="Delete Member"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#fffbeb] dark:border-amber-950/40 shadow-xs mb-3.5 mt-1 flex items-center justify-center bg-amber-50 shrink-0">
+                          <img src={m.img} alt={m.name} className="w-full h-full object-cover select-none" />
+                        </div>
+
+                        <h3 className="font-bold text-[15px] text-slate-900 dark:text-slate-100 mb-1.5 leading-snug">
+                          {m.name}
+                        </h3>
+
+                        <div className="mb-1">
+                          <span className="inline-block px-3 py-0.5 rounded-full text-[10px] font-extrabold tracking-wider uppercase bg-[#ecfdf5] text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/60">
+                            {m.role}
+                          </span>
+                        </div>
+
+                        {m.bio ? (
+                          <p className="text-[11.5px] text-slate-500 dark:text-slate-400 mt-2 line-clamp-2 max-w-[220px]">
+                            {m.bio}
+                          </p>
+                        ) : null}
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'project-manager' && (
+            <div className="space-y-6">
+              {/* Header Section (Matching Screenshot) */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-[24px] sm:text-[26px] font-extrabold tracking-tight text-[var(--tx)]">
+                    Project Manager
+                  </h1>
+                  <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5">
+                    Create and manage your company projects
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setIsBoardView(!isBoardView)}
+                    className="h-9 px-3.5 rounded-xl border bd bg-white dark:bg-[#141a25] hover:bg-slate-50 dark:hover:bg-slate-800 text-[#4f46e5] dark:text-indigo-400 font-bold text-[12.5px] inline-flex items-center gap-2 transition cursor-pointer shadow-2xs"
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                    <span>{isBoardView ? 'Table View' : 'Go to Board'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingProject(null);
+                      setProjectForm({
+                        name: '',
+                        desc: '',
+                        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                        status: 'in_progress',
+                        img: svgDCS
+                      });
+                      setIsCreateProjectOpen(true);
+                    }}
+                    className="h-9 px-4 rounded-xl bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold text-[12.5px] inline-flex items-center gap-1.5 transition cursor-pointer shadow-xs active:scale-95"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Create Project</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Filter & Search Controls Bar */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="relative w-full sm:max-w-xs">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <Search className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    value={projectSearchQuery}
+                    onChange={(e) => setProjectSearchQuery(e.target.value)}
+                    placeholder="Search projects by name..."
+                    className="w-full h-10 pl-9 pr-4 rounded-xl border bd bg-white dark:bg-[#141a25] text-slate-800 dark:text-slate-100 text-[13px] placeholder:text-slate-400 focus:outline-none focus:border-[#4f46e5] shadow-2xs"
+                  />
+                </div>
+
+                <div className="relative">
+                  <select
+                    value={projectCategoryFilter}
+                    onChange={(e) => setProjectCategoryFilter(e.target.value)}
+                    className="h-10 px-4 pr-9 rounded-xl border bd bg-white dark:bg-[#141a25] text-[12.5px] font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#4f46e5] cursor-pointer appearance-none shadow-2xs"
+                  >
+                    <option value="all">All Projects</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="planning">Planning</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+              </div>
+
+              {/* TABLE VIEW (Matching Screenshot) */}
+              {!isBoardView ? (
+                <div className="card rounded-2xl bg-white dark:bg-[#141a25] soft overflow-hidden border bd">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="border-b bd text-[12px] font-bold text-slate-600 dark:text-slate-400 bg-slate-50/50 dark:bg-slate-900/40">
+                          <th className="py-3.5 pl-6 w-14 font-extrabold">#</th>
+                          <th className="py-3.5 px-4 font-bold">Project Name</th>
+                          <th className="py-3.5 px-4 font-bold">Description</th>
+                          <th className="py-3.5 px-4 font-bold">Start Date</th>
+                          <th className="py-3.5 pr-6 text-right font-bold">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y bd text-[13px]">
+                        {projects
+                          .filter((p) => {
+                            const matchSearch =
+                              !projectSearchQuery ||
+                              p.name.toLowerCase().includes(projectSearchQuery.toLowerCase()) ||
+                              p.desc.toLowerCase().includes(projectSearchQuery.toLowerCase());
+                            const matchCategory =
+                              projectCategoryFilter === 'all' || p.status === projectCategoryFilter;
+                            return matchSearch && matchCategory;
+                          })
+                          .map((p, idx) => (
+                            <tr
+                              key={p.num + p.name}
+                              className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition"
+                            >
+                              <td className="py-4 pl-6 font-semibold text-slate-500 dark:text-slate-400 text-xs">
+                                {p.num}
+                              </td>
+                              <td className="py-4 px-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border bd bg-slate-50 dark:bg-slate-900">
+                                    <img src={p.img} alt={p.name} className="w-full h-full object-contain" />
+                                  </div>
+                                  <span className="font-bold text-slate-900 dark:text-slate-100 text-[13.5px]">
+                                    {p.name}
+                                  </span>
+                                </div>
+                              </td>
+                              <td className="py-4 px-4 text-slate-600 dark:text-slate-300 max-w-[420px] truncate text-[12.5px]">
+                                {p.desc}
+                              </td>
+                              <td className="py-4 px-4 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap text-[12px]">
+                                {p.date}
+                              </td>
+                              <td className="py-4 pr-6 text-right whitespace-nowrap">
+                                <div className="inline-flex items-center justify-end gap-2 relative">
+                                  <button
+                                    type="button"
+                                    onClick={() => setViewingProjectDetail(p)}
+                                    className="h-7 px-3 rounded-lg border border-[#e0e7ff] hover:border-[#c7d2fe] bg-white dark:bg-[#141a25] hover:bg-indigo-50/70 text-[#4f46e5] dark:text-indigo-400 font-semibold text-[11.5px] transition cursor-pointer shadow-2xs"
+                                  >
+                                    Open Project
+                                  </button>
+
+                                  <div className="relative">
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setOpenProjectMenuIndex(openProjectMenuIndex === idx ? null : idx);
+                                      }}
+                                      className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition cursor-pointer"
+                                      title="More actions"
+                                    >
+                                      <MoreVertical className="w-3.5 h-3.5" />
+                                    </button>
+
+                                    {openProjectMenuIndex === idx && (
+                                      <div className="absolute right-0 top-8 z-30 w-36 py-1.5 rounded-xl card bg-white dark:bg-[#141a25] border bd shadow-xl text-left text-xs animate-scale-up">
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setViewingProjectDetail(p);
+                                            setOpenProjectMenuIndex(null);
+                                          }}
+                                          className="w-full px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-200"
+                                        >
+                                          <Eye className="w-3.5 h-3.5 text-indigo-500" />
+                                          <span>View Details</span>
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setEditingProject(p);
+                                            setProjectForm({
+                                              name: p.name,
+                                              desc: p.fullDesc || p.desc,
+                                              date: p.date,
+                                              status: p.status,
+                                              img: p.img
+                                            });
+                                            setIsCreateProjectOpen(true);
+                                            setOpenProjectMenuIndex(null);
+                                          }}
+                                          className="w-full px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-200"
+                                        >
+                                          <EditIcon className="w-3.5 h-3.5 text-slate-500" />
+                                          <span>Edit Project</span>
+                                        </button>
+                                        <div className="h-px bg-slate-100 dark:bg-slate-800 my-1" />
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setDeleteProjectTarget(p);
+                                            setOpenProjectMenuIndex(null);
+                                          }}
+                                          className="w-full px-3 py-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 flex items-center gap-2 cursor-pointer"
+                                        >
+                                          <Trash2 className="w-3.5 h-3.5" />
+                                          <span>Delete</span>
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : (
+                /* KANBAN BOARD VIEW */
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {['planning', 'in_progress', 'review', 'completed'].map((colKey) => {
+                    const colLabels = {
+                      planning: { title: 'To Do', color: 'bg-slate-400', badge: 'bg-slate-100 text-slate-600' },
+                      in_progress: { title: 'In Progress', color: 'bg-indigo-500', badge: 'bg-indigo-50 text-indigo-600' },
+                      review: { title: 'Review', color: 'bg-amber-500', badge: 'bg-amber-50 text-amber-600' },
+                      completed: { title: 'Completed', color: 'bg-emerald-500', badge: 'bg-emerald-50 text-emerald-600' }
+                    };
+                    const colItems = projects.filter((p) => {
+                      const matchCol = colKey === 'planning' ? p.status === 'planning' : colKey === 'completed' ? p.status === 'completed' : p.status === 'in_progress';
+                      const matchSearch = !projectSearchQuery || p.name.toLowerCase().includes(projectSearchQuery.toLowerCase()) || p.desc.toLowerCase().includes(projectSearchQuery.toLowerCase());
+                      const matchCat = projectCategoryFilter === 'all' || p.status === projectCategoryFilter;
+                      return matchCol && matchSearch && matchCat;
+                    });
+                    const meta = colLabels[colKey];
+                    return (
+                      <div key={colKey} className="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border bd space-y-3 flex flex-col">
+                        <div className="flex items-center justify-between pb-2 border-b bd">
+                          <div className="flex items-center gap-2">
+                            <span className={`w-2.5 h-2.5 rounded-full ${meta.color}`} />
+                            <h3 className="font-bold text-[13.5px]">{meta.title}</h3>
+                          </div>
+                          <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${meta.badge}`}>
+                            {colItems.length}
+                          </span>
+                        </div>
+                        <div className="space-y-3 flex-1 min-h-[140px]">
+                          {colItems.map((p) => (
+                            <div
+                              key={p.num + p.name}
+                              onClick={() => setViewingProjectDetail(p)}
+                              className="p-3.5 rounded-xl border bd bg-slate-50/70 dark:bg-slate-900/50 hover:shadow-sm transition space-y-2.5 cursor-pointer"
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-6 h-6 rounded overflow-hidden shrink-0">
+                                    <img src={p.img} alt="" className="w-full h-full object-contain" />
+                                  </div>
+                                  <span className="font-bold text-xs text-slate-900 dark:text-slate-100">{p.name}</span>
+                                </div>
+                                <span className="text-[10px] font-semibold text-slate-400">#{p.num}</span>
+                              </div>
+                              <p className="text-[11.5px] text-slate-500 line-clamp-2">{p.desc}</p>
+                              <div className="flex items-center justify-between pt-1 border-t bd text-[10.5px] text-slate-400">
+                                <span>{p.date}</span>
+                                <span className="text-indigo-600 dark:text-indigo-400 font-semibold">{p.completed}/{p.tasks} Tasks</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'access' && (
+            <div className="space-y-8 py-4">
+              {/* Top Centered Title (Matches media_1794561004086_f7f4418f.png) */}
+              <div className="text-center space-y-1.5 pt-2">
+                <h1 className="text-2xl sm:text-[32px] font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+                  Application Access
+                </h1>
+                <p className="text-[13.5px] text-[#64748b] dark:text-slate-400">
+                  Quick access to external applications and services
+                </p>
+              </div>
+
+              {/* 6 Cards Grid */}
+              <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+                {/* 1. GitHub */}
+                <div className="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+                  <div className="h-44 bg-[#f4f5f7] dark:bg-slate-800/50 border-b bd flex items-center justify-center p-6">
+                    <svg className="w-16 h-16 text-[#181717] dark:text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                    </svg>
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-6">
+                    <div className="space-y-1">
+                      <h3 className="text-[18px] font-bold text-slate-900 dark:text-slate-100">GitHub</h3>
+                      <p className="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+                        Version control and code repository management
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAccessModalService({ name: 'GitHub', desc: 'Version control and code repository management' })}
+                      className="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+                    >
+                      Give Access
+                    </button>
+                  </div>
+                </div>
+
+                {/* 2. Firebase */}
+                <div className="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+                  <div className="h-44 bg-[#fffbf0] dark:bg-amber-950/20 border-b bd flex items-center justify-center p-6">
+                    <svg className="w-16 h-16" viewBox="0 0 40 40" fill="none">
+                      <path d="M7.8 28.5L14.2 4.8C14.4 4.1 15.3 3.9 15.8 4.5L20.2 11.2L7.8 28.5Z" fill="#FFA000"/>
+                      <path d="M24.8 14.9L20.2 6.1C19.8 5.4 18.8 5.5 18.5 6.2L7.8 28.5L24.8 14.9Z" fill="#F57C00"/>
+                      <path d="M21.2 36.1C26.5 36.1 30.8 31.8 30.8 26.5C30.8 21.2 26 18.5 24.5 15.2C23.2 18.4 18.8 21.5 18.8 26.5C18.8 31.8 21.2 36.1 21.2 36.1Z" fill="#FFCA28"/>
+                      <path d="M30.6 28.5L24.8 14.9L7.8 28.5C9.8 33 14.5 36.1 20 36.1C25.5 36.1 28.8 33.5 30.6 28.5Z" fill="#FFA000"/>
+                    </svg>
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-6">
+                    <div className="space-y-1">
+                      <h3 className="text-[18px] font-bold text-slate-900 dark:text-slate-100">Firebase</h3>
+                      <p className="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+                        Backend as a Service platform by Google
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAccessModalService({ name: 'Firebase', desc: 'Backend as a Service platform by Google' })}
+                      className="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+                    >
+                      Give Access
+                    </button>
+                  </div>
+                </div>
+
+                {/* 3. AWS */}
+                <div className="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+                  <div className="h-44 bg-[#fffdf7] dark:bg-amber-950/20 border-b bd flex items-center justify-center p-6">
+                    <svg className="w-20 h-20" viewBox="0 0 100 100" fill="none">
+                      <path d="M52 48.5c-4.2 0-7.8 1.2-10 2.5l1.6 5.2c1.8-1 4.5-1.9 7.4-1.9 4.8 0 7 2.4 7 6.4v1.8c-2.4-.4-5.2-.6-8.2-.6-7.8 0-12.8 4.2-12.8 10.6 0 6.2 4.6 10.1 11.4 10.1 5.2 0 8.6-2.4 10.4-5.5h.4l.6 4.7h6.6V58.8c0-7.4-4.8-10.3-14.4-10.3zm5.8 21.2c0 1.6-.6 3.2-1.8 4.4-1.6 1.6-4.2 2.6-7 2.6-4 0-6.4-2.2-6.4-5.4 0-3.6 2.8-5.6 7.4-5.6 2.6 0 5.4.4 7.8.8v3.2z" fill="#232F3E"/>
+                      <path d="M33 76.8c11.8 8.8 28.2 9.2 40.8 1.4.6-.4.4-1.2-.2-1.4-1.8-.8-5.6-2.2-5.6-2.2-.4-.2-.8 0-1 .4-9.8 6.4-23 6-32.2-.8-.4-.4-1-.2-1.2.2 0 0-.4 1.6-.6 2.4z" fill="#FF9900"/>
+                      <path d="M74.8 74.6c.4-.6 1.8-2 2.2-2.6.4-.6.2-1.2-.4-1.4l-6.8-2.6c-.6-.2-1.2.2-1 1 .6 2 1.4 4.8 2 6.8.2.6.8.8 1.4.4.8-.4 2.2-1.2 2.6-1.6z" fill="#FF9900"/>
+                    </svg>
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-6">
+                    <div className="space-y-1">
+                      <h3 className="text-[18px] font-bold text-slate-900 dark:text-slate-100">AWS</h3>
+                      <p className="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+                        Amazon Web Services cloud platform
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAccessModalService({ name: 'AWS', desc: 'Amazon Web Services cloud platform' })}
+                      className="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+                    >
+                      Give Access
+                    </button>
+                  </div>
+                </div>
+
+                {/* 4. MongoDB */}
+                <div className="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+                  <div className="h-44 bg-[#f8fafc] dark:bg-slate-800/40 border-b bd flex items-center justify-center p-6">
+                    <svg className="h-12 w-auto max-w-[210px]" viewBox="0 0 240 70" fill="none">
+                      <g transform="translate(10, 5)">
+                        <path d="M28 2C27.5 2 24.5 9 23.5 13C21 23 15 31 15 42C15 50.5 21 57.5 28 60C35 57.5 41 50.5 41 42C41 31 35 23 32.5 13C31.5 9 28.5 2 28 2Z" fill="#13AA52"/>
+                        <path d="M28 2V60C35 57.5 41 50.5 41 42C41 31 35 23 32.5 13C31.5 9 28.5 2 28 2Z" fill="#116149"/>
+                        <path d="M28 50C27.5 50 27 48 27.2 45C27.6 38 28 30 28 22V50Z" fill="#FFFFFF" opacity="0.3"/>
+                      </g>
+                      <text x="68" y="46" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="700" fontSize="34" fill="#001E2B" className="dark:fill-slate-100" letterSpacing="-0.5">MongoDB</text>
+                    </svg>
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-6">
+                    <div className="space-y-1">
+                      <h3 className="text-[18px] font-bold text-slate-900 dark:text-slate-100">MongoDB</h3>
+                      <p className="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+                        NoSQL document database for scalable modern web apps
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAccessModalService({ name: 'MongoDB', desc: 'NoSQL document database for scalable modern web apps' })}
+                      className="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+                    >
+                      Give Access
+                    </button>
+                  </div>
+                </div>
+
+                {/* 5. TiDB */}
+                <div className="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+                  <div className="h-44 bg-[#f8fafc] dark:bg-slate-800/40 border-b bd flex items-center justify-center p-6">
+                    <svg className="h-12 w-auto max-w-[190px]" viewBox="0 0 200 65" fill="none">
+                      <g transform="translate(12, 4)">
+                        <path d="M24 0L48 14V42L24 56L0 42V14L24 0Z" fill="#E30C34"/>
+                        <path d="M24 10L40 19.5V36.5L24 46L8 36.5V19.5L24 10Z" fill="#FFFFFF"/>
+                        <path d="M24 13L36 20.5V26H27V42H21V26H12V20.5L24 13Z" fill="#E30C34"/>
+                      </g>
+                      <text x="74" y="44" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="900" fontSize="38" fill="#17233D" className="dark:fill-slate-100" letterSpacing="-0.5">TiDB</text>
+                    </svg>
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-6">
+                    <div className="space-y-1">
+                      <h3 className="text-[18px] font-bold text-slate-900 dark:text-slate-100">TiDB</h3>
+                      <p className="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+                        Distributed SQL database for real-time elastic transactions
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAccessModalService({ name: 'TiDB', desc: 'Distributed SQL database for real-time elastic transactions' })}
+                      className="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+                    >
+                      Give Access
+                    </button>
+                  </div>
+                </div>
+
+                {/* 6. DCS */}
+                <div className="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25] border bd flex flex-col justify-between hover:shadow-md transition">
+                  <div className="h-44 bg-[#f0fdf4] dark:bg-emerald-950/20 border-b bd flex items-center justify-center p-6">
+                    <svg className="w-18 h-18 text-[#059669]" viewBox="0 0 24 24" fill="currentColor">
+                      <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-6">
+                    <div className="space-y-1">
+                      <h3 className="text-[18px] font-bold text-slate-900 dark:text-slate-100">DCS</h3>
+                      <p className="text-[12.5px] text-[#64748b] dark:text-slate-400 leading-relaxed">
+                        Internal Dev Creations &amp; Solutions core infrastructure &amp; secure portal
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAccessModalService({ name: 'DCS', desc: 'Dev Creations core administrative and cloud infrastructure' })}
+                      className="w-full py-2.5 px-4 rounded-xl text-white font-semibold text-[13px] bg-[#5c56d6] hover:bg-[#4f48cb] active:scale-95 transition cursor-pointer shadow-xs"
+                    >
+                      Give Access
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </main>
       </div>
 
@@ -2892,7 +5083,7 @@ export default function App() {
               <button
                 key={item.id}
                 onClick={() => {
-                  if (item.id === 'banners' || item.id === 'gallery' || item.id === 'blogs' || item.id === 'contacts' || item.id === 'client-logos' || item.id === 'websites') {
+                  if (item.id === 'banners' || item.id === 'gallery' || item.id === 'blogs' || item.id === 'contacts' || item.id === 'client-logos' || item.id === 'websites' || item.id === 'employees' || item.id === 'documents' || item.id === 'team' || item.id === 'project-manager' || item.id === 'access') {
                     setActiveTab(item.id);
                   } else {
                     showToast(`${item.name} section`);
@@ -2919,6 +5110,548 @@ export default function App() {
         <p className="text-center text-[11px] mu py-3 border-t bd">DCS Admin v1.0.0</p>
       </aside>
 
+{/* View Applicant Modal (Compact, matching screenshots) */}
+      {viewingApplicant && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl max-w-[640px] w-full max-h-[90vh] overflow-y-auto shadow-2xl bg-white dark:bg-[#141a25] mobile-bottom-sheet sm:animate-scale-up border-t sm:border border-slate-100 dark:border-slate-800">
+            <div className="sheet-drag-handle sm:hidden mt-3" />
+            {/* Header */}
+            <div className="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="font-bold text-[15px] text-slate-900 dark:text-slate-100">
+                  New Application Details - <span className="text-[#ea580c]">{viewingApplicant.name}</span>
+                </h3>
+                <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#fff7ed] text-[#ea580c] dark:bg-orange-950/40 dark:text-orange-400 border border-[#ffedd5] dark:border-orange-900/60">
+                  {viewingApplicant.status}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setViewingApplicant(null)}
+                className="w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center justify-center text-slate-500 hover:text-slate-800 dark:text-slate-400 transition cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-4 space-y-3">
+              {/* Applicant Profile Card */}
+              <div className="rounded-xl border border-slate-100 dark:border-slate-800/80 bg-[#fbfcfd] dark:bg-slate-900/40 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-full bg-[#ea580c] text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-xs">
+                    {viewingApplicant.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="font-bold text-[14px] text-slate-900 dark:text-slate-100">{viewingApplicant.name}</div>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      <span className="inline-flex items-center gap-1">
+                        <Mail className="w-3 h-3 text-[#ea580c]" />
+                        <span>{viewingApplicant.email}</span>
+                      </span>
+                      {viewingApplicant.phone && (
+                        <span className="inline-flex items-center gap-1">
+                          <Phone className="w-3 h-3 text-emerald-600" />
+                          <span>{viewingApplicant.phone}</span>
+                        </span>
+                      )}
+                      <span className="inline-flex items-center gap-1">
+                        <Briefcase className="w-3 h-3 text-violet-600" />
+                        <span>{viewingApplicant.position}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 self-start sm:self-center shrink-0">
+                  <span className="inline-block px-2 py-0.5 rounded-md text-[10.5px] font-semibold bg-[#fff7ed] text-[#ea580c] dark:bg-orange-950/40 dark:text-orange-400 border border-[#ffedd5] dark:border-orange-900/60">
+                    {viewingApplicant.role}
+                  </span>
+                  <span className="inline-block px-2 py-0.5 rounded-md text-[10.5px] font-bold uppercase bg-[#fff7ed] text-[#ea580c] dark:bg-orange-950/40 dark:text-orange-400 border border-[#ffedd5] dark:border-orange-900/60">
+                    {viewingApplicant.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* Main Application Details Card */}
+              <div className="rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-4 space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">POSITION APPLIED</span>
+                    <span className="font-bold text-[13px] text-slate-800 dark:text-slate-100">{viewingApplicant.position}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">ROLE / TYPE</span>
+                    <span className="font-bold text-[13px] text-slate-800 dark:text-slate-100">{viewingApplicant.role}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">PREVIOUS EXPERIENCE (IN YEARS)</span>
+                  <div className="font-bold text-[13px] text-slate-800 dark:text-slate-100">{viewingApplicant.experience}</div>
+                  {viewingApplicant.subExperience && (
+                    <div className="text-[11px] text-slate-400 mt-0.5">{viewingApplicant.subExperience}</div>
+                  )}
+                </div>
+
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">APPLIED DATE</span>
+                  <div className="font-bold text-[13px] text-slate-800 dark:text-slate-100">{viewingApplicant.date}</div>
+                </div>
+
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">RESUME / CV DOCUMENT</span>
+                  <div className="rounded-lg border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-2xs">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <FileText className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-bold text-[12.5px] text-slate-800 dark:text-slate-100 truncate">
+                          {viewingApplicant.resume || `${viewingApplicant.name} (Resume).pdf`}
+                        </div>
+                        <span className="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9.5px] font-medium bg-[#ecfdf5] text-[#059669] dark:bg-emerald-950/40 dark:text-emerald-400 border border-[#a7f3d0] dark:border-emerald-800">
+                          PDF Ready for View & Download
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <button
+                        type="button"
+                        onClick={() => showToast(`Viewing ${viewingApplicant.name} Resume`)}
+                        className="h-8 px-2.5 rounded-lg bg-[#0f172a] hover:bg-slate-800 text-white font-bold text-[11px] flex items-center gap-1 transition cursor-pointer shadow-xs"
+                      >
+                        <Eye className="w-3 h-3" />
+                        <span>View Resume</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => showToast(`Downloading ${viewingApplicant.name} Resume PDF`)}
+                        className="h-8 px-2.5 rounded-lg bg-[#2563eb] hover:bg-blue-700 text-white font-bold text-[11px] flex items-center gap-1 transition cursor-pointer shadow-xs"
+                      >
+                        <Download className="w-3 h-3" />
+                        <span>Download PDF</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => showToast(`Share link copied for ${viewingApplicant.name}`)}
+                        className="h-8 px-2.5 rounded-lg bg-[#10b981] hover:bg-emerald-600 text-white font-bold text-[11px] flex items-center gap-1 transition cursor-pointer shadow-xs"
+                      >
+                        <Share2 className="w-3 h-3" />
+                        <span>Share</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="pt-2 flex items-center justify-end">
+                <button
+                  type="button"
+                  onClick={() => setViewingApplicant(null)}
+                  className="h-8 px-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-[12px] transition cursor-pointer shadow-2xs"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Schedule Interview Modal (matching media_1794550389356, 372, 381) */}
+      {schedulingApplicant && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl bg-white dark:bg-[#141a25] mobile-bottom-sheet sm:animate-scale-up border-t sm:border border-slate-100 dark:border-slate-800">
+            <div className="sheet-drag-handle sm:hidden mt-3" />
+            {/* Header */}
+            <div className="p-6 pb-4 flex items-start justify-between border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                  <Calendar className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-[18px] text-slate-900 dark:text-slate-100 leading-tight">Schedule Interview</h3>
+                  <p className="text-[12.5px] text-slate-500 dark:text-slate-400 mt-0.5">
+                    Applicant: <span className="font-semibold text-slate-700 dark:text-slate-300">{schedulingApplicant.name} ({schedulingApplicant.position})</span>
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSchedulingApplicant(null)}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center justify-center text-slate-500 hover:text-slate-800 dark:text-slate-400 transition cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 space-y-4">
+              {/* Applicant Summary Card */}
+              <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-4 flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-xl bg-[#ea580c] text-white flex items-center justify-center font-bold text-xl shrink-0 shadow-xs">
+                  {schedulingApplicant.name.charAt(0).toUpperCase()}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-bold text-[15px] text-slate-900 dark:text-slate-100">{schedulingApplicant.name}</div>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-slate-500 dark:text-slate-400 mt-1">
+                    <span className="inline-flex items-center gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-slate-400" />
+                      <span>{schedulingApplicant.email}</span>
+                    </span>
+                    {schedulingApplicant.phone && (
+                      <span className="inline-flex items-center gap-1.5">
+                        <Phone className="w-3.5 h-3.5 text-slate-400" />
+                        <span>{schedulingApplicant.phone}</span>
+                      </span>
+                    )}
+                    <span className="inline-flex items-center gap-1.5">
+                      <Briefcase className="w-3.5 h-3.5 text-slate-400" />
+                      <span>{schedulingApplicant.position}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mode of Interview Dropdown */}
+              <div>
+                <label className="block text-[13px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+                  Mode of Interview <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={interviewMode}
+                  onChange={(e) => setInterviewMode(e.target.value)}
+                  className="w-full h-12 px-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-[13.5px] font-medium focus:outline-none focus:border-indigo-500 cursor-pointer"
+                >
+                  <option value="">-- Select Mode of Interview --</option>
+                  <option value="offline">🏢 Offline (In-Person / Office)</option>
+                  <option value="online">🌐 Online (Virtual Meeting)</option>
+                </select>
+              </div>
+
+              {/* Offline Fields */}
+              {interviewMode === 'offline' && (
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                        <MapPin className="w-4 h-4 text-red-500" />
+                        <span>Location / Office Address <span className="text-red-500">*</span></span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setInterviewAddress('1st floor, 88, KR Defense Colony, Cheemasandra, Bengaluru, Karnataka, India - 560049')}
+                        className="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50/80 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 font-semibold text-[11px] inline-flex items-center gap-1 cursor-pointer transition hover:bg-amber-100"
+                      >
+                        🏢 Use DCS Office Address
+                      </button>
+                    </div>
+                    <input
+                      type="text"
+                      value={interviewAddress}
+                      onChange={(e) => setInterviewAddress(e.target.value)}
+                      placeholder="1st floor, 88, KR Defense Colony, Cheemasandra, Bengaluru, Karnataka, India - 560049"
+                      className="w-full h-11 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[13px] font-bold text-slate-800 dark:text-slate-200 mb-2 flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-[#ea580c]" />
+                      <span>Timing / Date &amp; Time <span className="text-red-500">*</span></span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      value={interviewDateTime}
+                      onChange={(e) => setInterviewDateTime(e.target.value)}
+                      className="w-full h-11 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Online Fields */}
+              {interviewMode === 'online' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-[13px] font-bold text-slate-800 dark:text-slate-200 mb-2 flex items-center gap-1.5">
+                      <Video className="w-4 h-4 text-blue-600" />
+                      <span>Meeting Link <span className="text-red-500">*</span></span>
+                    </label>
+                    <input
+                      type="text"
+                      value={interviewMeetingLink}
+                      onChange={(e) => setInterviewMeetingLink(e.target.value)}
+                      placeholder="e.g., https://meet.google.com/abc-defg-hij or Zoom link"
+                      className="w-full h-11 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[13px] font-bold text-slate-800 dark:text-slate-200 mb-2 flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-indigo-600" />
+                      <span>Timing / Date &amp; Time <span className="text-red-500">*</span></span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      value={interviewDateTime}
+                      onChange={(e) => setInterviewDateTime(e.target.value)}
+                      className="w-full h-11 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Official Email Dispatch Delivery Preview Card */}
+              <div className="rounded-2xl border border-blue-100 dark:border-blue-900/60 bg-blue-50/40 dark:bg-blue-950/20 p-4 space-y-2 text-[12px]">
+                <div className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                  <Mail className="w-4 h-4 text-indigo-600" />
+                  <span>Official Email Dispatch Delivery:</span>
+                </div>
+                <div className="space-y-1 text-slate-600 dark:text-slate-300">
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-400 w-28 shrink-0">To (Applicant):</span>
+                    <span className="font-bold text-slate-800 dark:text-slate-100">{schedulingApplicant.email}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-400 w-28 shrink-0">Cc (HR &amp; Admin):</span>
+                    <span className="font-medium">hr@devcreationsblr.com, devcreationsblr@gmail.com</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-400 w-28 shrink-0">Reply-To:</span>
+                    <span className="font-medium">hr@devcreationsblr.com</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setSchedulingApplicant(null)}
+                  className="h-11 px-6 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-700 dark:text-slate-200 font-bold text-[13.5px] transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!interviewMode) {
+                      showToast('Please select Mode of Interview');
+                      return;
+                    }
+                    setApplicants(prev => prev.map(a => a.id === schedulingApplicant.id ? { ...a, status: 'INTERVIEW' } : a));
+                    setSchedulingApplicant(null);
+                    showToast(`Interview scheduled for ${schedulingApplicant.name}`);
+                  }}
+                  className="h-11 px-6 rounded-xl font-bold text-[13.5px] text-white transition cursor-pointer shadow-sm hover:opacity-95"
+                  style={{ background: 'linear-gradient(135deg, #fba170, #f88a4e)' }}
+                >
+                  <Eye className="w-4 h-4 inline-block mr-1.5" />
+                  <span>Preview Schedule</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Member Modal */}
+      {isAddMemberOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl p-5 bg-white dark:bg-[#141a25] mobile-bottom-sheet sm:animate-scale-up border-t sm:border bd">
+            <div className="sheet-drag-handle sm:hidden mt-2" />
+            <div className="flex items-center justify-between pb-3 border-b bd mb-4">
+              <h3 className="font-bold text-[15px] text-[var(--tx)]">Add Team / Pipeline Member</h3>
+              <button
+                type="button"
+                onClick={() => setIsAddMemberOpen(false)}
+                className="w-7 h-7 rounded-lg mu flex items-center justify-center hover:opacity-75 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name *</label>
+                <input
+                  type="text"
+                  value={newMemberName}
+                  onChange={(e) => setNewMemberName(e.target.value)}
+                  placeholder="e.g. Ramesh Kumar"
+                  className="w-full h-9 px-3 rounded-xl border bd text-[12.5px] bg-slate-50/50 dark:bg-slate-900 text-[var(--tx)] focus:outline-none focus:border-[#ea580c]"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1">Role Type</label>
+                  <select
+                    value={newMemberRole}
+                    onChange={(e) => setNewMemberRole(e.target.value)}
+                    className="w-full h-9 px-2.5 rounded-xl border bd text-[12px] bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#ea580c]"
+                  >
+                    <option value="Employee">Employee</option>
+                    <option value="Intern">Intern</option>
+                    <option value="Freelancer">Freelancer</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1">Position *</label>
+                  <input
+                    type="text"
+                    value={newMemberPos}
+                    onChange={(e) => setNewMemberPos(e.target.value)}
+                    placeholder="e.g. React Developer"
+                    className="w-full h-9 px-3 rounded-xl border bd text-[12.5px] bg-slate-50/50 dark:bg-slate-900 text-[var(--tx)] focus:outline-none focus:border-[#ea580c]"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1">Email *</label>
+                <input
+                  type="email"
+                  value={newMemberEmail}
+                  onChange={(e) => setNewMemberEmail(e.target.value)}
+                  placeholder="ramesh@example.com"
+                  className="w-full h-9 px-3 rounded-xl border bd text-[12.5px] bg-slate-50/50 dark:bg-slate-900 text-[var(--tx)] focus:outline-none focus:border-[#ea580c]"
+                />
+              </div>
+              <div>
+                <label className="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1">Phone</label>
+                <input
+                  type="tel"
+                  value={newMemberPhone}
+                  onChange={(e) => setNewMemberPhone(e.target.value)}
+                  placeholder="9876543210"
+                  className="w-full h-9 px-3 rounded-xl border bd text-[12.5px] bg-slate-50/50 dark:bg-slate-900 text-[var(--tx)] focus:outline-none focus:border-[#ea580c]"
+                />
+              </div>
+              <div className="flex items-center gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAddMemberOpen(false)}
+                  className="flex-1 h-9 rounded-xl border bd text-slate-700 dark:text-slate-300 font-semibold text-[12px] hover:bg-slate-50 transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!newMemberName.trim() || !newMemberPos.trim() || !newMemberEmail.trim()) {
+                      showToast('Please fill all required fields');
+                      return;
+                    }
+                    const newEntry = {
+                      id: Date.now(),
+                      name: newMemberName.trim(),
+                      email: newMemberEmail.trim(),
+                      phone: newMemberPhone.trim(),
+                      role: newMemberRole,
+                      position: newMemberPos.trim(),
+                      experience: newMemberExp,
+                      subExperience: '',
+                      date: new Date().toLocaleDateString('en-GB'),
+                      status: 'PENDING',
+                      section: 'apps',
+                      resume: `${newMemberName.trim()} (Resume).pdf`
+                    };
+                    setApplicants(prev => [newEntry, ...prev]);
+                    setIsAddMemberOpen(false);
+                    setNewMemberName('');
+                    setNewMemberPos('');
+                    setNewMemberEmail('');
+                    setNewMemberPhone('');
+                    showToast('Member added to applications pipeline');
+                  }}
+                  className="flex-1 h-9 rounded-xl bg-[#ea580c] text-white font-semibold text-[12px] hover:opacity-95 transition cursor-pointer"
+                >
+                  Save Member
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Certified Document Preview Modal */}
+      {previewingDoc && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl bg-white dark:bg-[#141a25] mobile-bottom-sheet sm:animate-scale-up border-t sm:border bd">
+            <div className="sheet-drag-handle sm:hidden mt-3" />
+            <div className="p-4 px-5 border-b bd flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 flex items-center justify-center">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-[14.5px] text-slate-900 dark:text-slate-100">
+                    {previewingDoc.doc.name} - {previewingDoc.doc.version}
+                  </h3>
+                  <p className="text-[11px] text-slate-400">
+                    Candidate: {previewingDoc.candidate.name} ({previewingDoc.candidate.din})
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPreviewingDoc(null)}
+                className="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-800 flex items-center justify-center transition cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="p-6 bg-slate-50 dark:bg-slate-900/60 max-h-[70vh] overflow-y-auto">
+              <div className="bg-white dark:bg-[#182030] p-6 rounded-xl border bd shadow-sm space-y-4 text-[12px] text-slate-700 dark:text-slate-300">
+                <div className="flex items-center justify-between pb-3 border-b bd">
+                  <div>
+                    <div className="text-[15px] font-black tracking-tight text-slate-900 dark:text-slate-100">DEV CREATIONS &amp; SOLUTIONS</div>
+                    <div className="text-[10px] text-slate-400">Official Document Certification Registry</div>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200">
+                    OFFICIAL CERTIFIED
+                  </span>
+                </div>
+                <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border bd space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-bold text-slate-800 dark:text-slate-200">{previewingDoc.doc.name}</span>
+                    <span className="font-mono text-slate-500">REF-DCS-2026-VAL</span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    This document certifies the official validation status of <strong>{previewingDoc.candidate.name}</strong> as <strong>{previewingDoc.candidate.position}</strong>. Background verification, security clearances, and document authentication have been completed by Main Admin Approver.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 pt-2 text-[11px] text-slate-500">
+                    <div>Effective Date: <strong>22/10/2026</strong></div>
+                    <div>Validation Status: <strong>Certified Official</strong></div>
+                  </div>
+                </div>
+                <div className="pt-4 border-t bd flex items-center justify-between text-[11px] text-slate-400">
+                  <span>Digitally Certified &amp; Approved by Main Admin</span>
+                  <span>Security Token: DCS-CERT-2026-VAL</span>
+                </div>
+              </div>
+            </div>
+            <div className="p-4 border-t bd flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => showToast(`Downloading ${previewingDoc.doc.name} PDF...`)}
+                className="h-9 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-[12px] inline-flex items-center gap-1.5 transition cursor-pointer shadow-xs"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download PDF</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPreviewingDoc(null)}
+                className="h-9 px-4 rounded-lg border bd text-slate-700 dark:text-slate-300 font-semibold text-[12px] hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Preview Modal */}
       {previewItem && (
         <div
@@ -2944,10 +5677,444 @@ export default function App() {
         </div>
       )}
 
+
+
+      {/* Delete Member Confirmation Modal */}
+      {deleteMemberTarget && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl max-w-sm w-full p-6 bg-white dark:bg-[#141a25] shadow-2xl mobile-bottom-sheet sm:animate-scale-up border-t sm:border bd">
+            <div className="sheet-drag-handle sm:hidden -mt-1 mb-4" />
+            <h3 className="font-bold text-[14.5px] text-slate-900 dark:text-slate-100 mb-1">Delete Member?</h3>
+            <p className="text-xs text-slate-500 mb-4">
+              "{deleteMemberTarget.name}" will be permanently removed from the team directory.
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setDeleteMemberTarget(null)}
+                className="flex-1 h-9 rounded-lg border bd text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setTeamMembers(prev => prev.filter(m => m.id !== deleteMemberTarget.id));
+                  setDeleteMemberTarget(null);
+                  showToast('Member deleted successfully');
+                }}
+                className="flex-1 h-9 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition cursor-pointer"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create / Edit Project Modal (Exact Match to media_1794559745183_b15f39f3.png) */}
+      {isCreateProjectOpen && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto shadow-2xl p-6 sm:p-7 bg-white dark:bg-[#141a25] mobile-bottom-sheet sm:animate-scale-up border-t sm:border bd space-y-4">
+            <div className="sheet-drag-handle sm:hidden -mt-1 mb-2" />
+            <h3 className="font-bold text-[18px] text-slate-900 dark:text-slate-100">
+              {editingProject ? `Edit Project - ${editingProject.name}` : 'Create New Project'}
+            </h3>
+
+            <div className="space-y-3.5">
+              {/* Project Name */}
+              <div>
+                <input
+                  type="text"
+                  value={projectForm.name}
+                  onChange={(e) => setProjectForm({ ...projectForm, name: e.target.value })}
+                  placeholder="Project Name *"
+                  className="w-full h-11 px-3.5 rounded-xl border border-slate-200 dark:border-slate-800 text-[13px] bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-[#4f46e5]"
+                />
+              </div>
+
+              {/* Project Description */}
+              <div>
+                <textarea
+                  rows={4}
+                  value={projectForm.desc}
+                  onChange={(e) => setProjectForm({ ...projectForm, desc: e.target.value })}
+                  placeholder="Project Description *"
+                  className="w-full p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 text-[13px] bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-[#4f46e5] resize-none"
+                />
+              </div>
+
+              {/* Dates Row (2 Columns) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Start Date */}
+                <div>
+                  <fieldset className="rounded-xl border border-slate-200 dark:border-slate-800 px-3 pb-2 pt-0 focus-within:border-[#4f46e5]">
+                    <legend className="text-[11px] text-slate-400 px-1 font-medium select-none">Project Start Date</legend>
+                    <input
+                      type="date"
+                      value={projectForm.date ? (projectForm.date.includes('-') ? projectForm.date : '2024-08-16') : ''}
+                      onChange={(e) => setProjectForm({ ...projectForm, date: e.target.value })}
+                      className="w-full bg-transparent text-[13px] text-slate-800 dark:text-slate-100 focus:outline-none cursor-pointer"
+                    />
+                  </fieldset>
+                </div>
+
+                {/* Deadline */}
+                <div>
+                  <fieldset className="rounded-xl border border-slate-200 dark:border-slate-800 px-3 pb-2 pt-0 focus-within:border-[#4f46e5]">
+                    <legend className="text-[11px] text-slate-400 px-1 font-medium select-none">Project Deadline</legend>
+                    <input
+                      type="date"
+                      value={projectForm.deadline || ''}
+                      onChange={(e) => setProjectForm({ ...projectForm, deadline: e.target.value })}
+                      className="w-full bg-transparent text-[13px] text-slate-800 dark:text-slate-100 focus:outline-none cursor-pointer"
+                    />
+                  </fieldset>
+                  <p className="text-[10.5px] text-slate-400 mt-1 pl-1">Optional - leave blank if there is no fixed deadline</p>
+                </div>
+              </div>
+
+              {/* Logo Upload Row */}
+              <div className="pt-1">
+                <div className="flex items-center gap-3">
+                  {/* Icon Preview / Code mark box */}
+                  <div className="w-11 h-11 rounded-xl bg-[#eef2ff] dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-center text-[#4f46e5] dark:text-indigo-400 shrink-0 font-bold text-sm overflow-hidden shadow-2xs">
+                    {projectForm.hasCustomImg ? (
+                      <img src={projectForm.img} alt="" className="w-full h-full object-contain" />
+                    ) : (
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                      </svg>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="h-8 px-3 rounded-lg border border-[#dbeafe] hover:border-[#bfdbfe] bg-white dark:bg-[#141a25] hover:bg-indigo-50/60 text-[#4f46e5] dark:text-indigo-400 font-semibold text-[12px] inline-flex items-center gap-1.5 cursor-pointer transition shadow-2xs">
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Upload Logo</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (ev) => {
+                              setProjectForm(prev => ({ ...prev, img: ev.target?.result, hasCustomImg: true }));
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+                    <p className="text-[11px] text-slate-400 mt-1">Optional - falls back to a colored icon if none is uploaded</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons Footer */}
+              <div className="flex items-center justify-end gap-3 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setIsCreateProjectOpen(false)}
+                  className="px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold text-[13px] transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!projectForm.name.trim() || !projectForm.desc.trim()) {
+                      showToast('Please fill all required fields');
+                      return;
+                    }
+                    const formattedDate = projectForm.date && projectForm.date.includes('-')
+                      ? new Date(projectForm.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                      : (projectForm.date || '16 Aug 2024');
+
+                    if (editingProject) {
+                      setProjects(prev => prev.map(p => p.name === editingProject.name ? {
+                        ...p,
+                        name: projectForm.name,
+                        desc: projectForm.desc,
+                        fullDesc: projectForm.desc,
+                        date: formattedDate,
+                        deadline: projectForm.deadline,
+                        img: projectForm.hasCustomImg ? projectForm.img : p.img
+                      } : p));
+                      showToast('Project updated successfully');
+                    } else {
+                      const nextNum = (projects.length + 1).toString().padStart(2, '0');
+                      const newP = {
+                        num: nextNum,
+                        name: projectForm.name.trim(),
+                        desc: projectForm.desc.trim(),
+                        fullDesc: projectForm.desc.trim(),
+                        date: formattedDate,
+                        deadline: projectForm.deadline,
+                        status: 'in_progress',
+                        img: projectForm.hasCustomImg ? projectForm.img : generateFallbackIcon(projectForm.name.trim()),
+                        tasks: 10,
+                        completed: 2
+                      };
+                      setProjects(prev => [...prev, newP]);
+                      showToast('Project created successfully');
+                    }
+                    setIsCreateProjectOpen(false);
+                  }}
+                  className="px-5 py-2 rounded-xl bg-[#4f46e5] hover:bg-[#4338ca] text-white font-semibold text-[13px] transition cursor-pointer shadow-xs active:scale-95"
+                >
+                  {editingProject ? 'Save Changes' : 'Create Project'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Project Details Modal */}
+      {viewingProjectDetail && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl max-w-xl w-full max-h-[92vh] overflow-y-auto shadow-2xl p-6 bg-white dark:bg-[#141a25] mobile-bottom-sheet sm:animate-scale-up border-t sm:border bd space-y-5">
+            <div className="sheet-drag-handle sm:hidden -mt-1 mb-2" />
+            <div className="flex items-start justify-between pb-3 border-b bd">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden shrink-0 border bd bg-slate-50 dark:bg-slate-900">
+                  <img src={viewingProjectDetail.img} alt="" className="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                    {viewingProjectDetail.name}
+                  </h2>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="px-2 py-0.5 text-[10.5px] font-bold rounded-full uppercase bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                      {viewingProjectDetail.status.replace('_', ' ')}
+                    </span>
+                    <span className="text-xs text-slate-400">•</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                      Started: {viewingProjectDetail.date}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setViewingProjectDetail(null)}
+                className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 flex items-center justify-center cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div>
+              <h4 className="text-[12px] font-bold uppercase text-slate-400 tracking-wider mb-1">Description</h4>
+              <p className="text-[13px] text-slate-700 dark:text-slate-300 leading-relaxed">
+                {viewingProjectDetail.fullDesc || viewingProjectDetail.desc}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border bd">
+                <div className="text-[11px] font-bold text-slate-400">Total Tasks</div>
+                <div className="text-[18px] font-black text-slate-800 dark:text-slate-100 mt-0.5">
+                  {viewingProjectDetail.tasks}
+                </div>
+              </div>
+              <div className="p-3 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/60">
+                <div className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">Completed</div>
+                <div className="text-[18px] font-black text-emerald-700 dark:text-emerald-300 mt-0.5">
+                  {viewingProjectDetail.completed}
+                </div>
+              </div>
+              <div className="p-3 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/60">
+                <div className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">Progress</div>
+                <div className="text-[18px] font-black text-indigo-700 dark:text-indigo-300 mt-0.5">
+                  {Math.round((viewingProjectDetail.completed / viewingProjectDetail.tasks) * 100)}%
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2.5 pt-3 border-t bd">
+              <button
+                type="button"
+                onClick={() => setViewingProjectDetail(null)}
+                className="h-9 px-4 rounded-xl border bd text-[12.5px] font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  showToast(`Opening Kanban Board for ${viewingProjectDetail.name}`);
+                  setViewingProjectDetail(null);
+                  setIsBoardView(true);
+                }}
+                className="h-9 px-4 rounded-xl bg-[#4f46e5] hover:bg-[#4338ca] text-white text-[12.5px] font-semibold transition cursor-pointer shadow-xs"
+              >
+                View Project Board
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Project Confirmation Modal */}
+      {deleteProjectTarget && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl max-w-sm w-full p-6 bg-white dark:bg-[#141a25] shadow-2xl mobile-bottom-sheet sm:animate-scale-up border-t sm:border bd">
+            <div className="sheet-drag-handle sm:hidden -mt-1 mb-4" />
+            <h3 className="font-bold text-[14.5px] text-slate-900 dark:text-slate-100 mb-1">Delete Project?</h3>
+            <p className="text-xs text-slate-500 mb-4">
+              "{deleteProjectTarget.name}" and associated records will be permanently removed.
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setDeleteProjectTarget(null)}
+                className="flex-1 h-9 rounded-lg border bd text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setProjects(prev => prev.filter(p => p.name !== deleteProjectTarget.name));
+                  setDeleteProjectTarget(null);
+                  showToast('Project deleted successfully');
+                }}
+                className="flex-1 h-9 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition cursor-pointer"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Grant Access Modal */}
+      {accessModalService && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 bg-white dark:bg-[#141a25] mobile-bottom-sheet sm:animate-scale-up border-t sm:border bd space-y-5">
+            <div className="sheet-drag-handle sm:hidden -mt-1 mb-2" />
+            <div className="flex items-start justify-between pb-3 border-b bd">
+              <div>
+                <h3 className="font-bold text-[16px] text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                  <span>Grant Access:</span>
+                  <span className="text-[#5c56d6]">{accessModalService.name}</span>
+                </h3>
+                <p className="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  {accessModalService.desc}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setAccessModalService(null)}
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                showToast(`Access to ${accessModalService.name} (${accessRole}) granted to ${accessMember}!`);
+                setAccessModalService(null);
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Select Team Member / Employee *
+                </label>
+                <select
+                  value={accessMember}
+                  onChange={(e) => setAccessMember(e.target.value)}
+                  className="w-full h-10 px-3.5 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[13px] font-medium focus:outline-none focus:border-[#5c56d6] cursor-pointer shadow-2xs"
+                >
+                  <option value="Padmavathi H M">Padmavathi H M (Managing Director)</option>
+                  <option value="Devaraj H M">Devaraj H M (Managing Director)</option>
+                  <option value="kushi">kushi (Web Developer Intern - DIN069)</option>
+                  <option value="Ganashree GM">Ganashree GM (Web Developer - DIN068)</option>
+                  <option value="M Sahana">M Sahana (Web Developer Intern - DIN067)</option>
+                  <option value="Sai Venkat">Sai Venkat (Technical Advisor)</option>
+                  <option value="All Engineering Team">All Engineering Team</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Permission Role *
+                  </label>
+                  <select
+                    value={accessRole}
+                    onChange={(e) => setAccessRole(e.target.value)}
+                    className="w-full h-10 px-3 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[12.5px] font-medium focus:outline-none focus:border-[#5c56d6] cursor-pointer shadow-2xs"
+                  >
+                    <option value="Admin">Admin (Full Access)</option>
+                    <option value="Developer">Developer / Contributor</option>
+                    <option value="Read Only">Read Only / Viewer</option>
+                    <option value="DevOps">DevOps Engineer</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Environment *
+                  </label>
+                  <select
+                    value={accessEnv}
+                    onChange={(e) => setAccessEnv(e.target.value)}
+                    className="w-full h-10 px-3 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[12.5px] font-medium focus:outline-none focus:border-[#5c56d6] cursor-pointer shadow-2xs"
+                  >
+                    <option value="All Environments">All Environments</option>
+                    <option value="Production Only">Production</option>
+                    <option value="Staging Only">Staging</option>
+                    <option value="Development Only">Development</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[12px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Access Expiration
+                </label>
+                <select
+                  className="w-full h-10 px-3.5 rounded-xl border bd bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-[12.5px] font-medium focus:outline-none focus:border-[#5c56d6] cursor-pointer shadow-2xs"
+                >
+                  <option value="never">Never Expires (Standing Access)</option>
+                  <option value="30">Expires in 30 Days</option>
+                  <option value="90">Expires in 90 Days</option>
+                  <option value="365">Expires in 1 Year</option>
+                </select>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setAccessModalService(null)}
+                  className="px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold text-[13px] transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 rounded-xl bg-[#5c56d6] hover:bg-[#4f48cb] text-white font-semibold text-[13px] transition cursor-pointer shadow-xs active:scale-95"
+                >
+                  Grant Access
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-          <div className="card rounded-2xl p-5 max-w-sm w-full shadow-2xl bg-white dark:bg-[#141a25]">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="card rounded-t-3xl sm:rounded-2xl p-6 max-w-sm w-full shadow-2xl bg-white dark:bg-[#141a25] mobile-bottom-sheet sm:animate-scale-up border-t sm:border bd">
+            <div className="sheet-drag-handle sm:hidden -mt-1 mb-4" />
             <h3 className="font-bold text-[14px] mb-1">
               Delete this {deleteConfirm.type === 'banner' ? 'banner' : deleteConfirm.type === 'blog' ? 'article' : deleteConfirm.type === 'contact' ? 'contact submission' : deleteConfirm.type === 'logo' ? 'client logo' : deleteConfirm.type === 'website' ? 'website' : 'gallery image'}?
             </h3>
@@ -2972,7 +6139,7 @@ export default function App() {
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-lg pointer-events-none transition-all">
+        <div className="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-xl pointer-events-none transition-all">
           {toastMessage}
         </div>
       )}

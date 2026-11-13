@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Dashboard - Documents Validation</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{
+  --bg:#f8fafc;--card:#ffffff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--tile:#fffdf5;
+  --surface:#ffffff;--ink:#1c2230;--muted:#667085;--line:#e2e5ea;
+  --brand:#4f46e5;--brand-ink:#ffffff;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712;
+  --surface:#1b1f29;--ink:#eef0f4;--muted:#9aa3b2;--line:#2a3040;
+  --brand:#6366f1;--brand-ink:#ffffff;
+}
+body{background:var(--bg);color:var(--tx);font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.card{background:var(--card);border:1px solid var(--bd)}
+.mu{color:var(--mu)} .bd{border-color:var(--bd)}
+.soft{box-shadow:0 4px 20px -4px rgba(15,23,42,.06)}
+.btn{border:1px solid var(--bd);background:var(--card)}
+
+#desktopSidebar{transition:width .25s cubic-bezier(.4,0,.2,1)}
+#desktopSidebar.sidebar-collapsed{width:54px!important;min-width:54px!important}
+#desktopSidebar.sidebar-collapsed .logo-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .logo-mini{display:block!important}
+#desktopSidebar.sidebar-collapsed .sidebar-header-box{padding:1.25rem .25rem!important}
+#desktopSidebar.sidebar-collapsed nav a{justify-content:center!important;padding:0!important;width:36px!important;height:36px!important;margin-left:auto!important;margin-right:auto!important}
+#desktopSidebar.sidebar-collapsed nav a span{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-full{display:none!important}
+#desktopSidebar.sidebar-collapsed .sidebar-footer-mini{display:block!important}
+
+@keyframes scaleUp{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.animate-scale-up{animation:scaleUp .15s ease-out forwards}
+</style>
+</head>
+<body class="min-h-screen flex bg-[var(--bg)] text-[var(--tx)]">
+
+<!-- Desktop Persistent Left Sidebar -->
+<aside id="desktopSidebar" class="hidden lg:flex flex-col w-[220px] border-r bd h-screen sticky top-0 bg-white dark:bg-[#141a25] z-30 shrink-0">
+  <div class="sidebar-header-box pt-5 pb-5 px-3 flex items-center justify-center">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="logo-full h-[54px] w-auto max-w-[185px] object-contain">
+    <img src="logo-mini.png" alt="DCS" class="logo-mini hidden w-7 h-7 object-contain">
+  </div>
+  <nav class="flex-1 overflow-y-auto px-2.5 space-y-1" id="desktopNav"></nav>
+  <div class="py-3 border-t bd text-center">
+    <p class="sidebar-footer-full text-[10.5px] mu">DCS Admin v1.0.0</p>
+    <p class="sidebar-footer-mini hidden text-[10px] mu font-semibold">v1.0</p>
+  </div>
+</aside>
+
+<!-- Right Side Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+
+  <!-- Top Header Bar -->
+  <header class="sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 h-14 border-b bd bg-white dark:bg-[#141a25]">
+    <div class="flex items-center gap-2.5">
+      <button onclick="toggleSidebar()" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle sidebar" title="Toggle sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" y2="6"/>
+          <line x1="4" x2="20" y1="12" y2="12"/>
+          <line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+      <span class="text-[13.5px] font-bold tracking-tight">Admin Dashboard</span>
+    </div>
+    <div class="flex items-center gap-2.5">
+      <button onclick="theme()" id="tbtn" class="btn w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button onclick="toast('Logged out successfully')" class="h-8 px-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-xs">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 flex-1 space-y-5">
+    
+    <!-- Top Header Card -->
+    <div class="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="flex items-start sm:items-center gap-3.5">
+        <div class="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0 shadow-xs">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <h1 class="text-[20px] sm:text-[22px] font-extrabold tracking-tight text-[var(--tx)]">Documents Validation</h1>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+              <span>Main Admin Approver</span>
+            </span>
+          </div>
+          <p class="text-[12px] text-slate-500 dark:text-slate-400 mt-1">
+            Automated Document Certification, Main Admin Validation & Official Candidate Delivery Workflow
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5 self-start sm:self-center">
+        <button type="button" onclick="toast('Validation Settings')" class="h-9 px-3.5 rounded-xl border bd bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-700 dark:text-slate-200 text-xs font-semibold inline-flex items-center gap-1.5 transition cursor-pointer shadow-xs">
+          <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Settings</span>
+        </button>
+        <button type="button" onclick="refreshData()" class="h-9 px-3.5 rounded-xl border bd bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-700 dark:text-slate-200 text-xs font-semibold inline-flex items-center gap-1.5 transition cursor-pointer shadow-xs">
+          <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+          <span>Refresh</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Candidate Summary & Grid View -->
+    <div id="candidatesView" class="space-y-5">
+      <!-- 5 Summary KPI Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+      <!-- 1: Awaiting Validation -->
+      <div class="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-amber-400 soft flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center shrink-0 border border-amber-100 dark:border-amber-900/60">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">AWAITING VALIDATION</span>
+          <div class="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1" id="kpiAwaiting">2</div>
+          <span class="text-[10.5px] text-slate-400 block truncate">0 submitted in last 24h</span>
+        </div>
+      </div>
+
+      <!-- 2: Sent to HR for Correction -->
+      <div class="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-rose-500 soft flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-500 flex items-center justify-center shrink-0 border border-rose-100 dark:border-rose-900/60">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">SENT TO HR FOR CORRECTION</span>
+          <div class="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1" id="kpiCorrection">0</div>
+          <span class="text-[10.5px] text-slate-400 block truncate">Needs HR review & correction</span>
+        </div>
+      </div>
+
+      <!-- 3: Validated & Sent to HR -->
+      <div class="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-emerald-500 soft flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 flex items-center justify-center shrink-0 border border-emerald-100 dark:border-emerald-900/60">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">VALIDATED & SENT TO HR</span>
+          <div class="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1" id="kpiValidated">3</div>
+          <span class="text-[10.5px] text-slate-400 block truncate">Awaiting HR Candidate Dispatch</span>
+        </div>
+      </div>
+
+      <!-- 4: Sent to Candidate -->
+      <div class="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-blue-500 soft flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-500 flex items-center justify-center shrink-0 border border-blue-100 dark:border-blue-900/60">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">SENT TO CANDIDATE</span>
+          <div class="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1" id="kpiCandidate">5</div>
+          <span class="text-[10.5px] text-slate-400 block truncate">Delivered to candidate's email</span>
+        </div>
+      </div>
+
+      <!-- 5: Delivery / Issues -->
+      <div class="card rounded-2xl p-4 bg-white dark:bg-[#141a25] border-t-4 border-slate-300 dark:border-slate-700 soft flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">DELIVERY / ISSUES</span>
+          <div class="text-2xl font-black text-slate-900 dark:text-slate-100 leading-none my-1" id="kpiIssues">0</div>
+          <span class="text-[10.5px] text-slate-400 block truncate">Retry available</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Card -->
+    <div class="card rounded-2xl p-4 soft bg-white dark:bg-[#141a25] space-y-3.5">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="relative w-full sm:max-w-md">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="docSearch" oninput="onSearchChange(this.value)" placeholder="Search by Employee ID, Name, Email, Job Title..." class="w-full h-10 pl-9 pr-3.5 rounded-xl border bd text-[12.5px] bg-slate-50/50 dark:bg-slate-900 text-[var(--tx)] focus:outline-none focus:border-indigo-500 placeholder:text-slate-400">
+        </div>
+        <div class="w-full sm:w-auto">
+          <select id="docCategory" onchange="onCategoryChange(this.value)" class="w-full sm:w-auto h-10 px-3.5 rounded-xl border bd text-[12.5px] font-medium bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 focus:outline-none focus:border-indigo-500 cursor-pointer">
+            <option value="all">All Employment Categories</option>
+            <option value="Intern">Intern</option>
+            <option value="Employee">Employee</option>
+            <option value="Freelancer">Freelancer</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tab Pill Filter Strip -->
+      <div class="bg-slate-100/70 dark:bg-slate-800/60 p-1 rounded-xl flex items-center gap-1 overflow-x-auto" id="filterTabs">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Candidate Document Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="candidateGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Candidate Detailed Documents View (Exact replica of user screenshot media_1794554914892_269fce53.jpg) -->
+    <div id="documentsDetailView" class="hidden space-y-5">
+      <!-- Candidate Detail Header Card -->
+      <div class="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div class="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-black text-lg shrink-0 shadow-xs" id="detailAvatar">
+            K
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h2 class="text-[18px] sm:text-[20px] font-extrabold text-[var(--tx)]" id="detailName">kushi</h2>
+              <span class="text-[10.5px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded uppercase" id="detailDin">DIN069</span>
+              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200/80" id="detailRole">INTERN</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-1 flex-wrap">
+              <span id="detailPos" class="font-medium">Web Developer Intern</span>
+              <span>•</span>
+              <span class="inline-flex items-center gap-1 text-slate-400">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span id="detailEmail">harshasahana47@gmail.com</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2.5 self-start sm:self-center">
+          <button type="button" onclick="closeDocumentsDetail()" class="h-9 px-4 rounded-xl font-bold text-[12.5px] text-white bg-[#4f46e5] hover:bg-[#4338ca] transition inline-flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            <span>Back to Candidates</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 8 Documents Grid (Matching media_1794554914892_269fce53.jpg) -->
+      <div id="detailDocsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Mobile Drawer Sidebar Backdrop -->
+<div id="backdrop" class="fixed inset-0 z-40 bg-black/60 hidden transition-opacity" onclick="closeNav()"></div>
+
+<!-- Mobile Left Drawer -->
+<aside id="mobileNav" class="fixed left-0 top-0 z-50 h-full w-72 max-w-[85vw] flex flex-col card border-y-0 border-l-0 -translate-x-full transition-transform duration-200 lg:hidden bg-white dark:bg-[#141a25]">
+  <div class="flex items-center justify-between px-5 pt-4 pb-3">
+    <img src="logo.png" alt="Dev Creations and Solutions" class="h-10 w-auto max-w-[170px] object-contain">
+    <button onclick="closeNav()" class="w-8 h-8 rounded-lg mu flex items-center justify-center hover:opacity-75 cursor-pointer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="flex-1 overflow-y-auto px-2.5 py-2 space-y-0.5" id="drawerNav"></nav>
+  <p class="text-center text-[11px] mu py-3 border-t bd">DCS Admin v1.0.0</p>
+</aside>
+
+<!-- View Documents Modal -->
+<div id="docModal" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4">
+  <div class="card rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden bg-white dark:bg-[#141a25] animate-scale-up border border-slate-100 dark:border-slate-800">
+    <div class="p-5 pb-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 flex items-center justify-center font-bold text-base" id="modalAvatar">K</div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="font-bold text-[16px] text-slate-900 dark:text-slate-100" id="modalName">kushi</h3>
+            <span class="text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 px-1.5 py-0.5 rounded" id="modalDin">DIN069</span>
+          </div>
+          <p class="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5" id="modalPos">Web Developer Intern</p>
+        </div>
+      </div>
+      <button onclick="closeDocModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-800 flex items-center justify-center transition cursor-pointer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-5 space-y-3 max-h-[70vh] overflow-y-auto">
+      <div class="flex items-center justify-between text-[12px] font-bold text-slate-500 uppercase tracking-wider pb-1 border-b bd">
+        <span>Document Name</span>
+        <span>Status / Actions</span>
+      </div>
+      <div id="docList" class="space-y-2"></div>
+    </div>
+    <div class="p-4 border-t bd flex justify-end">
+      <button type="button" onclick="closeDocModal()" class="h-9 px-5 rounded-lg border bd text-slate-700 dark:text-slate-300 font-semibold text-[13px] hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Document Preview Modal -->
+<div id="previewDocModal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4">
+  <div class="card rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden bg-white dark:bg-[#141a25] animate-scale-up border bd">
+    <div class="p-4 px-5 border-b bd flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 flex items-center justify-center">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-[14.5px] text-slate-900 dark:text-slate-100" id="pvDocTitle">Offer Letter - Version 1</h3>
+          <p class="text-[11px] text-slate-400" id="pvDocSubtitle">Candidate Document Verification</p>
+        </div>
+      </div>
+      <button onclick="closeDocPreview()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-800 flex items-center justify-center transition cursor-pointer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-6 bg-slate-50 dark:bg-slate-900/60 max-h-[70vh] overflow-y-auto">
+      <div class="bg-white dark:bg-[#182030] p-6 rounded-xl border bd shadow-sm space-y-4 text-[12px] text-slate-700 dark:text-slate-300">
+        <div class="flex items-center justify-between pb-3 border-b bd">
+          <div>
+            <div class="text-[15px] font-black tracking-tight text-slate-900 dark:text-slate-100">DEV CREATIONS &amp; SOLUTIONS</div>
+            <div class="text-[10px] text-slate-400">Official Document Certification Registry</div>
+          </div>
+          <span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200">OFFICIAL COPY</span>
+        </div>
+        <div id="pvDocContent" class="space-y-3 leading-relaxed">
+          <!-- Dynamic details -->
+        </div>
+        <div class="pt-4 border-t bd flex items-center justify-between text-[11px] text-slate-400">
+          <span>Digitally Certified &amp; Approved by Main Admin</span>
+          <span>Security Token: DCS-CERT-2026-VAL</span>
+        </div>
+      </div>
+    </div>
+    <div class="p-4 border-t bd flex items-center justify-between">
+      <button type="button" onclick="toast('Downloading document PDF...')" class="h-9 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-[12px] inline-flex items-center gap-1.5 transition cursor-pointer shadow-xs">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Download PDF</span>
+      </button>
+      <button type="button" onclick="closeDocPreview()" class="h-9 px-4 rounded-lg border bd text-slate-700 dark:text-slate-300 font-semibold text-[12px] hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] hidden px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-lg pointer-events-none transition-all"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function toast(msg){
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  clearTimeout(t._tm);
+  t._tm = setTimeout(() => t.classList.add('hidden'), 2500);
+}
+
+function theme(){
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+}
+
+const SAMPLE_8_DOCS = [
+  {
+    id: 'offer',
+    name: 'Offer Letter',
+    version: 'Version 1',
+    status: 'Delivered To Candidate',
+    isDelivered: true,
+    submitted: '22/10/2026 by Admin',
+    reviewed: '22/10/2026 by Main Admin',
+    delivered: '23/10/2026 to candidate',
+    iconType: 'doc'
+  },
+  {
+    id: 'mou',
+    name: 'MOU',
+    version: 'Version 1',
+    status: 'Delivered To Candidate',
+    isDelivered: true,
+    submitted: '22/10/2026 by Admin',
+    reviewed: '22/10/2026 by Main Admin',
+    delivered: '03/11/2026 to candidate',
+    iconType: 'handshake'
+  },
+  {
+    id: 'idcard',
+    name: 'ID Card',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'id'
+  },
+  {
+    id: 'intern-compl-letter',
+    name: 'Internship Completion Letter',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'doc'
+  },
+  {
+    id: 'intern-compl-cert',
+    name: 'Internship Completion Certificate',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'award'
+  },
+  {
+    id: 'proj-compl-letter',
+    name: 'Project Completion Letter',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'check'
+  },
+  {
+    id: 'intern-ongoing',
+    name: 'Internship Ongoing Letter',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'hourglass'
+  },
+  {
+    id: 'relieving',
+    name: 'Relieving Letter',
+    version: 'Version 1',
+    status: 'Draft (Not Submitted)',
+    isDelivered: false,
+    iconType: 'doc'
+  }
+];
+
+const CANDIDATES = [
+  {
+    id: 1,
+    name: "kushi",
+    din: "DIN069",
+    roleType: "INTERN",
+    position: "Web Developer Intern",
+    email: "harshasahana47@gmail.com",
+    stats: { awaiting: 0, sentToHr: 0, validated: 0, sentToCandidate: 1 },
+    totalDocs: 8,
+    category: "Intern",
+    statusFilter: "sent-candidate",
+    docItems: JSON.parse(JSON.stringify(SAMPLE_8_DOCS))
+  },
+  {
+    id: 2,
+    name: "Ganashree GM",
+    din: "DIN068",
+    roleType: "INTERN",
+    position: "Web Developer",
+    email: "gmganashree99@gmail.com",
+    stats: { awaiting: 0, sentToHr: 0, validated: 0, sentToCandidate: 2 },
+    totalDocs: 8,
+    category: "Intern",
+    statusFilter: "sent-candidate",
+    docItems: JSON.parse(JSON.stringify(SAMPLE_8_DOCS))
+  },
+  {
+    id: 3,
+    name: "M Sahana",
+    din: "DIN067",
+    roleType: "INTERN",
+    position: "Web Developer Intern",
+    email: "msahanasahana47@gmail.com",
+    stats: { awaiting: 0, sentToHr: 0, validated: 1, sentToCandidate: 2 },
+    totalDocs: 4,
+    category: "Intern",
+    statusFilter: "validated",
+    docItems: JSON.parse(JSON.stringify(SAMPLE_8_DOCS))
+  },
+  {
+    id: 4,
+    name: "Vaishnavi R",
+    din: "DIN066",
+    roleType: "EMPLOYEE",
+    position: "Graphic Designer",
+    email: "vvaish0407@gmail.com",
+    stats: { awaiting: 2, sentToHr: 0, validated: 2, sentToCandidate: 0 },
+    totalDocs: 6,
+    category: "Employee",
+    statusFilter: "awaiting",
+    docItems: JSON.parse(JSON.stringify(SAMPLE_8_DOCS))
+  }
+];
+
+const TABS = [
+  { id: "all", label: "All Records" },
+  { id: "awaiting", label: "Sent for Validation" },
+  { id: "correction", label: "Sent to HR for Correction" },
+  { id: "validated", label: "Validated & Sent to HR" },
+  { id: "sent-candidate", label: "Sent to Candidate" },
+  { id: "issues", label: "Issues" }
+];
+
+let activeTab = "all";
+let searchQuery = "";
+let selectedCategory = "all";
+
+function renderTabs(){
+  $('filterTabs').innerHTML = TABS.map(t => {
+    const isActive = t.id === activeTab;
+    return `<button type="button" onclick="selectTab('${t.id}')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
+      isActive
+        ? 'bg-[#4f46e5] text-white shadow-xs font-bold'
+        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+    }">${t.label}</button>`;
+  }).join('');
+}
+
+function selectTab(id){
+  activeTab = id;
+  renderTabs();
+  renderGrid();
+}
+
+function onSearchChange(val){
+  searchQuery = val.trim().toLowerCase();
+  renderGrid();
+}
+
+function onCategoryChange(val){
+  selectedCategory = val;
+  renderGrid();
+}
+
+function refreshData(){
+  toast('Data refreshed successfully');
+  renderGrid();
+}
+
+function renderGrid(){
+  let list = [...CANDIDATES];
+
+  if(selectedCategory !== 'all'){
+    list = list.filter(c => c.category === selectedCategory);
+  }
+
+  if(activeTab !== 'all'){
+    list = list.filter(c => {
+      if(activeTab === 'awaiting') return c.stats.awaiting > 0 || c.statusFilter === 'awaiting';
+      if(activeTab === 'correction') return c.stats.sentToHr > 0 || c.statusFilter === 'correction';
+      if(activeTab === 'validated') return c.stats.validated > 0 || c.statusFilter === 'validated';
+      if(activeTab === 'sent-candidate') return c.stats.sentToCandidate > 0 || c.statusFilter === 'sent-candidate';
+      if(activeTab === 'issues') return c.statusFilter === 'issues';
+      return true;
+    });
+  }
+
+  if(searchQuery){
+    list = list.filter(c =>
+      c.name.toLowerCase().includes(searchQuery) ||
+      c.din.toLowerCase().includes(searchQuery) ||
+      c.email.toLowerCase().includes(searchQuery) ||
+      c.position.toLowerCase().includes(searchQuery)
+    );
+  }
+
+  if(!list.length){
+    $('candidateGrid').innerHTML = `
+      <div class="col-span-full py-12 text-center text-slate-400 font-semibold card rounded-2xl p-6 bg-white dark:bg-[#141a25]">
+        <p class="text-base text-slate-700 dark:text-slate-200 font-bold">No candidate records match your filters</p>
+        <p class="text-xs mt-1 text-slate-400">Try adjusting your search query or status filter tab.</p>
+      </div>
+    `;
+    return;
+  }
+
+  $('candidateGrid').innerHTML = list.map(c => `
+    <div class="card rounded-2xl p-5 bg-white dark:bg-[#141a25] soft border border-slate-200/80 dark:border-slate-800 space-y-4 hover:border-indigo-300 dark:hover:border-indigo-800 transition">
+      <!-- Top Row: Avatar, Name/ID, Role Badge -->
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-violet-50 dark:bg-violet-950/60 text-violet-600 dark:text-violet-400 border border-violet-100 dark:border-violet-900/60 flex items-center justify-center font-bold text-base shrink-0 shadow-2xs">
+            ${c.name[0].toUpperCase()}
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="font-bold text-[14px] text-slate-900 dark:text-slate-100 truncate">${c.name}</span>
+              <span class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded">${c.din}</span>
+            </div>
+            <div class="text-[12px] text-slate-600 dark:text-slate-300 font-medium truncate mt-0.5">${c.position}</div>
+          </div>
+        </div>
+        <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase bg-violet-50 text-violet-700 dark:bg-violet-950/50 dark:text-violet-300 border border-violet-200/80 shrink-0">
+          ${c.roleType}
+        </span>
+      </div>
+
+      <!-- Email with Lock Icon -->
+      <div class="flex items-center gap-1.5 text-[11.5px] text-slate-400 truncate">
+        <svg class="w-3.5 h-3.5 shrink-0 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span class="truncate">${c.email}</span>
+      </div>
+
+      <!-- 4 Stats Columns -->
+      <div class="grid grid-cols-4 gap-1 text-center py-2.5 px-2 rounded-xl bg-slate-50/70 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/80">
+        <div>
+          <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-tight block">AWAITING</span>
+          <span class="text-[14px] font-black text-slate-800 dark:text-slate-200 block mt-0.5">${c.stats.awaiting}</span>
+        </div>
+        <div>
+          <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-tight block">SENT TO HR</span>
+          <span class="text-[14px] font-black text-slate-800 dark:text-slate-200 block mt-0.5">${c.stats.sentToHr}</span>
+        </div>
+        <div>
+          <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-tight block">VALIDATED</span>
+          <span class="text-[14px] font-black ${c.stats.validated > 0 ? 'text-emerald-600' : 'text-slate-800 dark:text-slate-200'} block mt-0.5">${c.stats.validated}</span>
+        </div>
+        <div>
+          <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-tight block">SENT TO CANDIDATE</span>
+          <span class="text-[14px] font-black ${c.stats.sentToCandidate > 0 ? 'text-blue-600' : 'text-slate-800 dark:text-slate-200'} block mt-0.5">${c.stats.sentToCandidate}</span>
+        </div>
+      </div>
+
+      <!-- View Documents Button -->
+      <button type="button" onclick="viewCandidateDocs(${c.id})" class="w-full h-10 rounded-xl bg-[#4f46e5] hover:bg-indigo-700 text-white font-bold text-[12px] flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs">
+        <span>View Documents (${c.totalDocs})</span>
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  `).join('');
+}
+
+function getDocIconSvg(type){
+  switch(type){
+    case 'handshake':
+      return `<svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m11 17 2 2a1 1 0 0 0 1.4 0l4.3-4.3a1 1 0 0 0 0-1.4l-2-2"/><path d="m18 10 1.3-1.3a1 1 0 0 0 0-1.4l-3.6-3.6a1 1 0 0 0-1.4 0L13 5"/><path d="m2 14 6 6"/><path d="m7 19 3-3"/><path d="m14 12-8.5 8.5a2.12 2.12 0 0 1-3-3L11 9"/></svg>`;
+    case 'id':
+      return `<svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="14" x="3" y="5" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M15 9h2"/><path d="M15 13h2"/><path d="M6 16a3 3 0 0 1 6 0"/></svg>`;
+    case 'award':
+      return `<svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`;
+    case 'check':
+      return `<svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>`;
+    case 'hourglass':
+      return `<svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>`;
+    default:
+      return `<svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>`;
+  }
+}
+
+let currentViewingCandidate = null;
+
+function viewCandidateDocs(candidateId){
+  const c = CANDIDATES.find(x => x.id === candidateId) || CANDIDATES[0];
+  currentViewingCandidate = c;
+
+  $('detailAvatar').textContent = c.name[0].toUpperCase();
+  $('detailName').textContent = c.name;
+  $('detailDin').textContent = c.din;
+  $('detailRole').textContent = c.roleType;
+  $('detailPos').textContent = c.position;
+  $('detailEmail').textContent = c.email;
+
+  const docs = c.docItems || SAMPLE_8_DOCS;
+  $('detailDocsGrid').innerHTML = docs.map(doc => {
+    return `
+      <div class="card rounded-2xl p-5 bg-white dark:bg-[#141a25] soft border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between transition hover:shadow-sm">
+        <div>
+          <!-- Top Row: Icon, Title/Version, Status Badge -->
+          <div class="flex items-start justify-between gap-2.5">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 border border-purple-100 dark:border-purple-900/60 shadow-2xs">
+                ${getDocIconSvg(doc.iconType)}
+              </div>
+              <div class="min-w-0">
+                <h4 class="font-bold text-[14px] text-slate-800 dark:text-slate-100 leading-tight truncate">${doc.name}</h4>
+                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">${doc.version}</p>
+              </div>
+            </div>
+
+            ${doc.isDelivered ? `
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shrink-0">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                <svg class="w-3 h-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Delivered To Candidate</span>
+              </span>
+            ` : `
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 shrink-0">
+                <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                <span>Draft (Not Submitted)</span>
+              </span>
+            `}
+          </div>
+
+          <!-- Timeline Details (if delivered / submitted) -->
+          ${doc.isDelivered ? `
+            <div class="mt-4 pt-3 border-t bd space-y-1.5 text-[11px] text-slate-600 dark:text-slate-300">
+              <div class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Submitted: ${doc.submitted}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-slate-700 dark:text-slate-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+                <span>Reviewed: ${doc.reviewed}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-slate-800 dark:text-slate-100 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                <span>Delivered: ${doc.delivered}</span>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Action Buttons Matching Reference Image -->
+        <div class="mt-4 pt-3 border-t bd flex items-center justify-between gap-2 flex-wrap">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <button type="button" onclick="previewCandidateDoc('${doc.name}', '${c.name}', '${doc.version}')" class="h-8 px-2.5 rounded-lg border bd bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold inline-flex items-center gap-1 transition cursor-pointer shadow-2xs">
+              <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span>Preview</span>
+            </button>
+
+            ${doc.isDelivered ? `
+              <span class="h-8 px-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-semibold inline-flex items-center gap-1">
+                <svg class="w-3 h-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Sent to HR for Delivery</span>
+              </span>
+              <button type="button" onclick="downloadCandidateDoc('${doc.name}', '${c.name}')" class="h-8 px-2.5 rounded-lg border bd bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold inline-flex items-center gap-1 transition cursor-pointer shadow-2xs">
+                <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Download</span>
+              </button>
+            ` : ''}
+          </div>
+
+          <button type="button" onclick="toast('Version history: ${doc.version} is active and certified')" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 flex items-center justify-center transition cursor-pointer" title="Version History">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  $('candidatesView').classList.add('hidden');
+  $('documentsDetailView').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeDocumentsDetail(){
+  $('documentsDetailView').classList.add('hidden');
+  $('candidatesView').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function previewCandidateDoc(docName, candName, version){
+  $('pvDocTitle').textContent = `${docName} - ${version || 'Version 1'}`;
+  $('pvDocSubtitle').textContent = `Candidate: ${candName} (${currentViewingCandidate ? currentViewingCandidate.din : 'Verified'})`;
+
+  $('pvDocContent').innerHTML = `
+    <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border bd space-y-2">
+      <div class="flex justify-between items-center text-xs">
+        <span class="font-bold text-slate-800 dark:text-slate-200">${docName}</span>
+        <span class="font-mono text-slate-500">REF-DCS-2026-09</span>
+      </div>
+      <p class="text-xs text-slate-600 dark:text-slate-300">
+        This document confirms the official status of <strong>${candName}</strong> as <strong>${currentViewingCandidate ? currentViewingCandidate.position : 'Candidate'}</strong> at Dev Creations &amp; Solutions. All credentials, verification parameters, and background checks have been certified by Main Administration.
+      </p>
+      <div class="grid grid-cols-2 gap-2 pt-2 text-[11px] text-slate-500">
+        <div>Effective Date: <strong>22/10/2026</strong></div>
+        <div>Validation Authority: <strong>Main Admin Approver</strong></div>
+      </div>
+    </div>
+  `;
+
+  $('previewDocModal').classList.remove('hidden');
+}
+
+function closeDocPreview(){
+  $('previewDocModal').classList.add('hidden');
+}
+
+function downloadCandidateDoc(docName, candName){
+  toast(`Downloading ${docName} for ${candName}...`);
+}
+
+const P = {
+  Banners: { path: 'Banner management.html', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14"/>' },
+  Gallery: { path: 'Gallery management.html', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>' },
+  Blogs: { path: 'Blog management.html', icon: '<path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 4v16"/>' },
+  Contacts: { path: 'Contact management.html', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 10h4M15 14h4"/>' },
+  'Client Logos': { path: 'Client logos.html', icon: '<path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>' },
+  Websites: { path: 'Website management.html', icon: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+  Employees: { path: 'Employee management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Documents Validation': { path: 'Documents validation.html', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/>' },
+  Team: { path: 'Team management.html', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/>' },
+  'Project Manager': { path: 'Project manager.html', icon: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/>' },
+  Access: { path: 'Access management.html', icon: '<path stroke-width="3" d="M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01"/>' }
+};
+
+function renderNavHTML(activeName){
+  return Object.keys(P).map(k => {
+    const on = k === activeName;
+    const item = P[k];
+    return `<a href="${item.path}" title="${k}" class="w-full flex items-center gap-2.5 h-9 px-2.5 rounded-lg text-[12.5px] transition cursor-pointer ${
+      on ? 'border border-orange-400/90 bg-indigo-50/70 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-semibold' : 'font-medium text-[var(--tx)] hover:bg-slate-100 dark:hover:bg-slate-800'
+    }">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${on ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}">${item.icon}</svg>
+      <span>${k}</span>
+    </a>`;
+  }).join('');
+}
+
+$('desktopNav').innerHTML = renderNavHTML('Documents Validation');
+$('drawerNav').innerHTML = renderNavHTML('Documents Validation');
+
+function toggleSidebar(){
+  $('desktopSidebar').classList.toggle('sidebar-collapsed');
+}
+
+function openNav(){
+  $('mobileNav').classList.remove('-translate-x-full');
+  $('backdrop').classList.remove('hidden');
+}
+
+function closeNav(){
+  $('mobileNav').classList.add('-translate-x-full');
+  $('backdrop').classList.add('hidden');
+}
+
+renderTabs();
+renderGrid();
+</script>
+</body>
+</html>
+
