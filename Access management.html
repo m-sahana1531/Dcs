@@ -465,18 +465,6 @@ input, select, textarea { font-size: 16px; }
 <script>
 function $(id){ return document.getElementById(id); }
 
-// Theme Logic
-function applyTheme(t){
-  if(t === 'dark'){
-    document.documentElement.setAttribute('data-theme', 'dark');
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.removeAttribute('data-theme');
-    document.documentElement.classList.remove('dark');
-  }
-  localStorage.setItem('dcs-theme', t);
-}
-
 function updateThemeIcon(isDark) {
       const btn = (typeof $ === 'function' ? $('tbtn') : null) || document.getElementById('tbtn');
       if (btn) {

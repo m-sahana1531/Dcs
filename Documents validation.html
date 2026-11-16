@@ -771,6 +771,11 @@ function closeDocumentsDetail(){
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function closeDocModal(){
+  const m = $('docModal');
+  if (m) m.classList.add('hidden');
+}
+
 function previewCandidateDoc(docName, candName, version){
   $('pvDocTitle').textContent = `${docName} - ${version || 'Version 1'}`;
   $('pvDocSubtitle').textContent = `Candidate: ${candName} (${currentViewingCandidate ? currentViewingCandidate.din : 'Verified'})`;
