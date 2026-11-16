@@ -7,6 +7,11 @@
   <title>Admin Dashboard - Blog & Article Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]']
+    }
+  </script>
   <style>
     :root {
       --bg: #f8fafc;
@@ -17,7 +22,8 @@
       --tile: #fffdf5;
     }
 
-    :root[data-theme="dark"] {
+    :root[data-theme="dark"], html.dark {
+      color-scheme: dark;
       color-scheme: dark;
       --bg: #0b0f17;
       --card: #141a25;
@@ -232,16 +238,16 @@
         <!-- Blog Table Card -->
         <div class="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25]">
           <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full min-w-[880px] text-left border-collapse">
               <thead>
                 <tr class="border-b bd text-[10.5px] sm:text-[11px] font-semibold text-slate-500 uppercase tracking-wider bg-slate-50/70 dark:bg-slate-900/50">
                   <th class="py-3 px-3 sm:py-3.5 sm:px-4">Featured Image</th>
                   <th class="py-3 px-3 sm:py-3.5 sm:px-4">Title</th>
                   <th class="py-3 px-3 sm:py-3.5 sm:px-4">Author</th>
                   <th class="py-3 px-3 sm:py-3.5 sm:px-4">Status</th>
-                  <th class="py-3.5 px-4 hidden lg:table-cell">Tags</th>
-                  <th class="py-3.5 px-4 whitespace-nowrap hidden lg:table-cell">Published Date</th>
-                  <th class="py-3.5 px-4 text-right hidden lg:table-cell">Actions</th>
+                  <th class="py-3 px-3 sm:py-3.5 sm:px-4">Tags</th>
+                  <th class="py-3 px-3 sm:py-3.5 sm:px-4 whitespace-nowrap">Published Date</th>
+                  <th class="py-3 px-3 sm:py-3.5 sm:px-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody id="blogTableBody" class="divide-y bd text-[12px]"></tbody>
@@ -640,11 +646,25 @@
       t._h = setTimeout(() => t.classList.add('hidden'), 2200);
     }
 
+    function updateThemeIcon(isDark) {
+      const btn = (typeof $ === 'function' ? $('tbtn') : null) || document.getElementById('tbtn');
+      if (btn) {
+        btn.innerHTML = isDark
+          ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
+          : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+      }
+    }
+    function applyTheme(isDark) {
+      const r = document.documentElement;
+      r.dataset.theme = isDark ? 'dark' : 'light';
+      r.classList.toggle('dark', isDark);
+      localStorage.setItem('dcs-theme', isDark ? 'dark' : 'light');
+      updateThemeIcon(isDark);
+    }
     function theme() {
       const r = document.documentElement;
-      const d = getComputedStyle(r).colorScheme.includes('dark');
-      r.dataset.theme = d ? 'light' : 'dark';
-      $('tbtn').innerHTML = ico(d ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>' : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>', 16);
+      const isDark = r.dataset.theme === 'dark' || r.classList.contains('dark');
+      applyTheme(!isDark);
     }
 
     function renderBlogs(items = blogPosts) {
@@ -660,42 +680,40 @@
       empty.classList.add('hidden');
       tbody.innerHTML = items.map(post => `
         <tr class="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition">
-          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top w-20 sm:w-24">
+          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top w-20 sm:w-24 min-w-[80px]">
             ${post.img
               ? `<img src="${post.img}" alt="" class="w-16 h-12 sm:w-20 sm:h-14 rounded-lg object-cover border bd shadow-2xs">`
-              : `<div class="w-16 h-12 sm:w-20 sm:h-14 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10.5px] sm:text-[11px] text-slate-400 font-medium border bd">No Image</div>`
+              : `<div class="w-16 h-12 sm:w-20 sm:h-14 rounded-lg bg-[#edf2f7] dark:bg-slate-800 flex items-center justify-center text-[10.5px] sm:text-[11px] text-[#94a3b8] font-semibold border bd">No Image</div>`
             }
           </td>
-          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top min-w-[130px] sm:min-w-0 max-w-xs">
+          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top min-w-[170px] max-w-xs">
             <h3 onclick="openEditor(${post.id})" class="font-bold text-[12px] sm:text-[12.5px] text-[var(--tx)] leading-snug cursor-pointer hover:text-blue-600 transition">${post.title}</h3>
             <p class="text-[10px] sm:text-[10.5px] text-slate-400 font-mono mt-1 break-all line-clamp-3">${post.slug}</p>
           </td>
-          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top whitespace-nowrap">
+          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top whitespace-nowrap min-w-[120px]">
             <p class="font-semibold text-[12px] text-[var(--tx)]">${post.author}</p>
-            <p class="text-[10.5px] text-slate-400">${post.role}</p>
+            <p class="text-[10.5px] text-slate-400 mt-0.5">${post.role}</p>
           </td>
-          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top whitespace-nowrap">
+          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top whitespace-nowrap min-w-[85px]">
             ${post.status === 'Published' || post.status === 'Publish'
-              ? `<span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#e6f9ed] text-[#16a34a] dark:bg-emerald-950/40 dark:text-emerald-400">Publish</span>`
-              : `<span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Draft</span>`
+              ? `<span class="inline-block px-3 py-1 rounded-full text-[11px] font-semibold bg-[#e6f9ed] text-[#16a34a] dark:bg-emerald-950/40 dark:text-emerald-400">Publish</span>`
+              : `<span class="inline-block px-3 py-1 rounded-full text-[11px] font-semibold bg-[#f1f5f9] text-[#334155] dark:bg-slate-800 dark:text-slate-300">Draft</span>`
             }
           </td>
-          <td class="py-3 px-4 align-top hidden lg:table-cell">
-            <div class="flex flex-col gap-1 max-w-[150px]">
-              ${post.tags.map(t => `<span class="inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 truncate">${t}</span>`).join('')}
+          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top min-w-[140px] max-w-[170px]">
+            <div class="flex flex-col gap-1 items-start">
+              ${post.tags.map(t => `<span class="inline-block px-2.5 py-0.5 rounded text-[10.5px] font-medium bg-[#edf5ff] text-[#2563eb] dark:bg-blue-950/50 dark:text-blue-300 truncate">${t}</span>`).join('')}
             </div>
           </td>
-          <td class="py-3 px-4 align-top whitespace-nowrap text-slate-600 dark:text-slate-300 hidden lg:table-cell">
+          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top whitespace-nowrap text-slate-700 dark:text-slate-300 font-normal text-[12px] min-w-[100px]">
             ${post.date}
           </td>
-          <td class="py-3 px-4 align-top text-right whitespace-nowrap hidden lg:table-cell">
-            <div class="flex items-center justify-end gap-1.5">
-              <button onclick="openEditor(${post.id})" class="h-7 px-2.5 rounded-lg border bd bg-white dark:bg-[#141a25] hover:bg-slate-50 dark:hover:bg-slate-800 text-[11px] font-semibold text-slate-700 dark:text-slate-200 inline-flex items-center gap-1 transition cursor-pointer shadow-xs">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+          <td class="py-3 px-3 sm:py-3.5 sm:px-4 align-top text-right whitespace-nowrap min-w-[140px]">
+            <div class="flex items-center justify-end gap-2">
+              <button onclick="openEditor(${post.id})" class="h-8 px-3 rounded-lg border bd bg-white dark:bg-[#141a25] hover:bg-slate-50 dark:hover:bg-slate-800 text-[11.5px] font-semibold text-slate-700 dark:text-slate-200 inline-flex items-center justify-center transition cursor-pointer shadow-2xs">
                 Edit
               </button>
-              <button onclick="askDeleteBlog(${post.id})" class="h-7 px-2.5 rounded-lg border border-red-200/80 dark:border-red-900/50 bg-red-50/70 hover:bg-red-100 dark:bg-red-950/30 dark:hover:bg-red-950/50 text-[11px] font-semibold text-red-600 dark:text-red-400 inline-flex items-center gap-1 transition cursor-pointer shadow-xs">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>
+              <button onclick="askDeleteBlog(${post.id})" class="h-8 px-3 rounded-lg border border-red-200/80 dark:border-red-900/50 bg-red-50/70 hover:bg-red-100 dark:bg-red-950/30 dark:hover:bg-red-950/50 text-[11.5px] font-semibold text-red-600 dark:text-red-400 inline-flex items-center justify-center transition cursor-pointer shadow-2xs">
                 Delete
               </button>
             </div>
@@ -1060,6 +1078,13 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
 
     renderBlogs();
+  
+    (function () {
+      const saved = localStorage.getItem('dcs-theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = saved ? saved === 'dark' : prefersDark;
+      applyTheme(isDark);
+    })();
   </script>
 </body>
 

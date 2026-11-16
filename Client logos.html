@@ -6,9 +6,15 @@
 <title>Admin Dashboard - Client Logos Management</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]']
+    }
+  </script>
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--tile:#fffdf5}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712}
+:root[data-theme="dark"], html.dark {
+      color-scheme: dark;color-scheme:dark;--bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0b0f17;--card:#141a25;--tx:#f1f5f9;--mu:#94a3b8;--bd:#263042;--tile:#1c1712}}
 .logo-card-box img, .logo-card-box svg{transition:transform .3s ease}
 .logo-card-box .ov{transition:opacity .25s ease}
@@ -99,7 +105,7 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
 
         <div class="flex items-center gap-2 w-full sm:w-auto sm:self-center">
           <!-- Button toggles between "+ Upload Logos" and "✕ Cancel" -->
-          <button id="topActionBtn" onclick="toggleUploadView()" class="w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95" style="background:#ea580c;box-shadow:0 6px 16px -4px rgba(234,88,12,0.5)">
+          <button id="topActionBtn" onclick="toggleUploadForm()" class="w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95" style="background:#ea580c;box-shadow:0 6px 16px -4px rgba(234,88,12,0.5)">
             <span id="topActionIcon" class="text-sm font-bold leading-none">+</span>
             <span id="topActionLabel">Upload Logos</span>
           </button>
@@ -167,15 +173,15 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
             <div 
               id="dropzoneBox" 
               onclick="$('logoFileInput').click()" 
-              class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 sm:p-10 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/30 cursor-pointer hover:border-orange-400 dark:hover:border-orange-500 transition group"
+              class="border border-dashed border-slate-300 dark:border-slate-700 rounded-lg p-6 sm:p-8 flex flex-col items-center justify-center bg-transparent cursor-pointer hover:border-orange-400 dark:hover:border-orange-500 transition group"
             >
               <!-- Unselected State -->
               <div id="dropzoneEmpty" class="flex flex-col items-center justify-center">
                 <button 
                   type="button" 
-                  class="h-9 px-5 rounded-lg font-semibold text-[12.5px] text-white bg-[#ea580c] hover:opacity-95 shadow-sm inline-flex items-center gap-2 cursor-pointer pointer-events-none"
+                  class="h-10 px-5 rounded-lg font-bold text-[13px] text-white bg-[#ea580c] hover:opacity-95 shadow-sm inline-flex items-center gap-2 cursor-pointer pointer-events-none"
                 >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
                   </svg>
                   Select Logo Image
@@ -202,22 +208,22 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
             </div>
           </div>
 
-          <!-- Action Buttons at bottom: Cancel (grey) & Upload Logo (green) -->
-          <div class="flex items-center gap-4 pt-2">
-            <button 
-              type="button" 
-              onclick="hideUploadForm()" 
-              class="flex-1 h-11 rounded-lg font-bold text-[14px] text-white bg-[#94a3b8] hover:bg-[#64748b] transition cursor-pointer flex items-center justify-center shadow-xs active:scale-95"
-            >
-              Cancel
-            </button>
+          <!-- Action Buttons at bottom: Upload Logo (green) on top, Cancel (gray) below -->
+          <div class="flex flex-col gap-2.5 pt-2">
             <button 
               type="button" 
               id="formSubmitBtn"
               onclick="submitClientLogo()" 
-              class="flex-1 h-11 rounded-lg font-bold text-[14px] text-white bg-[#00a86b] hover:bg-[#059669] transition cursor-pointer flex items-center justify-center shadow-sm active:scale-95"
+              class="w-full h-11 rounded-lg font-bold text-[14px] text-white bg-[#00a86b] hover:bg-[#059669] transition cursor-pointer flex items-center justify-center shadow-sm active:scale-95"
             >
               Upload Logo
+            </button>
+            <button 
+              type="button" 
+              onclick="hideUploadForm()" 
+              class="w-full h-11 rounded-lg font-bold text-[14px] text-white bg-[#b0bec5] hover:bg-[#94a3b8] dark:bg-slate-700 dark:hover:bg-slate-600 transition cursor-pointer flex items-center justify-center shadow-xs active:scale-95"
+            >
+              Cancel
             </button>
           </div>
         </div>
@@ -308,7 +314,19 @@ let clientLogos = [
   { id: 1, title: 'Namma Bengaluru Trekkers', file: 'logo (1).png', date: '5/26/2026', img: svgTrekkers },
   { id: 2, title: 'Tridala', file: 'resize-17713241921671281798TridalaLogo8112025.jpg', date: '2/17/2026', img: svgTridala },
   { id: 3, title: 'Unnamed Client', file: 'LOGO.png', date: '2/14/2026', img: svgEcoTrek },
-  { id: 4, title: 'Nexus Innovations', file: 'nexus-tech-vector.png', date: '2/10/2026', img: svgNexus }
+  { id: 4, title: 'Nexus Innovations', file: 'nexus-tech-vector.png', date: '2/10/2026', img: svgNexus },
+  { id: 5, title: 'Apex Cloud Solutions', file: 'apex-cloud.png', date: '2/08/2026', img: svgNexus },
+  { id: 6, title: 'Vanguard Robotics', file: 'vanguard-robotics.png', date: '2/05/2026', img: svgTridala },
+  { id: 7, title: 'Hyperion Analytics', file: 'hyperion-data.png', date: '1/30/2026', img: svgNexus },
+  { id: 8, title: 'Starlight Media Group', file: 'starlight-media.png', date: '1/28/2026', img: svgTrekkers },
+  { id: 9, title: 'Zenith Healthtech', file: 'zenith-health.png', date: '1/25/2026', img: svgTridala },
+  { id: 10, title: 'BlueWave Logistics', file: 'bluewave-logistics.png', date: '1/22/2026', img: svgEcoTrek },
+  { id: 11, title: 'Quantum Leap Labs', file: 'quantum-labs.png', date: '1/20/2026', img: svgNexus },
+  { id: 12, title: 'Orion Cyber Security', file: 'orion-security.png', date: '1/18/2026', img: svgTrekkers },
+  { id: 13, title: 'Aura Architecture', file: 'aura-arch.png', date: '1/15/2026', img: svgTridala },
+  { id: 14, title: 'Solstice Renewable Energy', file: 'solstice-energy.png', date: '1/12/2026', img: svgEcoTrek },
+  { id: 15, title: 'Pinnacle Consulting', file: 'pinnacle-consulting.png', date: '1/10/2026', img: svgNexus },
+  { id: 16, title: 'Vertex Financial Group', file: 'vertex-finance.png', date: '1/05/2026', img: svgTridala }
 ];
 
 let isUploadFormVisible = false;
@@ -317,21 +335,42 @@ let selectedLogoFile = null;
 let selectedLogoDataUrl = null;
 
 function toast(m){const t=$('toast');t.textContent=m;t.classList.remove('hidden');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.add('hidden'),2200)}
-function theme(){const r=document.documentElement;const d=getComputedStyle(r).colorScheme.includes('dark');r.dataset.theme=d?'light':'dark';$('tbtn').innerHTML=ico(d?'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>':'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',16)}
+function updateThemeIcon(isDark) {
+      const btn = (typeof $ === 'function' ? $('tbtn') : null) || document.getElementById('tbtn');
+      if (btn) {
+        btn.innerHTML = isDark
+          ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
+          : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+      }
+    }
+    function applyTheme(isDark) {
+      const r = document.documentElement;
+      r.dataset.theme = isDark ? 'dark' : 'light';
+      r.classList.toggle('dark', isDark);
+      localStorage.setItem('dcs-theme', isDark ? 'dark' : 'light');
+      updateThemeIcon(isDark);
+    }
+    function theme() {
+      const r = document.documentElement;
+      const isDark = r.dataset.theme === 'dark' || r.classList.contains('dark');
+      applyTheme(!isDark);
+    }
 
-function toggleUploadView(){
+function toggleUploadForm(){
   if(isUploadFormVisible){
     hideUploadForm();
   } else {
     showUploadForm();
   }
 }
+function toggleUploadView(){
+  toggleUploadForm();
+}
 
 function showUploadForm(){
   isUploadFormVisible = true;
   editingLogoId = null;
   $('uploadFormSection').classList.remove('hidden');
-  $('logoListSection').classList.add('hidden');
   
   // Update top button to Cancel
   $('topActionIcon').textContent = '✕';
@@ -349,15 +388,17 @@ function showUploadForm(){
   $('dropzoneEmpty').classList.remove('hidden');
   $('dropzoneSelected').classList.add('hidden');
   
-  // Focus company name
-  setTimeout(() => $('companyNameInput').focus(), 100);
+  // Focus company name and scroll smoothly into view
+  setTimeout(() => {
+    $('companyNameInput').focus();
+    $('uploadFormSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
 }
 
 function hideUploadForm(){
   isUploadFormVisible = false;
   editingLogoId = null;
   $('uploadFormSection').classList.add('hidden');
-  $('logoListSection').classList.remove('hidden');
   
   // Reset top button to Upload Logos
   $('topActionIcon').textContent = '+';
@@ -375,7 +416,6 @@ function editLogo(id){
   editingLogoId = id;
   isUploadFormVisible = true;
   $('uploadFormSection').classList.remove('hidden');
-  $('logoListSection').classList.add('hidden');
 
   $('topActionIcon').textContent = '✕';
   $('topActionLabel').textContent = 'Cancel';
@@ -390,12 +430,13 @@ function editLogo(id){
 
   $('selectedLogoPreview').src = item.img;
   $('selectedLogoName').textContent = item.file;
-  $('selectedLogoSize').textContent = 'Current Logo';
+  $('selectedLogoSize').textContent = 'Existing logo';
   $('dropzoneEmpty').classList.add('hidden');
   $('dropzoneSelected').classList.remove('hidden');
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  setTimeout(() => $('companyNameInput').focus(), 100);
+  setTimeout(() => {
+    $('uploadFormSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
 }
 
 function handleFileSelected(input){
@@ -630,6 +671,13 @@ function toggleSidebar(){
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeNav(); });
 
 renderLogos();
-</script>
+
+    (function () {
+      const saved = localStorage.getItem('dcs-theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = saved ? saved === 'dark' : prefersDark;
+      applyTheme(isDark);
+    })();
+  </script>
 </body>
 </html>

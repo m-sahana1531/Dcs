@@ -35,6 +35,8 @@ import {
   XCircle,
   Clock,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Lock,
   ArrowRight,
   Download,
@@ -488,6 +490,27 @@ const svgKLG = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 
   <path d="M36 64 C42 67 58 67 64 64" stroke="#d97706" stroke-width="2" fill="none"/>
 </svg>`);
 
+const svgQuickPay = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#dcfce7"/>
+  <rect x="22" y="30" width="56" height="40" rx="6" fill="#16a34a"/>
+  <rect x="22" y="38" width="56" height="8" fill="#15803d"/>
+  <circle cx="34" cy="56" r="4" fill="#ffffff"/>
+  <circle cx="46" cy="56" r="4" fill="#86efac"/>
+</svg>`);
+
+const svgEduTrack = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#e0e7ff"/>
+  <polygon points="50,24 82,38 50,52 18,38" fill="#4f46e5"/>
+  <path d="M30 46 L30 64 C30 72 70 72 70 64 L70 46" fill="none" stroke="#4f46e5" stroke-width="5" stroke-linecap="round"/>
+  <line x1="82" y1="38" x2="82" y2="60" stroke="#4f46e5" stroke-width="4" stroke-linecap="round"/>
+</svg>`);
+
+const svgHealthSync = makeSvgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#ffe4e6"/>
+  <path d="M50 24 C34 16 18 30 24 50 C32 68 50 82 50 82 C50 82 68 68 76 50 C82 30 66 16 50 24 Z" fill="#e11d48"/>
+  <path d="M38 52 L45 52 L48 45 L52 59 L55 52 L62 52" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`);
+
 const PALETTES = [
   { bg: '#ede9fe', fg: '#7c3aed' },
   { bg: '#fef3c7', fg: '#b45309' },
@@ -571,6 +594,39 @@ const INITIAL_PROJECTS = [
     img: svgKLG,
     tasks: 22,
     completed: 14
+  },
+  {
+    num: "07",
+    name: "QuickPay",
+    desc: "Digital wallet and instant UPI payment gateway integration...",
+    fullDesc: "Digital wallet and instant UPI payment gateway integration with dynamic QR generation and ledger reconciliation.",
+    date: "22 Jul 2026",
+    status: "completed",
+    img: svgQuickPay,
+    tasks: 30,
+    completed: 30
+  },
+  {
+    num: "08",
+    name: "EduTrack",
+    desc: "Student attendance and fee management system for academy...",
+    fullDesc: "Comprehensive student attendance, timetable management, and automated fee invoicing system for academies and schools.",
+    date: "04 Aug 2026",
+    status: "planning",
+    img: svgEduTrack,
+    tasks: 18,
+    completed: 4
+  },
+  {
+    num: "09",
+    name: "HealthSync",
+    desc: "Real-time doctor appointment and clinic queue management...",
+    fullDesc: "Real-time doctor appointment scheduling, patient records repository, and digital token queue management.",
+    date: "11 Sep 2026",
+    status: "in_progress",
+    img: svgHealthSync,
+    tasks: 25,
+    completed: 11
   }
 ];
 
@@ -813,6 +869,8 @@ export default function App() {
   const [projects, setProjects] = useState(INITIAL_PROJECTS);
   const [projectSearchQuery, setProjectSearchQuery] = useState('');
   const [projectCategoryFilter, setProjectCategoryFilter] = useState('all');
+  const [projectPage, setProjectPage] = useState(1);
+  const PROJECT_PAGE_SIZE = 6;
   const [isBoardView, setIsBoardView] = useState(false);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
@@ -852,6 +910,11 @@ export default function App() {
   useEffect(() => {
     const root = document.documentElement;
     root.dataset.theme = theme;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
     localStorage.setItem('dcs-theme', theme);
   }, [theme]);
 
@@ -1455,7 +1518,7 @@ export default function App() {
         </header>
 
         {/* Main Content */}
-        <main className="max-w-7xl w-full mx-auto px-3.5 sm:px-6 py-5 flex-1 pb-24 lg:pb-8">
+        <main className={`max-w-7xl w-full mx-auto px-2.5 sm:px-6 py-3.5 sm:py-5 flex-1 flex flex-col ${activeTab === 'project-manager' ? 'pb-4 sm:pb-8 min-h-[calc(100dvh-3.5rem)]' : 'pb-24 lg:pb-8'}`}>
           {/* ============================================================== */}
           {/* TAB 1: GALLERY MANAGEMENT                                      */}
           {/* ============================================================== */}
@@ -1990,16 +2053,16 @@ export default function App() {
               {/* Blog Table Card */}
               <div className="card rounded-2xl overflow-hidden soft bg-white dark:bg-[#141a25]">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
+                  <table className="w-full min-w-[880px] text-left border-collapse">
                     <thead>
                       <tr className="border-b bd text-[10.5px] sm:text-[11px] font-semibold text-slate-500 uppercase tracking-wider bg-slate-50/70 dark:bg-slate-900/50">
                         <th className="py-3 px-3 sm:py-3.5 sm:px-4">Featured Image</th>
                         <th className="py-3 px-3 sm:py-3.5 sm:px-4">Title</th>
                         <th className="py-3 px-3 sm:py-3.5 sm:px-4">Author</th>
                         <th className="py-3 px-3 sm:py-3.5 sm:px-4">Status</th>
-                        <th className="py-3.5 px-4 hidden lg:table-cell">Tags</th>
-                        <th className="py-3.5 px-4 whitespace-nowrap hidden lg:table-cell">Published Date</th>
-                        <th className="py-3.5 px-4 text-right hidden lg:table-cell">Actions</th>
+                        <th className="py-3 px-3 sm:py-3.5 sm:px-4">Tags</th>
+                        <th className="py-3 px-3 sm:py-3.5 sm:px-4 whitespace-nowrap">Published Date</th>
+                        <th className="py-3 px-3 sm:py-3.5 sm:px-4 text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y bd text-[12px]">
@@ -2070,12 +2133,12 @@ export default function App() {
                             </td>
 
                             {/* Tags */}
-                            <td className="py-3.5 px-4 align-top hidden lg:table-cell">
-                              <div className="flex flex-wrap gap-1.5 max-w-[280px]">
+                            <td className="py-3 px-3 sm:py-3.5 sm:px-4 align-top min-w-[140px] max-w-[170px]">
+                              <div className="flex flex-col gap-1 items-start">
                                 {post.tags.map((tag) => (
                                   <span
                                     key={tag}
-                                    className="inline-block px-2 py-0.5 rounded text-[10.5px] font-medium bg-[#eef4ff] text-[#3b82f6] dark:bg-blue-950/50 dark:text-blue-400"
+                                    className="inline-block px-2.5 py-0.5 rounded text-[10.5px] font-medium bg-[#edf5ff] text-[#2563eb] dark:bg-blue-950/50 dark:text-blue-300 truncate"
                                   >
                                     {tag}
                                   </span>
@@ -2084,25 +2147,23 @@ export default function App() {
                             </td>
 
                             {/* Published Date */}
-                            <td className="py-3.5 px-4 align-top text-slate-600 dark:text-slate-400 text-[11.5px] whitespace-nowrap hidden lg:table-cell">
+                            <td className="py-3 px-3 sm:py-3.5 sm:px-4 align-top text-slate-700 dark:text-slate-300 font-normal text-[12px] whitespace-nowrap min-w-[100px]">
                               {post.date}
                             </td>
 
                             {/* Actions */}
-                            <td className="py-3.5 px-4 align-top text-right whitespace-nowrap hidden lg:table-cell">
-                              <div className="inline-flex items-center gap-1.5">
+                            <td className="py-3 px-3 sm:py-3.5 sm:px-4 align-top text-right whitespace-nowrap min-w-[140px]">
+                              <div className="inline-flex items-center justify-end gap-2">
                                 <button
                                   onClick={() => handleEditBlog(post)}
-                                  className="h-7 px-2.5 rounded-lg border bd bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-[11px] font-semibold inline-flex items-center gap-1 transition cursor-pointer shadow-xs"
+                                  className="h-8 px-3 rounded-lg border bd bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-[11.5px] font-semibold inline-flex items-center justify-center transition cursor-pointer shadow-2xs"
                                 >
-                                  <EditIcon className="w-3 h-3 text-slate-500" />
                                   Edit
                                 </button>
                                 <button
                                   onClick={() => setDeleteConfirm({ type: 'blog', id: post.id })}
-                                  className="h-7 px-2.5 rounded-lg border border-red-200/80 bg-red-50 hover:bg-red-100/80 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-[11px] font-semibold inline-flex items-center gap-1 transition cursor-pointer shadow-xs"
+                                  className="h-8 px-3 rounded-lg border border-red-200/80 bg-red-50 hover:bg-red-100/80 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-[11.5px] font-semibold inline-flex items-center justify-center transition cursor-pointer shadow-2xs"
                                 >
-                                  <Trash2 className="w-3 h-3 text-red-500" />
                                   Delete
                                 </button>
                               </div>
@@ -3104,58 +3165,42 @@ export default function App() {
           {/* ============================================================== */}
           {activeTab === 'websites' && (
             <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25]">
-              {/* Header Row: Title & Action Button */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
-                <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 sm:gap-3.5">
-                  <div
-                    className="w-11 h-11 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm"
-                    style={{ background: 'linear-gradient(135deg, #ff9a3c, #ff7a45)' }}
-                  >
-                    <Globe className="w-5 h-5" />
+              {/* Header Row: Title & Action Button (shown when form is closed) */}
+              {!isWebsiteFormOpen && (
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
+                  <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 sm:gap-3.5">
+                    <div
+                      className="w-11 h-11 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm"
+                      style={{ background: 'linear-gradient(135deg, #ff9a3c, #ff7a45)' }}
+                    >
+                      <Globe className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h1 className="text-[17px] font-bold tracking-tight text-[var(--tx)]">Website Management</h1>
+                      <p className="text-[11.5px] text-[#64748b] mt-0.5 max-w-sm sm:max-w-none">
+                        Upload and manage website information with images and URLs
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h1 className="text-[17px] font-bold tracking-tight text-[var(--tx)]">Website Management</h1>
-                    <p className="text-[11.5px] text-[#64748b] mt-0.5 max-w-sm sm:max-w-none">
-                      Upload and manage website information with images and URLs
-                    </p>
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-2 w-full sm:w-auto sm:self-center">
-                  <button
-                    onClick={() => {
-                      if (isWebsiteFormOpen) {
-                        setIsWebsiteFormOpen(false);
-                        setEditingWebsiteId(null);
-                        setWebsiteTitle('');
-                        setWebsiteUrl('');
-                        setSelectedWebsiteFile(null);
-                        setSelectedWebsitePreview(null);
-                      } else {
+                  <div className="flex items-center gap-2 w-full sm:w-auto sm:self-center">
+                    <button
+                      onClick={() => {
                         setEditingWebsiteId(null);
                         setWebsiteTitle('');
                         setWebsiteUrl('');
                         setSelectedWebsiteFile(null);
                         setSelectedWebsitePreview(null);
                         setIsWebsiteFormOpen(true);
-                      }
-                    }}
-                    className="w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition text-white shadow-sm hover:opacity-95 cursor-pointer bg-[#ea580c]"
-                  >
-                    {isWebsiteFormOpen ? (
-                      <>
-                        <X className="w-4 h-4" />
-                        Cancel
-                      </>
-                    ) : (
-                      <>
-                        <Plus className="w-4 h-4" />
-                        Add Website
-                      </>
-                    )}
-                  </button>
+                      }}
+                      className="w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 transition text-white shadow-sm hover:opacity-95 cursor-pointer bg-[#ea580c]"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Website
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Success Alert Banner */}
               {websiteSuccessAlert && (
@@ -3175,127 +3220,156 @@ export default function App() {
 
               {/* Add / Edit Form */}
               {isWebsiteFormOpen ? (
-                <div className="mb-6 card rounded-2xl border bd overflow-hidden bg-white dark:bg-[#141a25] shadow-xs">
-                  {/* Form Header Banner */}
-                  <div className="bg-[#ea580c] text-white px-6 py-4">
-                    <div className="flex items-center justify-center gap-2 font-bold text-[14px]">
-                      <Globe className="w-4.5 h-4.5" />
-                      <span>{editingWebsiteId ? 'Edit Website Information' : 'Add Website Information'}</span>
-                    </div>
-                    <p className="text-center text-[11px] text-orange-100 mt-0.5">
-                      Enter the website title, URL, and upload the preview screenshot
-                    </p>
+                <div className="mb-6">
+                  {/* Back to Websites button */}
+                  <div className="mb-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsWebsiteFormOpen(false);
+                        setEditingWebsiteId(null);
+                        setWebsiteTitle('');
+                        setWebsiteUrl('');
+                        setSelectedWebsiteFile(null);
+                        setSelectedWebsitePreview(null);
+                      }}
+                      className="h-9 px-3.5 rounded-lg border bd bg-white dark:bg-slate-800 text-[12.5px] font-semibold text-slate-700 dark:text-slate-200 inline-flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition cursor-pointer shadow-2xs"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      <span>Back to Websites</span>
+                    </button>
                   </div>
 
-                  {/* Upload Progress Bar */}
-                  {websiteUploadProgress !== null && (
-                    <div className="w-full bg-orange-100 h-1.5 overflow-hidden">
-                      <div
-                        className="bg-orange-600 h-full transition-all duration-150"
-                        style={{ width: `${websiteUploadProgress}%` }}
-                      />
-                    </div>
-                  )}
-
-                  <div className="p-6 sm:p-7 space-y-5">
-                    <div>
-                      <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-1.5">
-                        Website Title <span className="text-slate-700 dark:text-slate-300 font-bold">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        value={websiteTitle}
-                        onChange={(e) => setWebsiteTitle(e.target.value)}
-                        placeholder="e.g. GeoTrackMee"
-                        className="w-full h-10 px-3.5 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-1.5">
-                        Website URL <span className="text-slate-700 dark:text-slate-300 font-bold">*</span>
-                      </label>
-                      <input
-                        type="url"
-                        value={websiteUrl}
-                        onChange={(e) => setWebsiteUrl(e.target.value)}
-                        placeholder="https://example.com"
-                        className="w-full h-10 px-3.5 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
-                        Website Image <span className="text-slate-700 dark:text-slate-300 font-bold">*</span>
-                      </label>
-                      <input
-                        type="file"
-                        ref={websiteFileInputRef}
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleWebsiteFileSelect}
-                      />
-                      <div
-                        onClick={() => websiteFileInputRef.current?.click()}
-                        className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 sm:p-10 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/30 cursor-pointer hover:border-orange-400 dark:hover:border-orange-500 transition group"
-                      >
-                        {!selectedWebsitePreview ? (
-                          <div className="flex flex-col items-center">
-                            <button
-                              type="button"
-                              className="h-9 px-5 rounded-lg font-semibold text-[12.5px] text-white bg-[#ea580c] hover:opacity-95 shadow-sm inline-flex items-center gap-2 cursor-pointer pointer-events-none"
-                            >
-                              <Upload className="w-4 h-4" />
-                              Select Website Image
-                            </button>
-                            <span className="text-[11px] mu mt-2">PNG, JPG or WebP (max 5MB)</span>
-                          </div>
-                        ) : (
-                          <div className="flex flex-col items-center justify-center gap-3 w-full">
-                            <div className="w-full max-w-[340px] aspect-[16/10] p-1 bg-white dark:bg-slate-900 rounded-lg border bd flex items-center justify-center overflow-hidden shadow-xs">
-                              <img src={selectedWebsitePreview} alt="Preview" className="w-full h-full object-cover rounded" />
-                            </div>
-                            <div className="text-center">
-                              <p className="text-[12.5px] font-bold text-slate-800 dark:text-slate-200 truncate max-w-xs">
-                                {selectedWebsiteFile?.name}
-                              </p>
-                              <p className="text-[11px] mu mt-0.5">
-                                {((selectedWebsiteFile?.size || 0) / 1024).toFixed(1)} KB
-                              </p>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                websiteFileInputRef.current?.click();
-                              }}
-                              className="text-[11.5px] font-semibold text-orange-600 dark:text-orange-400 hover:underline cursor-pointer"
-                            >
-                              Change Image
-                            </button>
-                          </div>
-                        )}
+                  <div className="card rounded-2xl border bd overflow-hidden bg-white dark:bg-[#141a25] shadow-xs">
+                    {/* Form Header Banner (Orange to Purple Gradient) */}
+                    <div
+                      className="text-white px-6 py-4 text-center"
+                      style={{ background: 'linear-gradient(135deg, #ea580c 0%, #9333ea 100%)' }}
+                    >
+                      <div className="flex items-center justify-center gap-2 font-bold text-[15.5px] sm:text-[16px] tracking-tight">
+                        <Globe className="w-5 h-5" />
+                        <span>{editingWebsiteId ? 'Edit Website' : 'Add Website'}</span>
                       </div>
+                      <p className="text-center text-[12px] text-white/90 mt-1 font-normal">
+                        Enter the website URL and upload an image
+                      </p>
                     </div>
 
-                    <div className="flex items-center gap-4 pt-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setIsWebsiteFormOpen(false);
-                          setEditingWebsiteId(null);
-                        }}
-                        className="flex-1 h-11 rounded-lg font-bold text-[14px] text-white bg-[#94a3b8] hover:bg-[#64748b] transition cursor-pointer flex items-center justify-center shadow-xs active:scale-95"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="button"
-                        onClick={submitWebsiteForm}
-                        className="flex-1 h-11 rounded-lg font-bold text-[14px] text-white bg-[#00a86b] hover:bg-[#059669] transition cursor-pointer flex items-center justify-center shadow-sm active:scale-95"
-                      >
-                        {editingWebsiteId ? 'Update Website' : 'Add Website'}
-                      </button>
+                    {/* Upload Progress Bar */}
+                    {websiteUploadProgress !== null && (
+                      <div className="w-full bg-orange-100 h-1.5 overflow-hidden">
+                        <div
+                          className="bg-orange-600 h-full transition-all duration-150"
+                          style={{ width: `${websiteUploadProgress}%` }}
+                        />
+                      </div>
+                    )}
+
+                    <div className="p-6 sm:p-8 space-y-6">
+                      {/* Field 1: Website URL * */}
+                      <div>
+                        <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+                          Website URL <span className="text-slate-700 dark:text-slate-300 font-bold">*</span>
+                        </label>
+                        <input
+                          type="url"
+                          value={websiteUrl}
+                          onChange={(e) => setWebsiteUrl(e.target.value)}
+                          placeholder="https://example.com"
+                          className="w-full h-11 px-3.5 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] placeholder:italic placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-[#ea580c] transition"
+                        />
+                      </div>
+
+                      {/* Field 2: Website Name * */}
+                      <div>
+                        <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+                          Website Name <span className="text-slate-700 dark:text-slate-300 font-bold">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={websiteTitle}
+                          onChange={(e) => setWebsiteTitle(e.target.value)}
+                          placeholder="Example Website"
+                          className="w-full h-11 px-3.5 rounded-lg border bd text-[13px] bg-white dark:bg-[#0d121c] text-[var(--tx)] placeholder:italic placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-[#ea580c] transition"
+                        />
+                      </div>
+
+                      {/* Field 3: Website Image * */}
+                      <div>
+                        <label className="block text-[12.5px] font-bold text-slate-800 dark:text-slate-200 mb-2">
+                          Website Image <span className="text-slate-700 dark:text-slate-300 font-bold">*</span>
+                        </label>
+                        <input
+                          type="file"
+                          ref={websiteFileInputRef}
+                          accept="image/*"
+                          className="hidden"
+                          onChange={handleWebsiteFileSelect}
+                        />
+                        <div
+                          onClick={() => websiteFileInputRef.current?.click()}
+                          className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 sm:p-10 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/30 cursor-pointer hover:border-orange-400 dark:hover:border-orange-500 transition group"
+                        >
+                          {!selectedWebsitePreview ? (
+                            <div className="flex flex-col items-center justify-center">
+                              <button
+                                type="button"
+                                className="h-9 px-5 rounded-lg font-semibold text-[12.5px] text-white hover:opacity-95 shadow-sm inline-flex items-center gap-2 cursor-pointer pointer-events-none"
+                                style={{ background: 'linear-gradient(to right, #ea580c, #9333ea)' }}
+                              >
+                                <ImageIcon className="w-4 h-4" />
+                                <span>Select Image</span>
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="flex flex-col items-center justify-center gap-3 w-full">
+                              <div className="h-32 max-w-[340px] p-2 bg-white dark:bg-slate-900 rounded-lg border bd flex items-center justify-center overflow-hidden shadow-xs">
+                                <img src={selectedWebsitePreview} alt="Preview" className="max-h-full max-w-full object-contain" />
+                              </div>
+                              <div className="text-center">
+                                <p className="text-[12.5px] font-bold text-slate-800 dark:text-slate-200 truncate max-w-xs">
+                                  {selectedWebsiteFile?.name}
+                                </p>
+                                <p className="text-[11px] mu mt-0.5">
+                                  {((selectedWebsiteFile?.size || 0) / 1024).toFixed(1)} KB
+                                </p>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  websiteFileInputRef.current?.click();
+                                }}
+                                className="text-[11.5px] font-semibold text-orange-600 dark:text-orange-400 hover:underline cursor-pointer"
+                              >
+                                Change Image
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Stacked Vertical Action Buttons */}
+                      <div className="space-y-3 pt-2">
+                        <button
+                          type="button"
+                          onClick={submitWebsiteForm}
+                          className="w-full h-11 rounded-lg font-bold text-[14px] text-white bg-[#00a86b] hover:bg-[#059669] transition cursor-pointer flex items-center justify-center gap-2 shadow-sm active:scale-95"
+                        >
+                          <Upload className="w-4.5 h-4.5" />
+                          <span>Save Website</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsWebsiteFormOpen(false);
+                            setEditingWebsiteId(null);
+                          }}
+                          className="w-full h-11 rounded-lg font-bold text-[14px] text-white bg-[#8fa0b5] hover:bg-[#64748b] dark:bg-slate-700 dark:hover:bg-slate-600 transition cursor-pointer flex items-center justify-center shadow-xs active:scale-95"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -4078,20 +4152,20 @@ export default function App() {
 
           {activeTab === 'team' && (
             <div className="space-y-6">
-              {/* Top Header Card */}
-              <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              {/* Top Header Row (Matching desktop layout in media_1794821589089_464f5ae5.png) */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b bd">
                 <div className="flex items-center gap-3.5">
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm"
-                    style={{ background: 'linear-gradient(135deg, #ff9a3c, #ff7a45)' }}
+                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm"
+                    style={{ background: '#ea580c' }}
                   >
-                    <Users className="w-5 h-5" />
+                    <Users className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
                   </div>
                   <div>
-                    <h1 className="text-[18px] sm:text-[20px] font-bold tracking-tight text-[var(--tx)]">
+                    <h1 className="text-[17px] sm:text-[19px] font-bold tracking-tight text-[var(--tx)]">
                       About Us &amp; Team Management
                     </h1>
-                    <p className="text-[11.5px] text-[#64748b] dark:text-slate-400 mt-0.5">
+                    <p className="text-[11.5px] sm:text-[12px] text-[#64748b] dark:text-slate-400 mt-0.5">
                       Manage content across The Minds Behind Dev Creations, Mentors, and Team sections
                     </p>
                   </div>
@@ -4111,9 +4185,10 @@ export default function App() {
                       });
                       setIsTeamModalOpen(true);
                     }}
-                    className="h-9 px-4 rounded-lg font-semibold text-[12.5px] inline-flex items-center justify-center gap-1.5 transition text-white shadow-sm hover:opacity-95 cursor-pointer bg-[#ea580c] active:scale-95"
+                    className="w-full sm:w-auto h-9 px-4 rounded-xl font-bold text-[12.5px] inline-flex items-center justify-center gap-1.5 transition cursor-pointer text-white shadow-sm hover:opacity-95 bg-[#ea580c] active:scale-95"
+                    style={{ boxShadow: '0 4px 14px 0 rgba(234, 88, 12, 0.35)' }}
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-4 h-4" strokeWidth={2.8} />
                     <span>Add Member</span>
                   </button>
                 </div>
@@ -4299,20 +4374,20 @@ export default function App() {
                 </div>
               )}
 
-              {/* Search Bar */}
-              <div className="relative w-full sm:max-w-md">
+              {/* Search Bar (Matching media_1794821589089_464f5ae5.png) */}
+              <div className="relative w-full sm:max-w-xs">
                 <input
                   type="text"
                   value={teamSearchQuery}
                   onChange={(e) => setTeamSearchQuery(e.target.value)}
                   placeholder="Search members by name or title..."
-                  className="w-full h-10 px-4 rounded-xl border bd bg-white dark:bg-[#141a25] text-slate-800 dark:text-slate-100 text-[13px] placeholder:text-slate-400 focus:outline-none focus:border-[#ea580c] shadow-2xs"
+                  className="w-full h-10 px-3.5 rounded-xl border bd bg-white dark:bg-[#141a25] text-slate-800 dark:text-slate-100 text-[13px] placeholder:text-slate-400 focus:outline-none focus:border-[#ea580c] shadow-2xs"
                 />
               </div>
 
               {/* SECTION 1: The Minds Behind Dev Creations */}
               <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b bd">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b bd">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-[#ea580c] flex items-center justify-center border border-orange-100 dark:border-orange-900/60 shadow-2xs">
                       <Users className="w-4.5 h-4.5" />
@@ -4334,9 +4409,10 @@ export default function App() {
                       });
                       setIsTeamModalOpen(true);
                     }}
-                    className="h-8 px-3 rounded-lg border border-orange-200 dark:border-orange-900/60 bg-orange-50/60 dark:bg-orange-950/40 hover:bg-orange-100/70 text-[#ea580c] text-[11.5px] font-bold inline-flex items-center gap-1 transition cursor-pointer"
+                    className="self-start sm:self-auto h-9 px-4 rounded-xl border border-orange-200 dark:border-orange-900/60 bg-orange-50/70 dark:bg-orange-950/40 hover:bg-orange-100 text-[#ea580c] text-[12px] font-bold inline-flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
                   >
-                    <span>+ Add Mind</span>
+                    <Plus className="w-3.5 h-3.5" strokeWidth={2.8} />
+                    <span>Add Mind</span>
                   </button>
                 </div>
 
@@ -4415,7 +4491,7 @@ export default function App() {
 
               {/* SECTION 2: Mentors & Strategic Advisors */}
               <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b bd">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b bd">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 flex items-center justify-center border border-indigo-100 dark:border-indigo-900/60 shadow-2xs">
                       <Bookmark className="w-4.5 h-4.5" />
@@ -4437,8 +4513,9 @@ export default function App() {
                       });
                       setIsTeamModalOpen(true);
                     }}
-                    className="h-8 px-3 rounded-lg border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/60 dark:bg-indigo-950/40 hover:bg-indigo-100/70 text-indigo-600 dark:text-indigo-400 text-[11.5px] font-bold inline-flex items-center gap-1 transition cursor-pointer"
+                    className="self-start sm:self-auto h-9 px-4 rounded-xl border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/70 dark:bg-indigo-950/40 hover:bg-indigo-100 text-indigo-600 dark:text-indigo-400 text-[12px] font-bold inline-flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
                   >
+                    <Plus className="w-3.5 h-3.5" strokeWidth={2.8} />
                     <span>+ Add Mentor</span>
                   </button>
                 </div>
@@ -4513,7 +4590,7 @@ export default function App() {
 
               {/* SECTION 3: Core Engineering & Operations Team */}
               <div className="card rounded-2xl p-5 sm:p-6 soft bg-white dark:bg-[#141a25] space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b bd">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b bd">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 flex items-center justify-center border border-emerald-100 dark:border-emerald-900/60 shadow-2xs">
                       <Briefcase className="w-4.5 h-4.5" />
@@ -4535,8 +4612,9 @@ export default function App() {
                       });
                       setIsTeamModalOpen(true);
                     }}
-                    className="h-8 px-3 rounded-lg border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/60 dark:bg-emerald-950/40 hover:bg-emerald-100/70 text-emerald-600 dark:text-emerald-400 text-[11.5px] font-bold inline-flex items-center gap-1 transition cursor-pointer"
+                    className="self-start sm:self-auto h-9 px-4 rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/70 dark:bg-emerald-950/40 hover:bg-emerald-100 text-emerald-600 dark:text-emerald-400 text-[12px] font-bold inline-flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
                   >
+                    <Plus className="w-3.5 h-3.5" strokeWidth={2.8} />
                     <span>+ Add Team Member</span>
                   </button>
                 </div>
@@ -4612,7 +4690,7 @@ export default function App() {
           )}
 
           {activeTab === 'project-manager' && (
-            <div className="space-y-6">
+            <div className="space-y-3.5 sm:space-y-6 flex-1 flex flex-col min-h-0">
               {/* Header Section (Matching Screenshot) */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
@@ -4664,17 +4742,23 @@ export default function App() {
                   <input
                     type="text"
                     value={projectSearchQuery}
-                    onChange={(e) => setProjectSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                      setProjectSearchQuery(e.target.value);
+                      setProjectPage(1);
+                    }}
                     placeholder="Search projects by name..."
                     className="w-full h-10 pl-9 pr-4 rounded-xl border bd bg-white dark:bg-[#141a25] text-slate-800 dark:text-slate-100 text-[13px] placeholder:text-slate-400 focus:outline-none focus:border-[#4f46e5] shadow-2xs"
                   />
                 </div>
 
-                <div className="relative">
+                <div className="relative w-full sm:w-auto">
                   <select
                     value={projectCategoryFilter}
-                    onChange={(e) => setProjectCategoryFilter(e.target.value)}
-                    className="h-10 px-4 pr-9 rounded-xl border bd bg-white dark:bg-[#141a25] text-[12.5px] font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#4f46e5] cursor-pointer appearance-none shadow-2xs"
+                    onChange={(e) => {
+                      setProjectCategoryFilter(e.target.value);
+                      setProjectPage(1);
+                    }}
+                    className="w-full sm:w-44 h-10 px-4 pr-9 rounded-xl border bd bg-white dark:bg-[#141a25] text-[12.5px] font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#4f46e5] cursor-pointer appearance-none shadow-2xs"
                   >
                     <option value="all">All Projects</option>
                     <option value="in_progress">In Progress</option>
@@ -4688,133 +4772,191 @@ export default function App() {
               </div>
 
               {/* TABLE VIEW (Matching Screenshot) */}
-              {!isBoardView ? (
-                <div className="card rounded-2xl bg-white dark:bg-[#141a25] soft overflow-hidden border bd">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="border-b bd text-[12px] font-bold text-slate-600 dark:text-slate-400 bg-slate-50/50 dark:bg-slate-900/40">
-                          <th className="py-3.5 pl-6 w-14 font-extrabold">#</th>
-                          <th className="py-3.5 px-4 font-bold">Project Name</th>
-                          <th className="py-3.5 px-4 font-bold">Description</th>
-                          <th className="py-3.5 px-4 font-bold">Start Date</th>
-                          <th className="py-3.5 pr-6 text-right font-bold">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y bd text-[13px]">
-                        {projects
-                          .filter((p) => {
-                            const matchSearch =
-                              !projectSearchQuery ||
-                              p.name.toLowerCase().includes(projectSearchQuery.toLowerCase()) ||
-                              p.desc.toLowerCase().includes(projectSearchQuery.toLowerCase());
-                            const matchCategory =
-                              projectCategoryFilter === 'all' || p.status === projectCategoryFilter;
-                            return matchSearch && matchCategory;
-                          })
-                          .map((p, idx) => (
-                            <tr
-                              key={p.num + p.name}
-                              className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition"
-                            >
-                              <td className="py-4 pl-6 font-semibold text-slate-500 dark:text-slate-400 text-xs">
-                                {p.num}
-                              </td>
-                              <td className="py-4 px-4">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border bd bg-slate-50 dark:bg-slate-900">
-                                    <img src={p.img} alt={p.name} className="w-full h-full object-contain" />
-                                  </div>
-                                  <span className="font-bold text-slate-900 dark:text-slate-100 text-[13.5px]">
-                                    {p.name}
-                                  </span>
-                                </div>
-                              </td>
-                              <td className="py-4 px-4 text-slate-600 dark:text-slate-300 max-w-[420px] truncate text-[12.5px]">
-                                {p.desc}
-                              </td>
-                              <td className="py-4 px-4 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap text-[12px]">
-                                {p.date}
-                              </td>
-                              <td className="py-4 pr-6 text-right whitespace-nowrap">
-                                <div className="inline-flex items-center justify-end gap-2 relative">
-                                  <button
-                                    type="button"
-                                    onClick={() => setViewingProjectDetail(p)}
-                                    className="h-7 px-3 rounded-lg border border-[#e0e7ff] hover:border-[#c7d2fe] bg-white dark:bg-[#141a25] hover:bg-indigo-50/70 text-[#4f46e5] dark:text-indigo-400 font-semibold text-[11.5px] transition cursor-pointer shadow-2xs"
-                                  >
-                                    Open Project
-                                  </button>
+              {!isBoardView ? (() => {
+                const filteredProjects = projects.filter((p) => {
+                  const matchSearch =
+                    !projectSearchQuery ||
+                    p.name.toLowerCase().includes(projectSearchQuery.toLowerCase()) ||
+                    p.desc.toLowerCase().includes(projectSearchQuery.toLowerCase());
+                  const matchCategory =
+                    projectCategoryFilter === 'all' || p.status === projectCategoryFilter;
+                  return matchSearch && matchCategory;
+                });
+                const totalProjectPages = Math.max(1, Math.ceil(filteredProjects.length / PROJECT_PAGE_SIZE));
+                const currentProjectPage = Math.min(Math.max(1, projectPage), totalProjectPages);
+                const startProjectIdx = (currentProjectPage - 1) * PROJECT_PAGE_SIZE;
+                const pagedProjects = filteredProjects.slice(startProjectIdx, startProjectIdx + PROJECT_PAGE_SIZE);
 
-                                  <div className="relative">
-                                    <button
-                                      type="button"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setOpenProjectMenuIndex(openProjectMenuIndex === idx ? null : idx);
-                                      }}
-                                      className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition cursor-pointer"
-                                      title="More actions"
-                                    >
-                                      <MoreVertical className="w-3.5 h-3.5" />
-                                    </button>
-
-                                    {openProjectMenuIndex === idx && (
-                                      <div className="absolute right-0 top-8 z-30 w-36 py-1.5 rounded-xl card bg-white dark:bg-[#141a25] border bd shadow-xl text-left text-xs animate-scale-up">
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            setViewingProjectDetail(p);
-                                            setOpenProjectMenuIndex(null);
-                                          }}
-                                          className="w-full px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-200"
-                                        >
-                                          <Eye className="w-3.5 h-3.5 text-indigo-500" />
-                                          <span>View Details</span>
-                                        </button>
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            setEditingProject(p);
-                                            setProjectForm({
-                                              name: p.name,
-                                              desc: p.fullDesc || p.desc,
-                                              date: p.date,
-                                              status: p.status,
-                                              img: p.img
-                                            });
-                                            setIsCreateProjectOpen(true);
-                                            setOpenProjectMenuIndex(null);
-                                          }}
-                                          className="w-full px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-200"
-                                        >
-                                          <EditIcon className="w-3.5 h-3.5 text-slate-500" />
-                                          <span>Edit Project</span>
-                                        </button>
-                                        <div className="h-px bg-slate-100 dark:bg-slate-800 my-1" />
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            setDeleteProjectTarget(p);
-                                            setOpenProjectMenuIndex(null);
-                                          }}
-                                          className="w-full px-3 py-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 flex items-center gap-2 cursor-pointer"
-                                        >
-                                          <Trash2 className="w-3.5 h-3.5" />
-                                          <span>Delete</span>
-                                        </button>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
+                return (
+                  <div className="card rounded-2xl bg-white dark:bg-[#141a25] soft overflow-hidden border bd flex-1 flex flex-col justify-between shadow-xs">
+                    <div className="overflow-x-auto custom-scrollbar flex-1 flex flex-col">
+                      <table className="w-full text-left border-collapse min-w-[650px] sm:min-w-[720px] h-full flex-1">
+                        <thead>
+                          <tr className="border-b bd text-[12px] font-bold text-slate-600 dark:text-slate-400 bg-slate-50/50 dark:bg-slate-900/40">
+                            <th className="py-3.5 pl-6 w-14 font-extrabold">#</th>
+                            <th className="py-3.5 px-4 font-bold min-w-[160px]">Project Name</th>
+                            <th className="py-3.5 px-4 font-bold min-w-[240px]">Description</th>
+                            <th className="py-3.5 px-4 font-bold min-w-[120px]">Start Date</th>
+                            <th className="py-3.5 pr-6 text-right font-bold min-w-[100px]">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y bd text-[13px]">
+                          {pagedProjects.length === 0 ? (
+                            <tr>
+                              <td colSpan={5} className="py-12 text-center text-slate-400">
+                                <p className="font-semibold text-slate-600 dark:text-slate-300">No projects found</p>
+                                <p className="text-xs text-slate-400 mt-1">Try adjusting your search query or category filter.</p>
                               </td>
                             </tr>
-                          ))}
-                      </tbody>
-                    </table>
+                          ) : (
+                            pagedProjects.map((p, idx) => (
+                              <tr
+                                key={p.num + p.name}
+                                className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition"
+                              >
+                                <td className="py-4 pl-6 font-semibold text-slate-500 dark:text-slate-400 text-xs">
+                                  {p.num}
+                                </td>
+                                <td className="py-4 px-4 whitespace-nowrap">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border bd bg-slate-50 dark:bg-slate-900">
+                                      <img src={p.img} alt={p.name} className="w-full h-full object-contain" />
+                                    </div>
+                                    <span className="font-bold text-slate-900 dark:text-slate-100 text-[13.5px]">
+                                      {p.name}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td className="py-4 px-4 text-slate-600 dark:text-slate-300 max-w-[280px] sm:max-w-[420px] truncate text-[12.5px]">
+                                  {p.desc}
+                                </td>
+                                <td className="py-4 px-4 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap text-[12px]">
+                                  {p.date}
+                                </td>
+                                <td className="py-4 pr-6 text-right whitespace-nowrap">
+                                  <div className="inline-flex items-center justify-end gap-2 relative">
+                                    <button
+                                      type="button"
+                                      onClick={() => setViewingProjectDetail(p)}
+                                      className="h-7 px-3 rounded-lg border border-[#e0e7ff] hover:border-[#c7d2fe] bg-white dark:bg-[#141a25] hover:bg-indigo-50/70 text-[#4f46e5] dark:text-indigo-400 font-semibold text-[11.5px] transition cursor-pointer shadow-2xs"
+                                    >
+                                      Open Project
+                                    </button>
+
+                                    <div className="relative">
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setOpenProjectMenuIndex(openProjectMenuIndex === (startProjectIdx + idx) ? null : (startProjectIdx + idx));
+                                        }}
+                                        className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition cursor-pointer"
+                                        title="More actions"
+                                      >
+                                        <MoreVertical className="w-3.5 h-3.5" />
+                                      </button>
+
+                                      {openProjectMenuIndex === (startProjectIdx + idx) && (
+                                        <div className="absolute right-0 top-8 z-30 w-36 py-1.5 rounded-xl card bg-white dark:bg-[#141a25] border bd shadow-xl text-left text-xs animate-scale-up">
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              setViewingProjectDetail(p);
+                                              setOpenProjectMenuIndex(null);
+                                            }}
+                                            className="w-full px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-200"
+                                          >
+                                            <Eye className="w-3.5 h-3.5 text-indigo-500" />
+                                            <span>View Details</span>
+                                          </button>
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              setEditingProject(p);
+                                              setProjectForm({
+                                                name: p.name,
+                                                desc: p.fullDesc || p.desc,
+                                                date: p.date,
+                                                status: p.status,
+                                                img: p.img
+                                              });
+                                              setIsCreateProjectOpen(true);
+                                              setOpenProjectMenuIndex(null);
+                                            }}
+                                            className="w-full px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-200"
+                                          >
+                                            <EditIcon className="w-3.5 h-3.5 text-slate-500" />
+                                            <span>Edit Project</span>
+                                          </button>
+                                          <div className="h-px bg-slate-100 dark:bg-slate-800 my-1" />
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              setDeleteProjectTarget(p);
+                                              setOpenProjectMenuIndex(null);
+                                            }}
+                                            className="w-full px-3 py-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 flex items-center gap-2 cursor-pointer"
+                                          >
+                                            <Trash2 className="w-3.5 h-3.5" />
+                                            <span>Delete</span>
+                                          </button>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Table Pagination Bar (Matching Reference Screenshot) */}
+                    <div className="px-5 py-3.5 border-t bd flex items-center justify-between text-[12px] text-slate-500 dark:text-slate-400 mt-auto bg-white dark:bg-[#141a25] shrink-0">
+                      <div className="font-medium">
+                        {filteredProjects.length === 0
+                          ? 'Showing 0 to 0 of 0 projects'
+                          : `Showing ${startProjectIdx + 1} to ${Math.min(startProjectIdx + PROJECT_PAGE_SIZE, filteredProjects.length)} of ${filteredProjects.length} projects`}
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setProjectPage(Math.max(1, currentProjectPage - 1))}
+                          disabled={currentProjectPage === 1}
+                          className={currentProjectPage === 1 ? 'w-6 h-6 flex items-center justify-center text-slate-300 dark:text-slate-600 cursor-not-allowed' : 'w-6 h-6 flex items-center justify-center text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 cursor-pointer'}
+                          title="Previous Page"
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                        </button>
+                        {Array.from({ length: totalProjectPages }, (_, i) => i + 1).map((pNum) => (
+                          <button
+                            key={pNum}
+                            type="button"
+                            onClick={() => setProjectPage(pNum)}
+                            className={
+                              pNum === currentProjectPage
+                                ? 'w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/40 text-[#3b82f6] dark:text-blue-400 font-bold flex items-center justify-center text-xs shadow-2xs'
+                                : 'w-6 h-6 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium flex items-center justify-center text-xs transition cursor-pointer'
+                            }
+                          >
+                            {pNum}
+                          </button>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={() => setProjectPage(Math.min(totalProjectPages, currentProjectPage + 1))}
+                          disabled={currentProjectPage === totalProjectPages}
+                          className={currentProjectPage === totalProjectPages ? 'w-6 h-6 flex items-center justify-center text-slate-300 dark:text-slate-600 cursor-not-allowed' : 'w-6 h-6 flex items-center justify-center text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 cursor-pointer'}
+                          title="Next Page"
+                        >
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ) : (
+                );
+              })() : (
                 /* KANBAN BOARD VIEW */
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {['planning', 'in_progress', 'review', 'completed'].map((colKey) => {

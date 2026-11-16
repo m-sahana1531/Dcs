@@ -7,6 +7,11 @@
   <title>Admin Dashboard - Banner Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]']
+    }
+  </script>
   <style>
     :root {
       --bg: #f8fafc;
@@ -17,7 +22,7 @@
       --tile: #fffdf5
     }
 
-    :root[data-theme="dark"] {
+    :root[data-theme="dark"], html.dark {
       color-scheme: dark;
       --bg: #0b0f17;
       --card: #141a25;
@@ -25,6 +30,10 @@
       --mu: #94a3b8;
       --bd: #263042;
       --tile: #1c1712
+    }
+
+    html.dark .logo-full, :root[data-theme="dark"] .logo-full {
+      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
     }
 
     @media (prefers-color-scheme:dark) {
@@ -404,7 +413,22 @@
     let files = { desktop: null, mobile: null }, n = 3;
 
     function toast(m) { const t = $('toast'); t.textContent = m; t.classList.remove('hidden'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.add('hidden'), 2200) }
-    function theme() { const r = document.documentElement; const d = getComputedStyle(r).colorScheme.includes('dark'); r.dataset.theme = d ? 'light' : 'dark'; $('tbtn').innerHTML = ico(d ? MOON : SUN, 20) }
+    function updateThemeIcon(isDark) {
+      const btn = $('tbtn');
+      if (btn) btn.innerHTML = isDark ? ico(SUN, 18) : ico(MOON, 18);
+    }
+    function applyTheme(isDark) {
+      const r = document.documentElement;
+      r.dataset.theme = isDark ? 'dark' : 'light';
+      r.classList.toggle('dark', isDark);
+      localStorage.setItem('dcs-theme', isDark ? 'dark' : 'light');
+      updateThemeIcon(isDark);
+    }
+    function theme() {
+      const r = document.documentElement;
+      const isDark = r.dataset.theme === 'dark' || r.classList.contains('dark');
+      applyTheme(!isDark);
+    }
 
     function render() {
       $('count').textContent = items.length;
@@ -590,6 +614,12 @@
       }
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav() });
+    (function () {
+      const saved = localStorage.getItem('dcs-theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = saved ? saved === 'dark' : prefersDark;
+      applyTheme(isDark);
+    })();
     render();
   </script>
 </body>
